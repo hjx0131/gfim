@@ -26,3 +26,6 @@
         Path   = "/tmp/log/gf-app/sql"
         Level  = "all"
         Stdout = true
+# Redis数据库配置
+[redis]
+    default = "127.0.0.1:6379,0"
