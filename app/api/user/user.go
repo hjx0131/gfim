@@ -7,13 +7,13 @@ import (
 	"github.com/gogf/gf/net/ghttp"
 )
 
-// SignInRequest sign in request parameters
+// SignInRequest 登录请求参数
 type SignInRequest struct {
 	Username string `v:"required#账号不能为空"`
 	Password string `v:"required#密码不能为空"`
 }
 
-//SignIn sign in for user with username and password
+//SignIn 登录
 func SignIn(r *ghttp.Request) {
 	var data *SignInRequest
 	if err := r.Parse(&data); err != nil {
@@ -29,5 +29,11 @@ func SignIn(r *ghttp.Request) {
 		"token": token,
 	}
 	response.JSONExit(r, 0, "ok", resp)
+
+}
+
+//Profile 主面板
+func Profile(r *ghttp.Request) {
+	response.JSONExit(r, 0, "ok", "主面板")
 
 }

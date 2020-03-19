@@ -6,9 +6,10 @@ package auth_group
 
 import (
 	"database/sql"
+	"time"
+
 	"github.com/gogf/gf/database/gdb"
 	"github.com/gogf/gf/frame/g"
-	"time"
 )
 
 // arModel is a active record design model for table gf_auth_group operations.
