@@ -1,11 +1,16 @@
 package user
 
 import (
+	"gfim/app/api"
 	"gfim/app/service/user"
-	"gfim/library/response"
 
 	"github.com/gogf/gf/net/ghttp"
 )
+
+//Controller 控制器结构体
+type Controller struct {
+	api.Base
+}
 
 // SignInRequest 登录请求参数
 type SignInRequest struct {
@@ -14,26 +19,26 @@ type SignInRequest struct {
 }
 
 //SignIn 登录
-func SignIn(r *ghttp.Request) {
+func (c *Controller) SignIn(r *ghttp.Request) {
 	var data *SignInRequest
 	if err := r.Parse(&data); err != nil {
-		response.JSONExit(r, 1, err.Error())
+		c.Fail(r, err.Error())
 
 	}
 	token, err := user.SignIn(data.Username, data.Password)
 	if err != nil {
-		response.JSONExit(r, 1, err.Error())
+		c.Fail(r, err.Error())
 
 	}
 	resp := map[string]string{
 		"token": token,
 	}
-	response.JSONExit(r, 0, "ok", resp)
+	c.Success(r, resp)
 
 }
 
 //Profile 主面板
-func Profile(r *ghttp.Request) {
-	response.JSONExit(r, 0, "ok", "主面板")
+func (c *Controller) Profile(r *ghttp.Request) {
+	c.Success(r, "主面板")
 
 }
