@@ -7,15 +7,19 @@ import (
 	"github.com/gogf/gf/net/ghttp"
 )
 
+//GetIDRequest 获取登录用户ID的请求参数
+type GetIDRequest struct {
+	user_token.GetIDInput
+}
+
 //Auth 鉴权中间件
 func Auth(r *ghttp.Request) {
-	token := r.Get("token")
-	if token == nil {
-		response.JSONExit(r, 2, "token不能为空，请先登录")
+	var data *GetIDRequest
+	if err := r.GetStruct(&data); err != nil {
+		response.JSONExit(r, 2, err.Error())
 	}
-	t := token.(string)
 	//验证token是否有效
-	_, err := user_token.GetUserID(t)
+	_, err := user_token.GetUserID(&data.GetIDInput)
 	if err != nil {
 		response.JSONExit(r, 2, err.Error())
 

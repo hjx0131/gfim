@@ -15,11 +15,12 @@ func init() {
 	s.Group("/", func(group *ghttp.RouterGroup) {
 		group.ALL("/", hello.Hello)
 	})
-	s.BindHandler("/login", user.SignIn)
+	ctlUser := new(user.Controller)
+	s.BindHandler("/login", ctlUser.SignIn)
 	s.Group("/api", func(group *ghttp.RouterGroup) {
 		group.Middleware(middleware.Auth)
 		group.Group("/user/profile", func(group *ghttp.RouterGroup) {
-			group.ALL("/", user.Profile)
+			group.ALL("/", ctlUser.Profile)
 		})
 	})
 }

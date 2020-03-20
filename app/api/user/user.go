@@ -39,6 +39,12 @@ func (c *Controller) SignIn(r *ghttp.Request) {
 
 //Profile 主面板
 func (c *Controller) Profile(r *ghttp.Request) {
-	c.Success(r, "主面板")
+	ID, e := c.GetUserID(r)
+	if e != nil {
+		c.Fail(r, e.Error())
+	}
+	c.Success(r, map[string]uint{
+		"id": ID,
+	})
 
 }

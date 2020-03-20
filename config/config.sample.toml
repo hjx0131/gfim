@@ -19,7 +19,7 @@
 
 # Database.
 [database]
-    link  = "mysql:root:123456@tcp(127.0.0.1:3307)/gfim"
+    link  = "mysql:root:123456@tcp(127.0.0.1:3306)/gfim"
     debug = true
     # Database logger.
     [database.logger]
