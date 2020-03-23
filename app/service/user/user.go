@@ -1,12 +1,12 @@
 package user
 
 import (
-	"crypto/md5"
-	"encoding/hex"
 	"errors"
 	"gfim/app/model/user"
 	"gfim/app/model/user_token"
 	"gfim/library/auth"
+
+	"github.com/gogf/gf/crypto/gmd5"
 
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/os/gtime"
@@ -66,10 +66,7 @@ func checkPassword(pwd, checkpwd, salt string) bool {
 
 //encryptPassword 加密密码 通过md5进行第一次加密后的值拼接密码盐后，再进行第二次md5加密
 func encryptPassword(pwd, salt string) string {
-	h := md5.New()
-	h2 := md5.New()
-	h.Write([]byte(pwd))
-	first := hex.EncodeToString(h.Sum(nil))
-	h2.Write([]byte(first + salt))
-	return hex.EncodeToString(h2.Sum(nil))
+	first, _ := gmd5.EncryptString(pwd)
+	final, _ := gmd5.EncryptString(first + salt)
+	return final
 }
