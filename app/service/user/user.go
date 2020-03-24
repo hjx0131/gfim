@@ -8,8 +8,12 @@ import (
 
 	"github.com/gogf/gf/crypto/gmd5"
 
+	"gfim/app/service/friend_group"
+
+	"github.com/gogf/gf/container/gmap"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/os/gtime"
+	"github.com/gogf/gf/util/gconv"
 )
 
 const (
@@ -69,4 +73,26 @@ func encryptPassword(pwd, salt string) string {
 	first, _ := gmd5.EncryptString(pwd)
 	final, _ := gmd5.EncryptString(first + salt)
 	return final
+}
+
+//ProFile 主面板
+func ProFile(ID uint) (interface{}, error) {
+	u, _ := user.FindOne("id=?", ID)
+	data := gmap.New()
+	mine := gmap.New()
+	mine.Sets(map[interface{}]interface{}{
+		"username": u.Nickname,
+		"id":       gconv.String(u.Id),
+		"status":   "online",
+		"sign":     u.Bio,
+		"avatar":   u.Avatar,
+	})
+
+	friendList, e := friend_group.GetListByUserID(u.Id)
+	data.Sets(map[interface{}]interface{}{
+		"mine":   mine,
+		"friend": friendList,
+	})
+	return data, e
+
 }

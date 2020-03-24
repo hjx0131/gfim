@@ -99,14 +99,15 @@
             var form = layui.form()
             //监听提交
             form.on('submit(formDemo)', function (data) {
-                $.post('/api/login', data.field, function (res) {
-                    interceptor(res)
-                    if (res.data.token) {
-                        setToken(res.data.token)
-                        layer.msg("登录成功，页面跳转中~")
-                        setTimeout(function () {
-                            window.location.href = '/proFile';
-                        }, 2000)
+                $.post('/api/user/signIn', data.field, function (res) {
+                    if (interceptor(res)) {
+                        if (res.data.token) {
+                            setToken(res.data.token)
+                            layer.msg("登录成功，页面跳转中~")
+                            setTimeout(function () {
+                                window.location.href = '/proFile';
+                            }, 2000)
+                        }
                     }
                 }, 'JSON')
                 return false;

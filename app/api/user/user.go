@@ -43,8 +43,10 @@ func (c *Controller) Profile(r *ghttp.Request) {
 	if e != nil {
 		c.Fail(r, e.Error())
 	}
-	c.Success(r, map[string]uint{
-		"id": ID,
-	})
+	data, e := user.ProFile(ID)
+	if e != nil {
+		c.Fail(r, e.Error())
+	}
+	c.Success(r, data)
 
 }
