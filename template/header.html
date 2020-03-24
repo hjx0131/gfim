@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>gfim</title>
+    <link rel="stylesheet" href="/resource/layui/css/layui.css" media="all">
+    <script type="text/javascript" src="/resource/layui/layui.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+</head>
+<script>
+    function interceptor(res) {
+        if (res.code != 0) {
+            layer.msg(res.msg)
+            if (res.code == 2) {
+                //token无效或者过期
+                setTimeout(function () {
+                    window.location.href = "/signIn"
+                }, 2000)
+            }
+            return;
+        }
+    }
+    function setToken(token) {
+        localStorage.setItem("token", token)
+    }
+    function getToken() {
+        return localStorage.getItem("token")
+    }
+</script>
