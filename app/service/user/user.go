@@ -9,6 +9,7 @@ import (
 	"github.com/gogf/gf/crypto/gmd5"
 
 	"gfim/app/service/friend_group"
+	"gfim/app/service/group"
 
 	"github.com/gogf/gf/container/gmap"
 	"github.com/gogf/gf/frame/g"
@@ -88,10 +89,18 @@ func ProFile(ID uint) (interface{}, error) {
 		"avatar":   u.Avatar,
 	})
 
-	friendList, e := friend_group.GetListByUserID(u.Id)
+	flist, e := friend_group.GetListByUserID(u.Id)
+	if e != nil {
+		return nil, e
+	}
+	glist, e := group.GetListByUserID(u.Id)
+	if e != nil {
+		return nil, e
+	}
 	data.Sets(map[interface{}]interface{}{
 		"mine":   mine,
-		"friend": friendList,
+		"friend": flist,
+		"group":  glist,
 	})
 	return data, e
 

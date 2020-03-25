@@ -23,26 +23,26 @@ type FriendInfo struct {
 
 // GetListByUserID 根据用户ID获取好友分组列表
 func GetListByUserID(UserID uint) ([]*GroupInfo, error) {
-	list, err := friend_group.GetListByUserID(UserID)
+	//好友群组列表
+	glist, err := friend_group.GetListByUserID(UserID)
 	if err != nil {
 		return nil, err
 	}
+	//好友列表
 	flist, _ := friend.GetListByUserID(UserID)
-
-	res := make([]*GroupInfo, len(list))
-
-	if list != nil {
-		for index, item := range list {
+	res := make([]*GroupInfo, len(glist))
+	if glist != nil {
+		for index, item := range glist {
 			f := make([]*FriendInfo, 0)
 			if flist != nil {
 				for _, val := range flist {
-					if val.FriendGroupId == item.Id {
+					if val["friend_group_id"].Uint() == item.Id {
 						f = append(f, &FriendInfo{
-							ID: val.Id,
-							// Username: val.Nickname,
-							// Avatar:   val.Avatar,
-							// Sign:     val.Bio,
-							// Status:   val.Status,
+							ID:       val["id"].Uint(),
+							Username: val["nickname"].String(),
+							Avatar:   val["avatar"].String(),
+							Sign:     val["bio"].String(),
+							Status:   val["status"].String(),
 						})
 					}
 				}
