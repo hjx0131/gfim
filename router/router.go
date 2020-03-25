@@ -1,9 +1,9 @@
 package router
 
 import (
+	"gfim/app/api/group"
 	"gfim/app/api/hello"
 	"gfim/app/api/user"
-	"gfim/app/api/group"
 	"gfim/app/http/middleware"
 
 	"github.com/gogf/gf/frame/g"
@@ -20,14 +20,13 @@ func init() {
 			"mainTpl": "index/signIn.html",
 		})
 	})
-	s.BindHandler("/proFile", func(r *ghttp.Request) {
+	s.BindHandler("/profile", func(r *ghttp.Request) {
 		r.Response.WriteTpl("layout.html", g.Map{
-			"mainTpl": "index/proFile.html",
+			"mainTpl": "index/init.html",
 		})
 	})
 	ctlUser := new(user.Controller)
 	ctlGroup := new(group.Controller)
-
 	s.Group("/api", func(group *ghttp.RouterGroup) {
 		group.Middleware(middleware.CORS)
 		group.Group("/user/signIn", func(group *ghttp.RouterGroup) {

@@ -29,7 +29,7 @@ func GetUserListByID(ID uint) ([]*UserInfo, error) {
 	var nickname string
 	if list != nil {
 		for index, item := range list {
-			if item["gniname"] != nil {
+			if item["gnickname"] != nil {
 				nickname = item["gnickname"].String()
 			} else {
 				nickname = item["nickname"].String()

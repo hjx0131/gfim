@@ -11,10 +11,8 @@ import (
 	"gfim/app/service/friend_group"
 	"gfim/app/service/group"
 
-	"github.com/gogf/gf/container/gmap"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/os/gtime"
-	"github.com/gogf/gf/util/gconv"
 )
 
 const (
@@ -76,32 +74,59 @@ func encryptPassword(pwd, salt string) string {
 	return final
 }
 
-//ProFile 主面板
-func ProFile(ID uint) (interface{}, error) {
-	u, _ := user.FindOne("id=?", ID)
-	data := gmap.New()
-	mine := gmap.New()
-	mine.Sets(map[interface{}]interface{}{
-		"username": u.Nickname,
-		"id":       gconv.String(u.Id),
-		"status":   "online",
-		"sign":     u.Bio,
-		"avatar":   u.Avatar,
-	})
+//Mine 主面板中的个人信息
+type Mine struct {
+	ID       uint   `json:"id"`
+	Username string `json:"username"`
+	Status   string `json:"status"`
+	Sign     string `json:"sign"`
+	Avatar   string `json:"avatar"`
+}
 
-	flist, e := friend_group.GetListByUserID(u.Id)
+//Init 主面板
+type Init struct {
+	Mine   *Mine                     `json:"mine"`
+	Friend []*friend_group.GroupInfo `json:"friend"`
+	Group  []*group.Info             `json:"group"`
+}
+
+//Profile 主面板
+func Profile(ID uint) (*Init, error) {
+	mine, e := GetMine(ID)
 	if e != nil {
 		return nil, e
 	}
-	glist, e := group.GetListByUserID(u.Id)
+	flist, e := friend_group.GetListByUserID(ID)
 	if e != nil {
 		return nil, e
 	}
-	data.Sets(map[interface{}]interface{}{
-		"mine":   mine,
-		"friend": flist,
-		"group":  glist,
-	})
-	return data, e
+	glist, e := group.GetListByUserID(ID)
+	if e != nil {
+		return nil, e
+	}
+	data := &Init{
+		Mine:   mine,
+		Friend: flist,
+		Group:  glist,
+	}
+	return data, nil
+}
 
+//GetMine 获取主面板个人信息
+func GetMine(ID uint) (*Mine, error) {
+	u, e := user.FindOne("id=?", ID)
+	if e != nil {
+		return nil, e
+	}
+	if u == nil {
+		return nil, errors.New("未找到该用户")
+	}
+	mine := &Mine{
+		Username: u.Nickname,
+		ID:       u.Id,
+		Status:   "online",
+		Sign:     u.Bio,
+		Avatar:   u.Avatar,
+	}
+	return mine, nil
 }
