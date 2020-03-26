@@ -4,6 +4,18 @@
             "token": getToken()
         }
         layui.use('layim', function (layim) {
+            //建立WebSocket通讯
+            //注意：如果你要兼容ie8+，建议你采用 socket.io 的版本。下面是以原生WS为例
+
+            var socket = new WebSocket('ws://localhost:8199/chat');
+            //连接成功时触发
+            socket.onopen = function () {
+                socket.send('我来了');
+            };
+            //监听收到的消息
+            socket.onmessage = function (res) {
+                console.log(res, 'ws返回的数据')
+            };
             //基础配置
             layim.config({
 
@@ -42,6 +54,16 @@
                 , find: '/resource/layui/css/modules/layim/html/find.html' //发现页面地址，若不开启，剔除该项即可
                 , chatLog: '/resource/layui/css/modules/layim/html/chatlog.html' //聊天记录页面地址，若不开启，剔除该项即可
             });
+            layim.on('sendMessage', function (res) {
+                console.log(res)
+                var mine = res.mine; //包含我发送的消息及我的信息
+                var to = res.to; //对方的信息
+                //监听到上述消息后，就可以轻松地发送socket了，如：
+                socket.send(JSON.stringify({
+                    type: 'chatMessage' //随便定义，用于在服务端区分消息类型
+                    , data: res
+                }));
+            })
         });      
     </script>
 </body>

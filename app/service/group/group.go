@@ -26,17 +26,11 @@ func GetUserListByID(ID uint) ([]*UserInfo, error) {
 		return nil, err
 	}
 	res := make([]*UserInfo, len(list))
-	var nickname string
 	if list != nil {
 		for index, item := range list {
-			if item["gnickname"] != nil {
-				nickname = item["gnickname"].String()
-			} else {
-				nickname = item["nickname"].String()
-			}
 			res[index] = &UserInfo{
 				ID:       item["id"].Uint(),
-				Username: nickname,
+				Username: item["nickname"].String(),
 				Avatar:   item["avatar"].String(),
 				Sign:     item["bio"].String(),
 			}

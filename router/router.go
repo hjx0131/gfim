@@ -5,6 +5,7 @@ import (
 	"gfim/app/api/hello"
 	"gfim/app/api/user"
 	"gfim/app/http/middleware"
+	"gfim/app/ws/chat"
 
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
@@ -38,6 +39,14 @@ func init() {
 		})
 		group.Group("/group/userList", func(group *ghttp.RouterGroup) {
 			group.ALL("/", ctlGroup.UserList)
+		})
+	})
+
+	s.Group("/chat", func(group *ghttp.RouterGroup) {
+		 group.Middleware(middleware.CORS)
+		// group.Middleware(middleware.Auth)
+		group.Group("/", func(group *ghttp.RouterGroup) {
+			group.ALL("/", chat.WebSocket)
 		})
 	})
 }

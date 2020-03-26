@@ -31,15 +31,15 @@ func (b *Base) Fail(r *ghttp.Request, msg string) {
 }
 
 //GetUserID 获取登录用户ID
-func (b *Base) GetUserID(r *ghttp.Request) (uint, error) {
+func (b *Base) GetUserID(r *ghttp.Request) uint {
 	var data *GetIDRequest
-	if err := r.GetStruct(&data); err != nil {
-		return 0, err
+	if e := r.GetStruct(&data); e != nil {
+		response.JSONExit(r, 1, e.Error())
 	}
 	//验证token是否有效
 	UserID, e := user_token.GetUserID(&data.GetIDInput)
 	if e != nil {
-		return 0, e
+		response.JSONExit(r, 2, e.Error())
 	}
-	return UserID, nil
+	return UserID
 }
