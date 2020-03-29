@@ -1,7 +1,8 @@
 <body>
     <script>
+        var token = getToken()
         var data = {
-            "token": getToken()
+            "token": token
         }
         layui.use('layim', function (layim) {
             //建立WebSocket通讯
@@ -10,11 +11,22 @@
             var socket = new WebSocket('ws://localhost:8199/chat');
             //连接成功时触发
             socket.onopen = function () {
-                socket.send('我来了');
+                socket.send(JSON.stringify({
+                    type: 'ping' //随便定义，用于在服务端区分消息类型
+                    , data: {}
+                    , token: token
+
+                }));
             };
-            //监听收到的消息
+
+            //监听收到的聊天消息，假设你服务端emit的事件名为：chatMessage
             socket.onmessage = function (res) {
-                console.log(res, 'ws返回的数据')
+                console.log(res)
+                data = JSON.parse(res.data);
+                console.log(data)
+                if (data.type === 'friend') {
+                    layim.getMessage(data)
+                }
             };
             //基础配置
             layim.config({
@@ -58,10 +70,16 @@
                 console.log(res)
                 var mine = res.mine; //包含我发送的消息及我的信息
                 var to = res.to; //对方的信息
+                var data = {
+                    from_user_id: res.mine.id,
+                    to_user_id: res.to.id,
+                    content: res.mine.content
+                }
+                console.log(res, 112312)
                 //监听到上述消息后，就可以轻松地发送socket了，如：
                 socket.send(JSON.stringify({
-                    type: 'chatMessage' //随便定义，用于在服务端区分消息类型
-                    , data: res
+                    type: 'friend' //随便定义，用于在服务端区分消息类型
+                    , data: data
                 }));
             })
         });      

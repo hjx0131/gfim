@@ -38,7 +38,7 @@ func GetListByUserID(UserID uint) ([]*GroupInfo, error) {
 				for _, val := range flist {
 					if val["friend_group_id"].Uint() == item.Id {
 						f = append(f, &FriendInfo{
-							ID:       val["id"].Uint(),
+							ID:       val["friend_id"].Uint(),
 							Username: val["nickname"].String(),
 							Avatar:   val["avatar"].String(),
 							Sign:     val["bio"].String(),

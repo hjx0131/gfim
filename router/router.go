@@ -41,12 +41,13 @@ func init() {
 			group.ALL("/", ctlGroup.UserList)
 		})
 	})
+	ctlChat := new(chat.Controller)
 
 	s.Group("/chat", func(group *ghttp.RouterGroup) {
-		 group.Middleware(middleware.CORS)
+		group.Middleware(middleware.CORS)
 		// group.Middleware(middleware.Auth)
 		group.Group("/", func(group *ghttp.RouterGroup) {
-			group.ALL("/", chat.WebSocket)
+			group.ALL("/", ctlChat.WebSocket)
 		})
 	})
 }
