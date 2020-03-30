@@ -3,7 +3,6 @@ package user
 import (
 	"gfim/app/api"
 	"gfim/app/service/user"
-	"time"
 
 	"github.com/gogf/gf/net/ghttp"
 )
@@ -45,7 +44,5 @@ func (c *Controller) Profile(r *ghttp.Request) {
 	if e != nil {
 		c.Fail(r, e.Error())
 	}
-	time.Sleep(time.Duration(1) * time.Second)
-
 	c.Success(r, data)
 }

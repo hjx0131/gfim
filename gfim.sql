@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主机： mysql:3306
--- 生成日期： 2020-03-23 10:51:13
+-- 生成日期： 2020-03-30 14:05:44
 -- 服务器版本： 8.0.13
 -- PHP 版本： 7.2.19
 
@@ -69,227 +69,6 @@ CREATE TABLE `gf_admin_log` (
   `useragent` varchar(255) NOT NULL DEFAULT '' COMMENT 'User-Agent',
   `createtime` int(10) DEFAULT NULL COMMENT '操作时间'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='管理员日志表' ROW_FORMAT=COMPACT;
-
---
--- 转存表中的数据 `gf_admin_log`
---
-
-INSERT INTO `gf_admin_log` (`id`, `admin_id`, `username`, `url`, `title`, `content`, `ip`, `useragent`, `createtime`) VALUES
-(1, 0, 'Unknown', '/nZz2ivbAMF.php/index/login?url=%2FnZz2ivbAMF.php', '', '{\"url\":\"\\/nZz2ivbAMF.php\",\"__token__\":\"36dae2be01144c18b6fa9a6376c91d2b\",\"username\":\"admin\",\"captcha\":\"0yev\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1578730712),
-(2, 1, 'admin', '/nZz2ivbAMF.php/index/login?url=%2FnZz2ivbAMF.php', '登录', '{\"url\":\"\\/nZz2ivbAMF.php\",\"__token__\":\"6f62cd423e091f5ae3a91e8c1060e0be\",\"username\":\"admin\",\"captcha\":\"ct28\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1578730717),
-(3, 1, 'admin', '/nZz2ivbAMF.php/addon/install', '插件管理', '{\"name\":\"command\",\"force\":\"0\",\"uid\":\"16601\",\"token\":\"631f0d1d-5a0e-4513-b353-ab3f2bf41e55\",\"version\":\"1.0.5\",\"faversion\":\"1.0.0.20191212_beta\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1578730748),
-(4, 1, 'admin', '/nZz2ivbAMF.php/index/index', '', '{\"action\":\"refreshmenu\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1578730749),
-(5, 1, 'admin', '/nZz2ivbAMF.php/command/get_field_list', '在线命令管理', '{\"table\":\"gf_admin\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1578730758),
-(6, 1, 'admin', '/nZz2ivbAMF.php/command/get_field_list', '在线命令管理', '{\"table\":\"gf_admin\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1578730768),
-(7, 1, 'admin', '/nZz2ivbAMF.php/command/get_field_list', '在线命令管理', '{\"table\":\"gf_admin\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1578731257),
-(8, 1, 'admin', '/nZz2ivbAMF.php/command/get_field_list', '在线命令管理', '{\"table\":\"gf_nota_apply\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1578731262),
-(9, 1, 'admin', '/nZz2ivbAMF.php/command/command/action/command', '在线命令管理', '{\"commandtype\":\"crud\",\"isrelation\":\"0\",\"local\":\"1\",\"delete\":\"0\",\"force\":\"0\",\"table\":\"gf_nota_apply\",\"controller\":\"\",\"model\":\"\",\"setcheckboxsuffix\":\"\",\"enumradiosuffix\":\"\",\"imagefield\":\"\",\"filefield\":\"\",\"intdatesuffix\":\"\",\"switchsuffix\":\"\",\"citysuffix\":\"\",\"selectpagesuffix\":\"\",\"selectpagessuffix\":\"\",\"ignorefields\":\"\",\"sortfield\":\"\",\"editorsuffix\":\"\",\"headingfilterfield\":\"state\",\"action\":\"command\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1578731336),
-(10, 1, 'admin', '/nZz2ivbAMF.php/command/command/action/execute', '在线命令管理', '{\"commandtype\":\"crud\",\"isrelation\":\"0\",\"local\":\"1\",\"delete\":\"0\",\"force\":\"0\",\"table\":\"gf_nota_apply\",\"controller\":\"\",\"model\":\"\",\"setcheckboxsuffix\":\"\",\"enumradiosuffix\":\"\",\"imagefield\":\"\",\"filefield\":\"\",\"intdatesuffix\":\"\",\"switchsuffix\":\"\",\"citysuffix\":\"\",\"selectpagesuffix\":\"\",\"selectpagessuffix\":\"\",\"ignorefields\":\"\",\"sortfield\":\"\",\"editorsuffix\":\"\",\"headingfilterfield\":\"state\",\"action\":\"execute\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1578731359),
-(11, 1, 'admin', '/nZz2ivbAMF.php/index/index', '', '{\"action\":\"refreshmenu\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1578731359),
-(12, 1, 'admin', '/nZz2ivbAMF.php/command/get_controller_list', '在线命令管理', '{\"q_word\":[\"\"],\"pageNumber\":\"1\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"name\",\"ASC\"]],\"searchTable\":\"tbl\",\"showField\":\"name\",\"keyField\":\"id\",\"searchField\":[\"name\"],\"name\":\"\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1578731364),
-(13, 1, 'admin', '/nZz2ivbAMF.php/command/get_field_list', '在线命令管理', '{\"table\":\"gf_admin\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1578731379),
-(14, 1, 'admin', '/nZz2ivbAMF.php/command/get_controller_list', '在线命令管理', '{\"q_word\":[\"\"],\"pageNumber\":\"1\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"name\",\"ASC\"]],\"searchTable\":\"tbl\",\"showField\":\"name\",\"keyField\":\"id\",\"searchField\":[\"name\"],\"name\":\"\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1578731381),
-(15, 1, 'admin', '/nZz2ivbAMF.php/command/get_controller_list', '在线命令管理', '{\"q_word\":[\"\"],\"pageNumber\":\"2\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"name\",\"ASC\"]],\"searchTable\":\"tbl\",\"showField\":\"name\",\"keyField\":\"id\",\"searchField\":[\"name\"],\"name\":\"\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1578731385),
-(16, 1, 'admin', '/nZz2ivbAMF.php/command/get_controller_list', '在线命令管理', '{\"q_word\":[\"\"],\"pageNumber\":\"2\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"name\",\"ASC\"]],\"searchTable\":\"tbl\",\"showField\":\"name\",\"keyField\":\"id\",\"searchField\":[\"name\"],\"name\":\"\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1578731387),
-(17, 1, 'admin', '/nZz2ivbAMF.php/command/command/action/command', '在线命令管理', '{\"commandtype\":\"menu\",\"allcontroller\":\"0\",\"delete\":\"0\",\"force\":\"0\",\"controllerfile_text\":\"\",\"controllerfile\":\"NotaApply.php\",\"action\":\"command\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1578731390),
-(18, 1, 'admin', '/nZz2ivbAMF.php/command/command/action/execute', '在线命令管理', '{\"commandtype\":\"menu\",\"allcontroller\":\"0\",\"delete\":\"0\",\"force\":\"0\",\"controllerfile_text\":\"\",\"controllerfile\":\"NotaApply.php\",\"action\":\"execute\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1578731394),
-(19, 1, 'admin', '/nZz2ivbAMF.php/index/index', '', '{\"action\":\"refreshmenu\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1578731394),
-(20, 1, 'admin', '/nZz2ivbAMF.php/ajax/upload', '', '{\"name\":\"d5ae42fd4ad7efbf486277329f1aea63.jpg\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1578731456),
-(21, 1, 'admin', '/nZz2ivbAMF.php/ajax/upload', '', '{\"name\":\"87d153caf7a9ff0664eef4e2d63e06f6.jpg\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1578731463),
-(22, 1, 'admin', '/nZz2ivbAMF.php/auth/rule/edit/ids/92?dialog=1', '权限管理 菜单规则 编辑', '{\"dialog\":\"1\",\"__token__\":\"c781c7b4050faf6411d6e19831c14ff7\",\"row\":{\"ismenu\":\"1\",\"pid\":\"0\",\"name\":\"nota_apply\",\"title\":\"\\u516c\\u8bc1\\u7533\\u8bf7\",\"icon\":\"fa fa-circle-o\",\"weigh\":\"0\",\"condition\":\"\",\"remark\":\"\",\"status\":\"normal\"},\"ids\":\"92\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1578731580),
-(23, 1, 'admin', '/nZz2ivbAMF.php/index/index', '', '{\"action\":\"refreshmenu\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1578731581),
-(24, 1, 'admin', '/nZz2ivbAMF.php/command/get_field_list', '在线命令管理', '{\"table\":\"gf_admin\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1578731601),
-(25, 1, 'admin', '/nZz2ivbAMF.php/command/get_field_list', '在线命令管理', '{\"table\":\"gf_sms\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1578731621),
-(26, 1, 'admin', '/nZz2ivbAMF.php/command/get_field_list', '在线命令管理', '{\"table\":\"gf_nota_apply\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1578731623),
-(27, 1, 'admin', '/nZz2ivbAMF.php/command/get_field_list', '在线命令管理', '{\"table\":\"gf_admin\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1578731827),
-(28, 1, 'admin', '/nZz2ivbAMF.php/auth/rule/edit/ids/92?dialog=1', '权限管理 菜单规则 编辑', '{\"dialog\":\"1\",\"__token__\":\"57882772d2ab0e1e0f1fd3d6bae2e71e\",\"row\":{\"ismenu\":\"1\",\"pid\":\"0\",\"name\":\"nota apply\",\"title\":\"\\u516c\\u8bc1\\u7533\\u8bf7\",\"icon\":\"fa fa-circle-o\",\"weigh\":\"0\",\"condition\":\"\",\"remark\":\"\",\"status\":\"normal\"},\"ids\":\"92\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1578734604),
-(29, 1, 'admin', '/nZz2ivbAMF.php/auth/rule/edit/ids/92?dialog=1', '权限管理 菜单规则 编辑', '{\"dialog\":\"1\",\"__token__\":\"2320047d7b4c4ca2582f6ef24fcbb11e\",\"row\":{\"ismenu\":\"1\",\"pid\":\"0\",\"name\":\"nota_apply\",\"title\":\"nota apply\",\"icon\":\"fa fa-circle-o\",\"weigh\":\"0\",\"condition\":\"\",\"remark\":\"\",\"status\":\"normal\"},\"ids\":\"92\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1578734630),
-(30, 1, 'admin', '/nZz2ivbAMF.php/index/index', '', '{\"action\":\"refreshmenu\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1578734631),
-(31, 1, 'admin', '/nZz2ivbAMF.php/auth/rule/edit/ids/92?dialog=1', 'Auth Rule Edit', '{\"dialog\":\"1\",\"__token__\":\"a88df58b07c1056013e60f2b1eed9bff\",\"row\":{\"ismenu\":\"1\",\"pid\":\"0\",\"name\":\"nota_apply\",\"title\":\"Nota apply\",\"icon\":\"fa fa-circle-o\",\"weigh\":\"0\",\"condition\":\"\",\"remark\":\"\",\"status\":\"normal\"},\"ids\":\"92\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1578734665),
-(32, 1, 'admin', '/nZz2ivbAMF.php/index/index', '', '{\"action\":\"refreshmenu\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1578734666),
-(33, 1, 'admin', '/nZz2ivbAMF.php/command/get_field_list', '在线命令管理', '{\"table\":\"gf_admin\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1578735319),
-(34, 1, 'admin', '/nZz2ivbAMF.php/command/get_field_list', '在线命令管理', '{\"table\":\"gf_nota_apply\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1578735322),
-(35, 1, 'admin', '/nZz2ivbAMF.php/command/command/action/command', '在线命令管理', '{\"commandtype\":\"crud\",\"isrelation\":\"0\",\"local\":\"1\",\"delete\":\"0\",\"force\":\"1\",\"table\":\"gf_nota_apply\",\"controller\":\"\",\"model\":\"\",\"setcheckboxsuffix\":\"\",\"enumradiosuffix\":\"state\",\"imagefield\":\"\",\"filefield\":\"\",\"intdatesuffix\":\"\",\"switchsuffix\":\"\",\"citysuffix\":\"\",\"selectpagesuffix\":\"\",\"selectpagessuffix\":\"\",\"ignorefields\":\"\",\"sortfield\":\"\",\"editorsuffix\":\"\",\"headingfilterfield\":\"\",\"action\":\"command\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1578735400),
-(36, 1, 'admin', '/nZz2ivbAMF.php/command/command/action/execute', '在线命令管理', '{\"commandtype\":\"crud\",\"isrelation\":\"0\",\"local\":\"1\",\"delete\":\"0\",\"force\":\"1\",\"table\":\"gf_nota_apply\",\"controller\":\"\",\"model\":\"\",\"setcheckboxsuffix\":\"\",\"enumradiosuffix\":\"state\",\"imagefield\":\"\",\"filefield\":\"\",\"intdatesuffix\":\"\",\"switchsuffix\":\"\",\"citysuffix\":\"\",\"selectpagesuffix\":\"\",\"selectpagessuffix\":\"\",\"ignorefields\":\"\",\"sortfield\":\"\",\"editorsuffix\":\"\",\"headingfilterfield\":\"\",\"action\":\"execute\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1578735402),
-(37, 1, 'admin', '/nZz2ivbAMF.php/index/index', '', '{\"action\":\"refreshmenu\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1578735402),
-(38, 1, 'admin', '/nZz2ivbAMF.php/general.config/edit', '常规管理 系统配置 编辑', '{\"__token__\":\"fc156ad197e93025ecc337c1e5ad08e8\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1578877552),
-(39, 1, 'admin', '/nZz2ivbAMF.php/general.config/edit', '常规管理 系统配置 编辑', '{\"__token__\":\"528f6fbf0c9be2ea0f4f336b1138311e\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1578877561),
-(40, 1, 'admin', '/nZz2ivbAMF.php/auth/group/roletree', '权限管理 角色组', '{\"pid\":\"1\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1578878150),
-(41, 0, 'Unknown', '/nZz2ivbAMF.php/index/login?url=%2FnZz2ivbAMF.php', '登录', '{\"url\":\"\\/nZz2ivbAMF.php\",\"__token__\":\"67079e30a122f0f84003211953b8b230\",\"username\":\"admin\",\"captcha\":\"3vnb\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1579503919),
-(42, 0, 'Unknown', '/nZz2ivbAMF.php/index/login?url=%2FnZz2ivbAMF.php', '', '{\"url\":\"\\/nZz2ivbAMF.php\",\"__token__\":\"101f8faf0f551d062faacb32be95c5b0\",\"username\":\"admin\",\"captcha\":\"3vnb\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1579503924),
-(43, 0, 'Unknown', '/nZz2ivbAMF.php/index/login?url=%2FnZz2ivbAMF.php', '登录', '{\"url\":\"\\/nZz2ivbAMF.php\",\"__token__\":\"13bd96301da62ca1fa104538151c7750\",\"username\":\"admin\",\"captcha\":\"qtp2\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1579503929),
-(44, 0, 'Unknown', '/nZz2ivbAMF.php/index/login?url=%2FnZz2ivbAMF.php', '登录', '{\"url\":\"\\/nZz2ivbAMF.php\",\"__token__\":\"af5c846e704b45dbfb5676fb4ba7af5f\",\"username\":\"admin\",\"captcha\":\"6f7y\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1579503986),
-(45, 0, 'Unknown', '/nZz2ivbAMF.php/index/login?url=%2FnZz2ivbAMF.php', '登录', '{\"url\":\"\\/nZz2ivbAMF.php\",\"__token__\":\"942df31af699b73a419fee26a5ce22c4\",\"username\":\"admin\",\"captcha\":\"f26c\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1579503996),
-(46, 0, 'Unknown', '/nZz2ivbAMF.php/index/login?url=%2FnZz2ivbAMF.php', '登录', '{\"url\":\"\\/nZz2ivbAMF.php\",\"__token__\":\"71e46bdd852a44858fb0dd81bcf8b452\",\"username\":\"admin\",\"captcha\":\"bf8c\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1579504014),
-(47, 0, 'Unknown', '/nZz2ivbAMF.php/index/login?url=%2FnZz2ivbAMF.php', '', '{\"url\":\"\\/nZz2ivbAMF.php\",\"__token__\":\"b58962bd5f64b29f40712924cc6ea9b7\",\"username\":\"admin\",\"captcha\":\"bf8c\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1579504039),
-(48, 0, 'Unknown', '/nZz2ivbAMF.php/index/login?url=%2FnZz2ivbAMF.php', '', '{\"url\":\"\\/nZz2ivbAMF.php\",\"__token__\":\"36d1d90cb857be6fa5bcf1740356e84e\",\"username\":\"admin\",\"captcha\":\"8kus\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1579504144),
-(49, 1, 'admin', '/nZz2ivbAMF.php/index/login?url=%2FnZz2ivbAMF.php', '登录', '{\"url\":\"\\/nZz2ivbAMF.php\",\"__token__\":\"c7c12ad0350e1ab46eea4b06a08ea276\",\"username\":\"admin\",\"captcha\":\"pphj\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1579504149),
-(50, 1, 'admin', '/nZz2ivbAMF.php/general.profile/update', '常规管理 个人资料 更新个人信息', '{\"__token__\":\"33fae281f55838926160d300979b45fe\",\"row\":{\"avatar\":\"\\/assets\\/img\\/avatar.png\",\"email\":\"admin@admin.com\",\"nickname\":\"Admin\",\"password\":\"123456\"}}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1579504165),
-(51, 1, 'admin', '/nZz2ivbAMF.php/addon/install', '插件管理', '{\"name\":\"example\",\"force\":\"0\",\"uid\":\"16601\",\"token\":\"631f0d1d-5a0e-4513-b353-ab3f2bf41e55\",\"version\":\"1.0.8\",\"faversion\":\"1.0.0.20191212_beta\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1579504196),
-(52, 1, 'admin', '/nZz2ivbAMF.php/index/index', '', '{\"action\":\"refreshmenu\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1579504197),
-(53, 1, 'admin', '/nZz2ivbAMF.php/auth/admin/selectpage', '权限管理 管理员管理', '{\"searchTable\":\"tbl\",\"searchKey\":\"id\",\"searchValue\":\"1\",\"orderBy\":[[\"username\",\"ASC\"]],\"showField\":\"username\",\"keyField\":\"id\",\"keyValue\":\"1\",\"searchField\":[\"username\"]}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36', 1579504366),
-(54, 0, 'Unknown', '/nZz2ivbAMF.php/index/login?url=%2FnZz2ivbAMF.php', '登录', '{\"url\":\"\\/nZz2ivbAMF.php\",\"__token__\":\"f2cd2150f0ff9cfa107374c3967cfd35\",\"username\":\"admin\",\"captcha\":\"qx4q\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581648905),
-(55, 0, 'Unknown', '/nZz2ivbAMF.php/index/login?url=%2FnZz2ivbAMF.php', '登录', '{\"url\":\"\\/nZz2ivbAMF.php\",\"__token__\":\"367bcc3c15fdb0665cb417732c226c58\",\"username\":\"admin\",\"captcha\":\"fc7b\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581648912),
-(56, 0, 'Unknown', '/nZz2ivbAMF.php/index/login?url=%2FnZz2ivbAMF.php', '登录', '{\"url\":\"\\/nZz2ivbAMF.php\",\"__token__\":\"d1e564a7e078c694f27515b7f71c6785\",\"username\":\"admin\",\"captcha\":\"nn87\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581648923),
-(57, 0, 'Unknown', '/nZz2ivbAMF.php/index/login?url=%2FnZz2ivbAMF.php', '', '{\"url\":\"\\/nZz2ivbAMF.php\",\"__token__\":\"4ab6e052e01038adbc848aff735b4f1f\",\"username\":\"admin\",\"captcha\":\"7eur\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581648939),
-(58, 1, 'admin', '/nZz2ivbAMF.php/index/login?url=%2FnZz2ivbAMF.php', '登录', '{\"url\":\"\\/nZz2ivbAMF.php\",\"__token__\":\"322749475a552a6809457ae8caaf7734\",\"username\":\"admin\",\"captcha\":\"khcf\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581648946),
-(59, 1, 'admin', '/nZz2ivbAMF.php/general.profile/update', '常规管理 个人资料 更新个人信息', '{\"__token__\":\"5f14106ed153b4a40b4615aef6605f30\",\"row\":{\"avatar\":\"\\/assets\\/img\\/avatar.png\",\"email\":\"admin@admin.com\",\"nickname\":\"Admin\",\"password\":\"123456\"}}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581648977),
-(60, 1, 'admin', '/nZz2ivbAMF.php/ajax/upload', '', '{\"name\":\"20200116182007.xls\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581649018),
-(61, 1, 'admin', '/nZz2ivbAMF.php/ajax/upload', '', '{\"name\":\"default_face.jpg\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581649038),
-(62, 1, 'admin', '/nZz2ivbAMF.php/addon/install', '插件管理', '{\"name\":\"third\",\"force\":\"0\",\"uid\":\"16601\",\"token\":\"631f0d1d-5a0e-4513-b353-ab3f2bf41e55\",\"version\":\"1.1.0\",\"faversion\":\"1.0.0.20191212_beta\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581650104),
-(63, 1, 'admin', '/nZz2ivbAMF.php/addon/install', '插件管理', '{\"name\":\"third\",\"force\":\"0\",\"uid\":\"16601\",\"token\":\"ca12585b-8b58-47f7-b9ae-dbf32b130794\",\"version\":\"1.1.0\",\"faversion\":\"1.0.0.20191212_beta\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581650128),
-(64, 1, 'admin', '/nZz2ivbAMF.php/index/index', '', '{\"action\":\"refreshmenu\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581650129),
-(65, 1, 'admin', '/nZz2ivbAMF.php/index/login', '登录', '{\"__token__\":\"c447158fc2d0abfad89effae99d90d5c\",\"username\":\"admin\",\"captcha\":\"ldwe\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581650191),
-(66, 1, 'admin', '/nZz2ivbAMF.php/addon/state', '插件管理 禁用启用', '{\"name\":\"third\",\"action\":\"disable\",\"force\":\"0\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581650284),
-(67, 1, 'admin', '/nZz2ivbAMF.php/index/index', '', '{\"action\":\"refreshmenu\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581650284),
-(68, 1, 'admin', '/nZz2ivbAMF.php/addon/state', '插件管理 禁用启用', '{\"name\":\"third\",\"action\":\"enable\",\"force\":\"0\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581650383),
-(69, 1, 'admin', '/nZz2ivbAMF.php/index/index', '', '{\"action\":\"refreshmenu\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581650383),
-(71, 1, 'admin', '/nZz2ivbAMF.php/addon/state', '插件管理 禁用启用', '{\"name\":\"litestore\",\"action\":\"enable\",\"force\":\"0\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581660729),
-(72, 1, 'admin', '/nZz2ivbAMF.php/index/index', '', '{\"action\":\"refreshmenu\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581660730),
-(73, 1, 'admin', '/nZz2ivbAMF.php/litestorecategory/selectpage', '商品分类', '{\"searchTable\":\"tbl\",\"searchKey\":\"id\",\"searchValue\":\"7\",\"orderBy\":[[\"name\",\"ASC\"]],\"showField\":\"name\",\"keyField\":\"id\",\"keyValue\":\"7\",\"searchField\":[\"name\"]}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581661135),
-(74, 1, 'admin', '/nZz2ivbAMF.php/litestorefreight/index', '运费模板设置 查看', '{\"searchTable\":\"tbl\",\"searchKey\":\"id\",\"searchValue\":\"24\",\"orderBy\":[[\"name\",\"ASC\"]],\"showField\":\"name\",\"keyField\":\"id\",\"keyValue\":\"24\",\"searchField\":[\"name\"]}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581661135),
-(75, 1, 'admin', '/nZz2ivbAMF.php/litestoregoods/addSpec', '商品设置', '{\"spec_name\":\"123\",\"spec_value\":\"321\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581661142),
-(76, 1, 'admin', '/nZz2ivbAMF.php/litestorecategory/selectpage', '商品分类', '{\"q_word\":[\"\"],\"pageNumber\":\"1\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"name\",\"ASC\"]],\"searchTable\":\"tbl\",\"showField\":\"name\",\"keyField\":\"id\",\"searchField\":[\"name\"],\"name\":\"\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581661295),
-(77, 1, 'admin', '/nZz2ivbAMF.php/command/get_field_list', '在线命令管理', '{\"table\":\"gf_admin\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581662897),
-(78, 1, 'admin', '/nZz2ivbAMF.php/addon/install', '插件管理', '{\"name\":\"database\",\"force\":\"0\",\"uid\":\"16601\",\"token\":\"ca12585b-8b58-47f7-b9ae-dbf32b130794\",\"version\":\"1.0.7\",\"faversion\":\"1.0.0.20191212_beta\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581662965),
-(79, 1, 'admin', '/nZz2ivbAMF.php/index/index', '', '{\"action\":\"refreshmenu\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581662966),
-(80, 1, 'admin', '/nZz2ivbAMF.php/command/get_field_list', '在线命令管理', '{\"table\":\"gf_admin\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581663286),
-(81, 1, 'admin', '/nZz2ivbAMF.php/command/get_field_list', '在线命令管理', '{\"table\":\"gf_admin\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581663872),
-(82, 1, 'admin', '/nZz2ivbAMF.php/command/get_field_list', '在线命令管理', '{\"table\":\"gf_admin\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664597),
-(83, 1, 'admin', '/nZz2ivbAMF.php/command/get_field_list', '在线命令管理', '{\"table\":\"gf_testdata\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664601),
-(84, 1, 'admin', '/nZz2ivbAMF.php/command/command/action/command', '在线命令管理', '{\"commandtype\":\"crud\",\"isrelation\":\"0\",\"local\":\"1\",\"delete\":\"0\",\"force\":\"0\",\"table\":\"gf_testdata\",\"controller\":\"\",\"model\":\"\",\"setcheckboxsuffix\":\"\",\"enumradiosuffix\":\"\",\"imagefield\":\"\",\"filefield\":\"\",\"intdatesuffix\":\"\",\"switchsuffix\":\"\",\"citysuffix\":\"\",\"selectpagesuffix\":\"\",\"selectpagessuffix\":\"\",\"ignorefields\":\"\",\"sortfield\":\"\",\"editorsuffix\":\"\",\"headingfilterfield\":\"\",\"action\":\"command\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664605),
-(85, 1, 'admin', '/nZz2ivbAMF.php/command/get_field_list', '在线命令管理', '{\"table\":\"gf_admin\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664620),
-(86, 1, 'admin', '/nZz2ivbAMF.php/command/get_field_list', '在线命令管理', '{\"table\":\"gf_testdata\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664637),
-(87, 1, 'admin', '/nZz2ivbAMF.php/command/command/action/command', '在线命令管理', '{\"commandtype\":\"crud\",\"isrelation\":\"0\",\"local\":\"1\",\"delete\":\"0\",\"force\":\"0\",\"table\":\"gf_testdata\",\"controller\":\"\",\"model\":\"\",\"setcheckboxsuffix\":\"\",\"enumradiosuffix\":\"\",\"imagefield\":\"\",\"filefield\":\"\",\"intdatesuffix\":\"\",\"switchsuffix\":\"\",\"citysuffix\":\"\",\"selectpagesuffix\":\"\",\"selectpagessuffix\":\"\",\"ignorefields\":\"\",\"sortfield\":\"\",\"editorsuffix\":\"\",\"headingfilterfield\":\"\",\"action\":\"command\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664646),
-(88, 1, 'admin', '/nZz2ivbAMF.php/command/get_controller_list', '在线命令管理', '{\"q_word\":[\"\"],\"pageNumber\":\"1\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"name\",\"ASC\"]],\"searchTable\":\"tbl\",\"showField\":\"name\",\"keyField\":\"id\",\"searchField\":[\"name\"],\"name\":\"\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664650),
-(89, 1, 'admin', '/nZz2ivbAMF.php/command/get_controller_list', '在线命令管理', '{\"q_word\":[\"\"],\"pageNumber\":\"2\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"name\",\"ASC\"]],\"searchTable\":\"tbl\",\"showField\":\"name\",\"keyField\":\"id\",\"searchField\":[\"name\"],\"name\":\"\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664655),
-(90, 1, 'admin', '/nZz2ivbAMF.php/command/get_controller_list', '在线命令管理', '{\"q_word\":[\"\"],\"pageNumber\":\"3\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"name\",\"ASC\"]],\"searchTable\":\"tbl\",\"showField\":\"name\",\"keyField\":\"id\",\"searchField\":[\"name\"],\"name\":\"\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664656),
-(91, 1, 'admin', '/nZz2ivbAMF.php/command/get_controller_list', '在线命令管理', '{\"q_word\":[\"\"],\"pageNumber\":\"4\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"name\",\"ASC\"]],\"searchTable\":\"tbl\",\"showField\":\"name\",\"keyField\":\"id\",\"searchField\":[\"name\"],\"name\":\"\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664657),
-(92, 1, 'admin', '/nZz2ivbAMF.php/command/get_controller_list', '在线命令管理', '{\"q_word\":[\"\"],\"pageNumber\":\"3\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"name\",\"ASC\"]],\"searchTable\":\"tbl\",\"showField\":\"name\",\"keyField\":\"id\",\"searchField\":[\"name\"],\"name\":\"\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664661),
-(93, 1, 'admin', '/nZz2ivbAMF.php/command/get_field_list', '在线命令管理', '{\"table\":\"gf_admin\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664674),
-(94, 1, 'admin', '/nZz2ivbAMF.php/command/get_controller_list', '在线命令管理', '{\"q_word\":[\"\"],\"pageNumber\":\"1\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"name\",\"ASC\"]],\"searchTable\":\"tbl\",\"showField\":\"name\",\"keyField\":\"id\",\"searchField\":[\"name\"],\"name\":\"\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664678),
-(95, 1, 'admin', '/nZz2ivbAMF.php/command/get_controller_list', '在线命令管理', '{\"q_word\":[\"\"],\"pageNumber\":\"2\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"name\",\"ASC\"]],\"searchTable\":\"tbl\",\"showField\":\"name\",\"keyField\":\"id\",\"searchField\":[\"name\"],\"name\":\"\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664681),
-(96, 1, 'admin', '/nZz2ivbAMF.php/command/get_controller_list', '在线命令管理', '{\"q_word\":[\"\"],\"pageNumber\":\"3\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"name\",\"ASC\"]],\"searchTable\":\"tbl\",\"showField\":\"name\",\"keyField\":\"id\",\"searchField\":[\"name\"],\"name\":\"\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664683),
-(97, 1, 'admin', '/nZz2ivbAMF.php/command/get_controller_list', '在线命令管理', '{\"q_word\":[\"\"],\"pageNumber\":\"4\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"name\",\"ASC\"]],\"searchTable\":\"tbl\",\"showField\":\"name\",\"keyField\":\"id\",\"searchField\":[\"name\"],\"name\":\"\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664686),
-(98, 1, 'admin', '/nZz2ivbAMF.php/command/get_field_list', '在线命令管理', '{\"table\":\"gf_admin\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664697),
-(99, 1, 'admin', '/nZz2ivbAMF.php/command/get_field_list', '在线命令管理', '{\"table\":\"gf_testdata\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664703),
-(100, 1, 'admin', '/nZz2ivbAMF.php/command/command/action/command', '在线命令管理', '{\"commandtype\":\"crud\",\"isrelation\":\"0\",\"local\":\"1\",\"delete\":\"0\",\"force\":\"0\",\"table\":\"gf_testdata\",\"controller\":\"\",\"model\":\"\",\"setcheckboxsuffix\":\"\",\"enumradiosuffix\":\"\",\"imagefield\":\"\",\"filefield\":\"\",\"intdatesuffix\":\"\",\"switchsuffix\":\"\",\"citysuffix\":\"\",\"selectpagesuffix\":\"\",\"selectpagessuffix\":\"\",\"ignorefields\":\"\",\"sortfield\":\"\",\"editorsuffix\":\"\",\"headingfilterfield\":\"\",\"action\":\"command\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664706),
-(101, 1, 'admin', '/nZz2ivbAMF.php/command/command/action/execute', '在线命令管理', '{\"commandtype\":\"crud\",\"isrelation\":\"0\",\"local\":\"1\",\"delete\":\"0\",\"force\":\"0\",\"table\":\"gf_testdata\",\"controller\":\"\",\"model\":\"\",\"setcheckboxsuffix\":\"\",\"enumradiosuffix\":\"\",\"imagefield\":\"\",\"filefield\":\"\",\"intdatesuffix\":\"\",\"switchsuffix\":\"\",\"citysuffix\":\"\",\"selectpagesuffix\":\"\",\"selectpagessuffix\":\"\",\"ignorefields\":\"\",\"sortfield\":\"\",\"editorsuffix\":\"\",\"headingfilterfield\":\"\",\"action\":\"execute\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664707),
-(102, 1, 'admin', '/nZz2ivbAMF.php/index/index', '', '{\"action\":\"refreshmenu\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664708),
-(103, 1, 'admin', '/nZz2ivbAMF.php/command/get_field_list', '在线命令管理', '{\"table\":\"gf_admin\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664721),
-(104, 1, 'admin', '/nZz2ivbAMF.php/command/get_controller_list', '在线命令管理', '{\"q_word\":[\"\"],\"pageNumber\":\"1\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"name\",\"ASC\"]],\"searchTable\":\"tbl\",\"showField\":\"name\",\"keyField\":\"id\",\"searchField\":[\"name\"],\"name\":\"\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664723),
-(105, 1, 'admin', '/nZz2ivbAMF.php/command/get_controller_list', '在线命令管理', '{\"q_word\":[\"\"],\"pageNumber\":\"4\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"name\",\"ASC\"]],\"searchTable\":\"tbl\",\"showField\":\"name\",\"keyField\":\"id\",\"searchField\":[\"name\"],\"name\":\"\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664724),
-(106, 1, 'admin', '/nZz2ivbAMF.php/command/get_controller_list', '在线命令管理', '{\"q_word\":[\"\"],\"pageNumber\":\"4\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"name\",\"ASC\"]],\"searchTable\":\"tbl\",\"showField\":\"name\",\"keyField\":\"id\",\"searchField\":[\"name\"],\"name\":\"\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664726),
-(107, 1, 'admin', '/nZz2ivbAMF.php/command/command/action/execute', '在线命令管理', '{\"commandtype\":\"menu\",\"allcontroller\":\"0\",\"delete\":\"0\",\"force\":\"0\",\"controllerfile_text\":\"\",\"controllerfile\":\"Testdata.php\",\"action\":\"execute\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664728),
-(108, 1, 'admin', '/nZz2ivbAMF.php/index/index', '', '{\"action\":\"refreshmenu\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664729),
-(109, 1, 'admin', '/nZz2ivbAMF.php/auth/admin/selectpage', '权限管理 管理员管理', '{\"q_word\":[\"\"],\"pageNumber\":\"1\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"nickname\",\"ASC\"]],\"searchTable\":\"tbl\",\"showField\":\"nickname\",\"keyField\":\"id\",\"searchField\":[\"nickname\"],\"nickname\":\"\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664759),
-(110, 1, 'admin', '/nZz2ivbAMF.php/auth/admin/selectpage', '权限管理 管理员管理', '{\"q_word\":[\"\"],\"pageNumber\":\"1\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"nickname\",\"ASC\"]],\"searchTable\":\"tbl\",\"showField\":\"nickname\",\"keyField\":\"id\",\"searchField\":[\"nickname\"],\"nickname\":\"\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664759),
-(111, 1, 'admin', '/nZz2ivbAMF.php/auth/admin/selectpage', '权限管理 管理员管理', '{\"q_word\":[\"\"],\"pageNumber\":\"1\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"nickname\",\"ASC\"]],\"searchTable\":\"tbl\",\"showField\":\"nickname\",\"keyField\":\"id\",\"searchField\":[\"nickname\"],\"nickname\":\"\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664759),
-(112, 1, 'admin', '/nZz2ivbAMF.php/auth/admin/selectpage', '权限管理 管理员管理', '{\"q_word\":[\"\"],\"pageNumber\":\"1\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"nickname\",\"ASC\"]],\"searchTable\":\"tbl\",\"showField\":\"nickname\",\"keyField\":\"id\",\"searchField\":[\"nickname\"],\"nickname\":\"\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664761),
-(113, 1, 'admin', '/nZz2ivbAMF.php/auth/admin/selectpage', '权限管理 管理员管理', '{\"q_word\":[\"\"],\"pageNumber\":\"1\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"nickname\",\"ASC\"]],\"searchTable\":\"tbl\",\"showField\":\"nickname\",\"keyField\":\"id\",\"searchField\":[\"nickname\"],\"nickname\":\"\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664761),
-(114, 1, 'admin', '/nZz2ivbAMF.php/auth/admin/selectpage', '权限管理 管理员管理', '{\"q_word\":[\"\"],\"pageNumber\":\"1\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"nickname\",\"ASC\"]],\"searchTable\":\"tbl\",\"showField\":\"nickname\",\"keyField\":\"id\",\"searchField\":[\"nickname\"],\"nickname\":\"\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664761),
-(115, 1, 'admin', '/nZz2ivbAMF.php/auth/admin/selectpage', '权限管理 管理员管理', '{\"q_word\":[\"\"],\"pageNumber\":\"1\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"nickname\",\"ASC\"]],\"searchTable\":\"tbl\",\"showField\":\"nickname\",\"keyField\":\"id\",\"searchField\":[\"nickname\"],\"nickname\":\"\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664761),
-(116, 1, 'admin', '/nZz2ivbAMF.php/auth/admin/selectpage', '权限管理 管理员管理', '{\"q_word\":[\"\"],\"pageNumber\":\"1\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"nickname\",\"ASC\"]],\"searchTable\":\"tbl\",\"showField\":\"nickname\",\"keyField\":\"id\",\"searchField\":[\"nickname\"],\"nickname\":\"\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664761),
-(117, 1, 'admin', '/nZz2ivbAMF.php/auth/admin/selectpage', '权限管理 管理员管理', '{\"q_word\":[\"\"],\"pageNumber\":\"1\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"nickname\",\"ASC\"]],\"searchTable\":\"tbl\",\"showField\":\"nickname\",\"keyField\":\"id\",\"searchField\":[\"nickname\"],\"nickname\":\"\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664796),
-(118, 1, 'admin', '/nZz2ivbAMF.php/command/get_field_list', '在线命令管理', '{\"table\":\"gf_admin\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664875),
-(119, 1, 'admin', '/nZz2ivbAMF.php/command/get_field_list', '在线命令管理', '{\"table\":\"gf_testdata\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664878),
-(120, 1, 'admin', '/nZz2ivbAMF.php/command/command/action/command', '在线命令管理', '{\"commandtype\":\"crud\",\"isrelation\":\"0\",\"local\":\"1\",\"delete\":\"0\",\"force\":\"0\",\"table\":\"gf_testdata\",\"controller\":\"\",\"model\":\"\",\"setcheckboxsuffix\":\"\",\"enumradiosuffix\":\"\",\"imagefield\":\"\",\"filefield\":\"\",\"intdatesuffix\":\"\",\"switchsuffix\":\"\",\"citysuffix\":\"\",\"selectpagesuffix\":\"\",\"selectpagessuffix\":\"\",\"ignorefields\":\"\",\"sortfield\":\"\",\"editorsuffix\":\"\",\"headingfilterfield\":\"\",\"action\":\"command\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664880),
-(121, 1, 'admin', '/nZz2ivbAMF.php/command/command/action/execute', '在线命令管理', '{\"commandtype\":\"crud\",\"isrelation\":\"0\",\"local\":\"1\",\"delete\":\"0\",\"force\":\"0\",\"table\":\"gf_testdata\",\"controller\":\"\",\"model\":\"\",\"setcheckboxsuffix\":\"\",\"enumradiosuffix\":\"\",\"imagefield\":\"\",\"filefield\":\"\",\"intdatesuffix\":\"\",\"switchsuffix\":\"\",\"citysuffix\":\"\",\"selectpagesuffix\":\"\",\"selectpagessuffix\":\"\",\"ignorefields\":\"\",\"sortfield\":\"\",\"editorsuffix\":\"\",\"headingfilterfield\":\"\",\"action\":\"execute\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664880),
-(122, 1, 'admin', '/nZz2ivbAMF.php/index/index', '', '{\"action\":\"refreshmenu\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664881),
-(123, 1, 'admin', '/nZz2ivbAMF.php/command/get_field_list', '在线命令管理', '{\"table\":\"gf_admin\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664913),
-(124, 1, 'admin', '/nZz2ivbAMF.php/command/get_field_list', '在线命令管理', '{\"table\":\"gf_testdata\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664916),
-(125, 1, 'admin', '/nZz2ivbAMF.php/command/command/action/command', '在线命令管理', '{\"commandtype\":\"crud\",\"isrelation\":\"0\",\"local\":\"1\",\"delete\":\"0\",\"force\":\"1\",\"table\":\"gf_testdata\",\"controller\":\"\",\"model\":\"\",\"setcheckboxsuffix\":\"\",\"enumradiosuffix\":\"\",\"imagefield\":\"\",\"filefield\":\"\",\"intdatesuffix\":\"\",\"switchsuffix\":\"\",\"citysuffix\":\"\",\"selectpagesuffix\":\"\",\"selectpagessuffix\":\"\",\"ignorefields\":\"\",\"sortfield\":\"\",\"editorsuffix\":\"\",\"headingfilterfield\":\"\",\"action\":\"command\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664918),
-(126, 1, 'admin', '/nZz2ivbAMF.php/command/command/action/execute', '在线命令管理', '{\"commandtype\":\"crud\",\"isrelation\":\"0\",\"local\":\"1\",\"delete\":\"0\",\"force\":\"1\",\"table\":\"gf_testdata\",\"controller\":\"\",\"model\":\"\",\"setcheckboxsuffix\":\"\",\"enumradiosuffix\":\"\",\"imagefield\":\"\",\"filefield\":\"\",\"intdatesuffix\":\"\",\"switchsuffix\":\"\",\"citysuffix\":\"\",\"selectpagesuffix\":\"\",\"selectpagessuffix\":\"\",\"ignorefields\":\"\",\"sortfield\":\"\",\"editorsuffix\":\"\",\"headingfilterfield\":\"\",\"action\":\"execute\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664919),
-(127, 1, 'admin', '/nZz2ivbAMF.php/index/index', '', '{\"action\":\"refreshmenu\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664920),
-(128, 1, 'admin', '/nZz2ivbAMF.php/command/get_field_list', '在线命令管理', '{\"table\":\"gf_admin\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664936),
-(129, 1, 'admin', '/nZz2ivbAMF.php/command/get_controller_list', '在线命令管理', '{\"q_word\":[\"\"],\"pageNumber\":\"1\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"name\",\"ASC\"]],\"searchTable\":\"tbl\",\"showField\":\"name\",\"keyField\":\"id\",\"searchField\":[\"name\"],\"name\":\"\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664937),
-(130, 1, 'admin', '/nZz2ivbAMF.php/command/get_controller_list', '在线命令管理', '{\"q_word\":[\"\"],\"pageNumber\":\"4\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"name\",\"ASC\"]],\"searchTable\":\"tbl\",\"showField\":\"name\",\"keyField\":\"id\",\"searchField\":[\"name\"],\"name\":\"\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664938),
-(131, 1, 'admin', '/nZz2ivbAMF.php/command/get_controller_list', '在线命令管理', '{\"q_word\":[\"\"],\"pageNumber\":\"4\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"name\",\"ASC\"]],\"searchTable\":\"tbl\",\"showField\":\"name\",\"keyField\":\"id\",\"searchField\":[\"name\"],\"name\":\"\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664940),
-(132, 1, 'admin', '/nZz2ivbAMF.php/command/command/action/execute', '在线命令管理', '{\"commandtype\":\"menu\",\"allcontroller\":\"0\",\"delete\":\"0\",\"force\":\"1\",\"controllerfile_text\":\"\",\"controllerfile\":\"Testdata.php\",\"action\":\"execute\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664943),
-(133, 1, 'admin', '/nZz2ivbAMF.php/index/index', '', '{\"action\":\"refreshmenu\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664943),
-(134, 1, 'admin', '/nZz2ivbAMF.php/auth/admin/selectpage', '权限管理 管理员管理', '{\"q_word\":[\"\"],\"pageNumber\":\"1\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"nickname\",\"ASC\"]],\"searchTable\":\"tbl\",\"showField\":\"nickname\",\"keyField\":\"id\",\"searchField\":[\"nickname\"],\"nickname\":\"\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664964),
-(135, 1, 'admin', '/nZz2ivbAMF.php/auth/admin/selectpage', '权限管理 管理员管理', '{\"q_word\":[\"\"],\"pageNumber\":\"1\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"nickname\",\"ASC\"]],\"searchTable\":\"tbl\",\"showField\":\"nickname\",\"keyField\":\"id\",\"searchField\":[\"nickname\"],\"nickname\":\"\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664966),
-(136, 1, 'admin', '/nZz2ivbAMF.php/auth/admin/selectpage', '权限管理 管理员管理', '{\"q_word\":[\"\"],\"pageNumber\":\"1\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"nickname\",\"ASC\"]],\"searchTable\":\"tbl\",\"showField\":\"nickname\",\"keyField\":\"id\",\"searchField\":[\"nickname\"],\"nickname\":\"\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581664967);
-INSERT INTO `gf_admin_log` (`id`, `admin_id`, `username`, `url`, `title`, `content`, `ip`, `useragent`, `createtime`) VALUES
-(137, 1, 'admin', '/nZz2ivbAMF.php/auth/admin/selectpage', '权限管理 管理员管理', '{\"q_word\":[\"\"],\"pageNumber\":\"1\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"nickname\",\"ASC\"]],\"searchTable\":\"tbl\",\"showField\":\"nickname\",\"keyField\":\"id\",\"searchField\":[\"nickname\"],\"nickname\":\"\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581665051),
-(138, 1, 'admin', '/nZz2ivbAMF.php/auth/admin/selectpage', '权限管理 管理员管理', '{\"q_word\":[\"\"],\"pageNumber\":\"1\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"nickname\",\"ASC\"]],\"searchTable\":\"tbl\",\"showField\":\"nickname\",\"keyField\":\"id\",\"searchField\":[\"nickname\"],\"nickname\":\"\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581665051),
-(139, 1, 'admin', '/nZz2ivbAMF.php/auth/admin/selectpage', '权限管理 管理员管理', '{\"q_word\":[\"\"],\"pageNumber\":\"1\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"nickname\",\"ASC\"]],\"searchTable\":\"tbl\",\"showField\":\"nickname\",\"keyField\":\"id\",\"searchField\":[\"nickname\"],\"nickname\":\"\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581665051),
-(140, 1, 'admin', '/nZz2ivbAMF.php/auth/admin/selectpage', '权限管理 管理员管理', '{\"q_word\":[\"\"],\"pageNumber\":\"1\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"nickname\",\"ASC\"]],\"searchTable\":\"tbl\",\"showField\":\"nickname\",\"keyField\":\"id\",\"searchField\":[\"nickname\"],\"nickname\":\"\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581665051),
-(141, 1, 'admin', '/nZz2ivbAMF.php/auth/admin/selectpage', '权限管理 管理员管理', '{\"q_word\":[\"\"],\"pageNumber\":\"1\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"nickname\",\"ASC\"]],\"searchTable\":\"tbl\",\"showField\":\"nickname\",\"keyField\":\"id\",\"searchField\":[\"nickname\"],\"nickname\":\"\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581665052),
-(142, 1, 'admin', '/nZz2ivbAMF.php/testdata/add?dialog=1', 'Testdata 添加', '{\"dialog\":\"1\",\"row\":{\"name\":\"1232131231\",\"logo_avatar\":\"\\/uploads\\/20200214\\/d551b312679f0c142c728aa958cdda45.jpg\",\"type\":\"type1\",\"configjson\":\"{&quot;123&quot;:&quot;123&quot;}\",\"openswitch\":\"1\",\"admin_ids\":\"1\"}}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581665108),
-(143, 1, 'admin', '/nZz2ivbAMF.php/auth/admin/selectpage', '权限管理 管理员管理', '{\"q_word\":[\"\"],\"pageNumber\":\"1\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"nickname\",\"ASC\"]],\"searchTable\":\"tbl\",\"showField\":\"nickname\",\"keyField\":\"id\",\"searchField\":[\"nickname\"],\"nickname\":\"\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581665206),
-(144, 1, 'admin', '/nZz2ivbAMF.php/auth/admin/selectpage', '权限管理 管理员管理', '{\"q_word\":[\"\"],\"pageNumber\":\"1\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"nickname\",\"ASC\"]],\"searchTable\":\"tbl\",\"showField\":\"nickname\",\"keyField\":\"id\",\"searchField\":[\"nickname\"],\"nickname\":\"\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581665207),
-(145, 1, 'admin', '/nZz2ivbAMF.php/testdata/add?dialog=1', 'Testdata 添加', '{\"dialog\":\"1\",\"row\":{\"name\":\"\\u554a\\u554a\",\"logo_avatar\":\"\\/uploads\\/20200214\\/d551b312679f0c142c728aa958cdda45.jpg\",\"type\":\"type1\",\"configjson\":\"{&quot;\\u989c\\u8272&quot;:&quot;\\u7ea2\\u8272&quot;,&quot;\\u5c3a\\u5bf8&quot;:&quot;X&quot;}\",\"openswitch\":\"1\",\"admin_ids\":\"1\"}}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581665208),
-(146, 1, 'admin', '/nZz2ivbAMF.php/testdata/restore/ids/2', 'Testdata 还原', '{\"ids\":\"2\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581666100),
-(147, 1, 'admin', '/nZz2ivbAMF.php/auth/admin/selectpage', '权限管理 管理员管理', '{\"searchTable\":\"tbl\",\"searchKey\":\"id\",\"searchValue\":\"1\",\"orderBy\":[[\"nickname\",\"ASC\"]],\"showField\":\"nickname\",\"keyField\":\"id\",\"keyValue\":\"1\",\"searchField\":[\"nickname\"]}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581666134),
-(148, 1, 'admin', '/nZz2ivbAMF.php/auth/admin/selectpage', '权限管理 管理员管理', '{\"q_word\":[\"\"],\"pageNumber\":\"1\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"nickname\",\"ASC\"]],\"searchTable\":\"tbl\",\"showField\":\"nickname\",\"keyField\":\"id\",\"searchField\":[\"nickname\"],\"nickname\":\"\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581666136),
-(149, 1, 'admin', '/nZz2ivbAMF.php/testdata/multi/ids/2', 'Testdata 批量更新', '{\"action\":\"\",\"ids\":\"2\",\"params\":\"openswitch=0\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581666142),
-(150, 1, 'admin', '/nZz2ivbAMF.php/testdata/multi/ids/2', 'Testdata 批量更新', '{\"action\":\"\",\"ids\":\"2\",\"params\":\"openswitch=1\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581666144),
-(151, 1, 'admin', '/nZz2ivbAMF.php/auth/admin/selectpage', '权限管理 管理员管理', '{\"searchTable\":\"tbl\",\"searchKey\":\"id\",\"searchValue\":\"1\",\"orderBy\":[[\"nickname\",\"ASC\"]],\"showField\":\"nickname\",\"keyField\":\"id\",\"keyValue\":\"1\",\"searchField\":[\"nickname\"]}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581666147),
-(152, 1, 'admin', '/nZz2ivbAMF.php/auth/admin/selectpage', '权限管理 管理员管理', '{\"searchTable\":\"tbl\",\"searchKey\":\"id\",\"searchValue\":\"1\",\"orderBy\":[[\"nickname\",\"ASC\"]],\"showField\":\"nickname\",\"keyField\":\"id\",\"keyValue\":\"1\",\"searchField\":[\"nickname\"]}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581666156),
-(153, 1, 'admin', '/nZz2ivbAMF.php/auth/admin/selectpage', '权限管理 管理员管理', '{\"searchTable\":\"tbl\",\"searchKey\":\"id\",\"searchValue\":\"1\",\"orderBy\":[[\"nickname\",\"ASC\"]],\"showField\":\"nickname\",\"keyField\":\"id\",\"keyValue\":\"1\",\"searchField\":[\"nickname\"]}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581666211),
-(154, 1, 'admin', '/nZz2ivbAMF.php/command/execute/ids/8', '在线命令管理 运行', '{\"ids\":\"8\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581666274),
-(155, 1, 'admin', '/nZz2ivbAMF.php/command/execute/ids/7', '在线命令管理 运行', '{\"ids\":\"7\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581666289),
-(156, 1, 'admin', '/nZz2ivbAMF.php/command/execute/ids/10', '在线命令管理 运行', '{\"ids\":\"10\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581666322),
-(157, 1, 'admin', '/nZz2ivbAMF.php/command/execute/ids/11', '在线命令管理 运行', '{\"ids\":\"11\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581666353),
-(158, 1, 'admin', '/nZz2ivbAMF.php/command/execute/ids/12', '在线命令管理 运行', '{\"ids\":\"12\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581666373),
-(159, 1, 'admin', '/nZz2ivbAMF.php/command/execute/ids/13', '在线命令管理 运行', '{\"ids\":\"13\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581666393),
-(160, 1, 'admin', '/nZz2ivbAMF.php/testdata/multi/ids/2', 'Testdata 批量更新', '{\"action\":\"\",\"ids\":\"2\",\"params\":\"openswitch=0\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581666443),
-(161, 1, 'admin', '/nZz2ivbAMF.php/testdata/multi/ids/2', 'Testdata 批量更新', '{\"action\":\"\",\"ids\":\"2\",\"params\":\"openswitch=1\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581666444),
-(162, 1, 'admin', '/nZz2ivbAMF.php/testdata/multi/ids/2', 'Testdata 批量更新', '{\"action\":\"\",\"ids\":\"2\",\"params\":\"openswitch=0\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581666446),
-(163, 1, 'admin', '/nZz2ivbAMF.php/testdata/multi/ids/2', 'Testdata 批量更新', '{\"action\":\"\",\"ids\":\"2\",\"params\":\"openswitch=1\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581666448),
-(164, 1, 'admin', '/nZz2ivbAMF.php/auth/admin/selectpage', '权限管理 管理员管理', '{\"searchTable\":\"tbl\",\"searchKey\":\"id\",\"searchValue\":\"1\",\"orderBy\":[[\"nickname\",\"ASC\"]],\"showField\":\"nickname\",\"keyField\":\"id\",\"keyValue\":\"1\",\"searchField\":[\"nickname\"]}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581666453),
-(165, 1, 'admin', '/nZz2ivbAMF.php/testdata/edit/ids/2?dialog=1', 'Testdata 编辑', '{\"dialog\":\"1\",\"row\":{\"name\":\"\\u554a\\u554a\",\"logo_avatar\":\"\\/uploads\\/20200214\\/d551b312679f0c142c728aa958cdda45.jpg\",\"type\":\"type2\",\"configjson\":\"{&quot;\\u989c\\u8272&quot;:&quot;\\u7ea2\\u8272&quot;,&quot;\\u5c3a\\u5bf8&quot;:&quot;X&quot;}\",\"openswitch\":\"1\",\"admin_ids\":\"1\"},\"ids\":\"2\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581666456),
-(166, 1, 'admin', '/nZz2ivbAMF.php/auth/admin/selectpage', '权限管理 管理员管理', '{\"searchTable\":\"tbl\",\"searchKey\":\"id\",\"searchValue\":\"1\",\"orderBy\":[[\"nickname\",\"ASC\"]],\"showField\":\"nickname\",\"keyField\":\"id\",\"keyValue\":\"1\",\"searchField\":[\"nickname\"]}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581666460),
-(167, 1, 'admin', '/nZz2ivbAMF.php/testdata/del/ids/2', 'Testdata 删除', '{\"action\":\"del\",\"ids\":\"2\",\"params\":\"\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581666618),
-(168, 1, 'admin', '/nZz2ivbAMF.php/testdata/restore/ids/2', 'Testdata 还原', '{\"action\":\"restore\",\"ids\":\"2\",\"params\":\"\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581666623),
-(169, 1, 'admin', '/nZz2ivbAMF.php/auth/admin/selectpage', '权限管理 管理员管理', '{\"searchTable\":\"tbl\",\"searchKey\":\"id\",\"searchValue\":\"1\",\"orderBy\":[[\"nickname\",\"ASC\"]],\"showField\":\"nickname\",\"keyField\":\"id\",\"keyValue\":\"1\",\"searchField\":[\"nickname\"]}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581666713),
-(170, 1, 'admin', '/nZz2ivbAMF.php/auth/admin/selectpage', '权限管理 管理员管理', '{\"searchTable\":\"tbl\",\"searchKey\":\"id\",\"searchValue\":\"1\",\"orderBy\":[[\"nickname\",\"ASC\"]],\"showField\":\"nickname\",\"keyField\":\"id\",\"keyValue\":\"1\",\"searchField\":[\"nickname\"]}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581666715),
-(171, 1, 'admin', '/nZz2ivbAMF.php/command/execute/ids/14', '在线命令管理 运行', '{\"ids\":\"14\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581666860),
-(172, 1, 'admin', '/nZz2ivbAMF.php/auth/admin/selectpage', '权限管理 管理员管理', '{\"searchTable\":\"tbl\",\"searchKey\":\"id\",\"searchValue\":\"1\",\"orderBy\":[[\"nickname\",\"ASC\"]],\"showField\":\"nickname\",\"keyField\":\"id\",\"keyValue\":\"1\",\"searchField\":[\"nickname\"]}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581666875),
-(173, 1, 'admin', '/nZz2ivbAMF.php/auth/admin/selectpage', '权限管理 管理员管理', '{\"searchTable\":\"tbl\",\"searchKey\":\"id\",\"searchValue\":\"1\",\"orderBy\":[[\"nickname\",\"ASC\"]],\"showField\":\"nickname\",\"keyField\":\"id\",\"keyValue\":\"1\",\"searchField\":[\"nickname\"]}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581667017),
-(174, 1, 'admin', '/nZz2ivbAMF.php/auth/admin/selectpage', '权限管理 管理员管理', '{\"searchTable\":\"tbl\",\"searchKey\":\"id\",\"searchValue\":\"1\",\"orderBy\":[[\"nickname\",\"ASC\"]],\"showField\":\"nickname\",\"keyField\":\"id\",\"keyValue\":\"1\",\"searchField\":[\"nickname\"]}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581667080),
-(175, 1, 'admin', '/nZz2ivbAMF.php/auth/admin/selectpage', '权限管理 管理员管理', '{\"q_word\":[\"\"],\"pageNumber\":\"1\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"nickname\",\"ASC\"]],\"searchTable\":\"tbl\",\"showField\":\"nickname\",\"keyField\":\"id\",\"searchField\":[\"nickname\"],\"nickname\":\"\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581667093),
-(176, 1, 'admin', '/nZz2ivbAMF.php/command/execute/ids/15', '在线命令管理 运行', '{\"ids\":\"15\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581667849),
-(177, 1, 'admin', '/nZz2ivbAMF.php/auth/admin/selectpage', '权限管理 管理员管理', '{\"searchTable\":\"tbl\",\"searchKey\":\"id\",\"searchValue\":\"1\",\"orderBy\":[[\"nickname\",\"ASC\"]],\"showField\":\"nickname\",\"keyField\":\"id\",\"keyValue\":\"1\",\"searchField\":[\"nickname\"]}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581667855),
-(178, 1, 'admin', '/nZz2ivbAMF.php/command/execute/ids/16', '在线命令管理 运行', '{\"ids\":\"16\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581667913),
-(179, 1, 'admin', '/nZz2ivbAMF.php/auth/admin/selectpage', '权限管理 管理员管理', '{\"searchTable\":\"tbl\",\"searchKey\":\"id\",\"searchValue\":\"1\",\"orderBy\":[[\"nickname\",\"ASC\"]],\"showField\":\"nickname\",\"keyField\":\"id\",\"keyValue\":\"1\",\"searchField\":[\"nickname\"]}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581667934),
-(180, 1, 'admin', '/nZz2ivbAMF.php/testdata/edit/ids/2?dialog=1', 'Testdata 编辑', '{\"dialog\":\"1\",\"row\":{\"name\":\"\\u554a\\u554a\",\"logo_avatar\":\"\\/uploads\\/20200214\\/d551b312679f0c142c728aa958cdda45.jpg\",\"type\":\"type1\",\"configjson\":\"{&quot;\\u989c\\u8272&quot;:&quot;\\u7ea2\\u8272&quot;,&quot;\\u5c3a\\u5bf8&quot;:&quot;X&quot;}\",\"openswitch\":\"1\",\"admin_ids\":\"1\"},\"ids\":\"2\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581667939),
-(181, 1, 'admin', '/nZz2ivbAMF.php/auth/admin/selectpage', '权限管理 管理员管理', '{\"searchTable\":\"tbl\",\"searchKey\":\"id\",\"searchValue\":\"1\",\"orderBy\":[[\"nickname\",\"ASC\"]],\"showField\":\"nickname\",\"keyField\":\"id\",\"keyValue\":\"1\",\"searchField\":[\"nickname\"]}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581667965),
-(182, 1, 'admin', '/nZz2ivbAMF.php/auth/admin/selectpage', '权限管理 管理员管理', '{\"searchTable\":\"tbl\",\"searchKey\":\"id\",\"searchValue\":\"1\",\"orderBy\":[[\"nickname\",\"ASC\"]],\"showField\":\"nickname\",\"keyField\":\"id\",\"keyValue\":\"1\",\"searchField\":[\"nickname\"]}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581670485),
-(183, 1, 'admin', '/nZz2ivbAMF.php/ajax/upload', '', '{\"name\":\"3.0\\u7cfb\\u7edf\\u5bfc\\u5165.xlsx\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581670786),
-(184, 1, 'admin', '/nZz2ivbAMF.php/testdata?addtabs=1', 'Testdata 查看', '{\"addtabs\":\"1\",\"file\":\"\\/uploads\\/20200214\\/703474985a95c0ada82183f630e4ede4.xlsx\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581670787),
-(185, 1, 'admin', '/nZz2ivbAMF.php/ajax/upload', '', '{\"name\":\"3.0\\u7cfb\\u7edf\\u5bfc\\u5165.xlsx\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581670803),
-(186, 1, 'admin', '/nZz2ivbAMF.php/testdata?addtabs=1', 'Testdata 查看', '{\"addtabs\":\"1\",\"file\":\"\\/uploads\\/20200214\\/703474985a95c0ada82183f630e4ede4.xlsx\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581670803),
-(187, 1, 'admin', '/nZz2ivbAMF.php/testdata/multi/ids/2', 'Testdata 批量更新', '{\"ids\":\"2\",\"params\":\"status=normal\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581670818),
-(188, 1, 'admin', '/nZz2ivbAMF.php/testdata/multi/ids/2', 'Testdata 批量更新', '{\"ids\":\"2\",\"params\":\"status=hidden\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581670848),
-(189, 1, 'admin', '/nZz2ivbAMF.php/testdata/multi/ids/2', 'Testdata 批量更新', '{\"ids\":\"2\",\"params\":\"status=normal\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581670851),
-(190, 1, 'admin', '/nZz2ivbAMF.php/testdata/multi/ids/2', 'Testdata 批量更新', '{\"ids\":\"2\",\"params\":\"status=hidden\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581670862),
-(191, 1, 'admin', '/nZz2ivbAMF.php/auth/admin/selectpage', '权限管理 管理员管理', '{\"searchTable\":\"tbl\",\"searchKey\":\"id\",\"searchValue\":\"1\",\"orderBy\":[[\"nickname\",\"ASC\"]],\"showField\":\"nickname\",\"keyField\":\"id\",\"keyValue\":\"1\",\"searchField\":[\"nickname\"]}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581670866),
-(192, 1, 'admin', '/nZz2ivbAMF.php/testdata/multi/ids/2', 'Testdata 批量更新', '{\"ids\":\"2\",\"params\":\"status=normal\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581670868),
-(193, 1, 'admin', '/nZz2ivbAMF.php/command/get_field_list', '在线命令管理', '{\"table\":\"gf_admin\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581670897),
-(194, 1, 'admin', '/nZz2ivbAMF.php/command/get_field_list', '在线命令管理', '{\"table\":\"gf_testdata\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581670902),
-(195, 1, 'admin', '/nZz2ivbAMF.php/command/command/action/command', '在线命令管理', '{\"commandtype\":\"crud\",\"isrelation\":\"0\",\"local\":\"1\",\"delete\":\"0\",\"force\":\"0\",\"table\":\"gf_testdata\",\"controller\":\"\",\"model\":\"\",\"setcheckboxsuffix\":\"\",\"enumradiosuffix\":\"\",\"imagefield\":\"\",\"filefield\":\"\",\"intdatesuffix\":\"\",\"switchsuffix\":\"\",\"citysuffix\":\"\",\"selectpagesuffix\":\"\",\"selectpagessuffix\":\"\",\"ignorefields\":\"\",\"sortfield\":\"\",\"editorsuffix\":\"\",\"headingfilterfield\":\"\",\"action\":\"command\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581670904),
-(196, 1, 'admin', '/nZz2ivbAMF.php/command/command/action/execute', '在线命令管理', '{\"commandtype\":\"crud\",\"isrelation\":\"0\",\"local\":\"1\",\"delete\":\"0\",\"force\":\"0\",\"table\":\"gf_testdata\",\"controller\":\"\",\"model\":\"\",\"setcheckboxsuffix\":\"\",\"enumradiosuffix\":\"\",\"imagefield\":\"\",\"filefield\":\"\",\"intdatesuffix\":\"\",\"switchsuffix\":\"\",\"citysuffix\":\"\",\"selectpagesuffix\":\"\",\"selectpagessuffix\":\"\",\"ignorefields\":\"\",\"sortfield\":\"\",\"editorsuffix\":\"\",\"headingfilterfield\":\"\",\"action\":\"execute\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581670906),
-(197, 1, 'admin', '/nZz2ivbAMF.php/index/index', '', '{\"action\":\"refreshmenu\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581670907),
-(198, 1, 'admin', '/nZz2ivbAMF.php/command/get_field_list', '在线命令管理', '{\"table\":\"gf_admin\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581670931),
-(199, 1, 'admin', '/nZz2ivbAMF.php/command/command/action/execute', '在线命令管理', '{\"commandtype\":\"api\",\"force\":\"0\",\"url\":\"\",\"output\":\"\",\"template\":\"\",\"title\":\"\",\"author\":\"\",\"language\":\"zh-cn\",\"action\":\"execute\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581670948),
-(200, 1, 'admin', '/nZz2ivbAMF.php/index/index', '', '{\"action\":\"refreshmenu\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581670949),
-(201, 1, 'admin', '/nZz2ivbAMF.php/command/del/ids/19', '在线命令管理 删除', '{\"action\":\"del\",\"ids\":\"19\",\"params\":\"\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581670960),
-(202, 1, 'admin', '/nZz2ivbAMF.php/command/del/ids/18', '在线命令管理 删除', '{\"action\":\"del\",\"ids\":\"18\",\"params\":\"\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1581670962),
-(203, 1, 'admin', '/nZz2ivbAMF.php/index/login?url=%2FnZz2ivbAMF.php', '登录', '{\"url\":\"\\/nZz2ivbAMF.php\",\"__token__\":\"1ffdccef1d38be232134584caf4a5608\",\"username\":\"admin\",\"captcha\":\"h8kr\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1582013878),
-(204, 1, 'admin', '/nZz2ivbAMF.php/addon/install', '插件管理', '{\"name\":\"recharge\",\"force\":\"0\",\"uid\":\"16601\",\"token\":\"ca12585b-8b58-47f7-b9ae-dbf32b130794\",\"version\":\"1.0.7\",\"faversion\":\"1.0.0.20191212_beta\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1582013892),
-(205, 1, 'admin', '/nZz2ivbAMF.php/index/index', '', '{\"action\":\"refreshmenu\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36', 1582013893),
-(206, 1, 'admin', '/nZz2ivbAMF.php/index/login?url=%2FnZz2ivbAMF.php', '登录', '{\"url\":\"\\/nZz2ivbAMF.php\",\"__token__\":\"a4aec8c7d31a1985508167f678b7f37e\",\"username\":\"admin\",\"captcha\":\"xg2t\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.116 Safari/537.36', 1582525647),
-(207, 1, 'admin', '/nZz2ivbAMF.php/auth/admin/selectpage', '权限管理 管理员管理', '{\"searchTable\":\"tbl\",\"searchKey\":\"id\",\"searchValue\":\"1\",\"orderBy\":[[\"nickname\",\"ASC\"]],\"showField\":\"nickname\",\"keyField\":\"id\",\"keyValue\":\"1\",\"searchField\":[\"nickname\"]}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.116 Safari/537.36', 1582525762),
-(208, 1, 'admin', '/nZz2ivbAMF.php/auth/admin/selectpage', '权限管理 管理员管理', '{\"q_word\":[\"\"],\"pageNumber\":\"1\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"nickname\",\"ASC\"]],\"searchTable\":\"tbl\",\"showField\":\"nickname\",\"keyField\":\"id\",\"searchField\":[\"nickname\"],\"nickname\":\"\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.116 Safari/537.36', 1582525764),
-(209, 1, 'admin', '/nZz2ivbAMF.php/example/bootstraptable/detail/ids/208', '开发示例管理 表格完整示例 详情', '{\"ids\":\"208\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.116 Safari/537.36', 1582525978),
-(210, 1, 'admin', '/nZz2ivbAMF.php/example/bootstraptable/detail/ids/208', '开发示例管理 表格完整示例 详情', '{\"ids\":\"208\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.116 Safari/537.36', 1582525981),
-(211, 1, 'admin', '/nZz2ivbAMF.php/auth/adminlog/selectpage', '权限管理 管理员日志', '{\"q_word\":[\"\"],\"pageNumber\":\"1\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"id\",\"desc\"]],\"searchTable\":\"tbl\",\"showField\":\"title\",\"keyField\":\"title\",\"searchField\":[\"title\"],\"title\":\"\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.116 Safari/537.36', 1582525987),
-(212, 1, 'admin', '/nZz2ivbAMF.php/auth/adminlog/selectpage', '权限管理 管理员日志', '{\"q_word\":[\"\"],\"pageNumber\":\"1\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"id\",\"desc\"]],\"searchTable\":\"tbl\",\"showField\":\"title\",\"keyField\":\"title\",\"searchField\":[\"title\"],\"title\":\"\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.116 Safari/537.36', 1582525988),
-(213, 1, 'admin', '/nZz2ivbAMF.php/auth/admin/index', '权限管理 管理员管理 查看', '{\"q_word\":[\"\"],\"pageNumber\":\"1\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"id\",\"desc\"]],\"searchTable\":\"tbl\",\"showField\":\"username\",\"keyField\":\"username\",\"searchField\":[\"username\"],\"username\":\"\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.116 Safari/537.36', 1582525994),
-(214, 1, 'admin', '/nZz2ivbAMF.php/index/login?url=%2FnZz2ivbAMF.php', '登录', '{\"url\":\"\\/nZz2ivbAMF.php\",\"__token__\":\"0235a7f546ae937da8879e7ccd5e704e\",\"username\":\"admin\",\"captcha\":\"ebtc\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36', 1582873643),
-(215, 1, 'admin', '/nZz2ivbAMF.php/index/login?url=%2FnZz2ivbAMF.php', '登录', '{\"url\":\"\\/nZz2ivbAMF.php\",\"__token__\":\"f01de4f87e124dbcd6cb2ef00e0104d3\",\"username\":\"admin\",\"captcha\":\"ivvh\"}', '172.20.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36', 1583375058);
 
 -- --------------------------------------------------------
 
@@ -4445,29 +4224,6 @@ CREATE TABLE `gf_command` (
   `status` enum('successed','failured') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'failured' COMMENT '状态'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='在线命令表' ROW_FORMAT=COMPACT;
 
---
--- 转存表中的数据 `gf_command`
---
-
-INSERT INTO `gf_command` (`id`, `type`, `params`, `command`, `content`, `executetime`, `createtime`, `updatetime`, `status`) VALUES
-(1, 'crud', '[\"--table=gf_nota_apply\",\"--headingfilterfield=state\"]', 'php think crud --table=gf_nota_apply --headingfilterfield=state', 'Build Successed', 1578731358, 1578731358, 1578731359, 'successed'),
-(2, 'menu', '[\"--controller=NotaApply\"]', 'php think menu --controller=NotaApply', 'Build Successed!', 1578731394, 1578731394, 1578731394, 'successed'),
-(3, 'crud', '[\"--force=1\",\"--table=gf_nota_apply\",\"--enumradiosuffix=state\"]', 'php think crud --force=1 --table=gf_nota_apply --enumradiosuffix=state', 'Build Successed', 1578735402, 1578735402, 1578735402, 'successed'),
-(4, 'crud', '[\"--table=gf_testdata\"]', 'php think crud --table=gf_testdata', 'Build Successed', 1581664707, 1581664707, 1581664707, 'successed'),
-(5, 'menu', '[\"--controller=Testdata\"]', 'php think menu --controller=Testdata', 'Build Successed!', 1581664728, 1581664728, 1581664728, 'successed'),
-(6, 'crud', '[\"--table=gf_testdata\"]', 'php think crud --table=gf_testdata', 'controller already exists!\nIf you need to rebuild again, use the parameter --force=true', 1581664880, 1581664880, 1581664880, 'failured'),
-(7, 'crud', '[\"--force=1\",\"--table=gf_testdata\"]', 'php think crud --force=1 --table=gf_testdata', 'Build Successed', 1581664919, 1581664919, 1581664919, 'successed'),
-(8, 'menu', '[\"--controller=Testdata\"]', 'php think menu --controller=Testdata', 'Build Successed!', 1581664942, 1581664942, 1581664943, 'successed'),
-(9, 'menu', '[\"--controller=Testdata\"]', 'php think menu --controller=Testdata', 'Build Successed!', 1581666274, 1581666274, 1581666274, 'successed'),
-(10, 'crud', '[\"--force=1\",\"--table=gf_testdata\"]', 'php think crud --force=1 --table=gf_testdata', 'Build Successed', 1581666289, 1581666289, 1581666289, 'successed'),
-(11, 'crud', '[\"--force=1\",\"--table=gf_testdata\"]', 'php think crud --force=1 --table=gf_testdata', 'Build Successed', 1581666322, 1581666322, 1581666322, 'successed'),
-(12, 'crud', '[\"--force=1\",\"--table=gf_testdata\"]', 'php think crud --force=1 --table=gf_testdata', 'Build Successed', 1581666353, 1581666353, 1581666353, 'successed'),
-(13, 'crud', '[\"--force=1\",\"--table=gf_testdata\"]', 'php think crud --force=1 --table=gf_testdata', 'Build Successed', 1581666373, 1581666373, 1581666373, 'successed'),
-(14, 'crud', '[\"--force=1\",\"--table=gf_testdata\"]', 'php think crud --force=1 --table=gf_testdata', 'Build Successed', 1581666393, 1581666393, 1581666393, 'successed'),
-(15, 'crud', '[\"--force=1\",\"--table=gf_testdata\"]', 'php think crud --force=1 --table=gf_testdata', 'Build Successed', 1581666860, 1581666860, 1581666860, 'successed'),
-(16, 'crud', '[\"--force=1\",\"--table=gf_testdata\"]', 'php think crud --force=1 --table=gf_testdata', 'Build Successed', 1581667848, 1581667848, 1581667848, 'successed'),
-(17, 'crud', '[\"--force=1\",\"--table=gf_testdata\"]', 'php think crud --force=1 --table=gf_testdata', 'Build Successed', 1581667913, 1581667913, 1581667913, 'successed');
-
 -- --------------------------------------------------------
 
 --
@@ -4513,18 +4269,47 @@ INSERT INTO `gf_config` (`id`, `name`, `group`, `title`, `tip`, `type`, `value`,
 -- --------------------------------------------------------
 
 --
--- 表的结构 `gf_ems`
+-- 表的结构 `gf_friend`
 --
 
-CREATE TABLE `gf_ems` (
-  `id` int(10) UNSIGNED NOT NULL COMMENT 'ID',
-  `event` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '事件',
-  `email` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '邮箱',
-  `code` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '验证码',
-  `times` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '验证次数',
-  `ip` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'IP',
-  `createtime` int(10) UNSIGNED DEFAULT '0' COMMENT '创建时间'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='邮箱验证码表' ROW_FORMAT=COMPACT;
+CREATE TABLE `gf_friend` (
+  `id` int(11) UNSIGNED NOT NULL COMMENT 'ID',
+  `user_id` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '用户ID',
+  `friend_id` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '好友ID',
+  `friend_group_id` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '好友分组ID',
+  `createtime` int(10) UNSIGNED DEFAULT NULL COMMENT '创建时间',
+  `remark` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '好友备注'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户朋友表';
+
+--
+-- 转存表中的数据 `gf_friend`
+--
+
+INSERT INTO `gf_friend` (`id`, `user_id`, `friend_id`, `friend_group_id`, `createtime`, `remark`) VALUES
+(1, 1, 2, 1, NULL, '11'),
+(2, 2, 1, 1, NULL, '11');
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `gf_friend_group`
+--
+
+CREATE TABLE `gf_friend_group` (
+  `id` int(11) UNSIGNED NOT NULL COMMENT 'ID',
+  `user_id` int(11) UNSIGNED NOT NULL DEFAULT '0' COMMENT '用户ID,0:系统默认',
+  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '好友分组名称',
+  `createtime` int(10) UNSIGNED DEFAULT NULL COMMENT '创建时间',
+  `updatetime` int(10) UNSIGNED DEFAULT NULL COMMENT '更新时间'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='好友组';
+
+--
+-- 转存表中的数据 `gf_friend_group`
+--
+
+INSERT INTO `gf_friend_group` (`id`, `user_id`, `name`, `createtime`, `updatetime`) VALUES
+(1, 0, '我的好友', NULL, NULL),
+(2, 1, '同学', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -4534,98 +4319,43 @@ CREATE TABLE `gf_ems` (
 
 CREATE TABLE `gf_group` (
   `id` int(10) UNSIGNED NOT NULL COMMENT 'ID',
-  `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '群名',
-  `avatar` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '头像',
+  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '群名',
+  `avatar` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '头像',
   `createtime` int(10) UNSIGNED DEFAULT NULL COMMENT '创建时间',
   `updatetime` int(10) UNSIGNED DEFAULT NULL COMMENT '更新时间',
   `create_user_id` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '创始人ID',
   `user_id` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '所属用户ID'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='聊天群';
 
--- --------------------------------------------------------
-
 --
--- 表的结构 `gf_recharge_order`
+-- 转存表中的数据 `gf_group`
 --
 
-CREATE TABLE `gf_recharge_order` (
-  `id` int(10) UNSIGNED NOT NULL COMMENT '主键ID',
-  `orderid` varchar(100) DEFAULT NULL COMMENT '订单ID',
-  `user_id` int(10) UNSIGNED DEFAULT '0' COMMENT '会员ID',
-  `amount` double(10,2) UNSIGNED DEFAULT '0.00' COMMENT '订单金额',
-  `payamount` double(10,2) UNSIGNED DEFAULT '0.00' COMMENT '支付金额',
-  `paytype` varchar(50) DEFAULT NULL COMMENT '支付类型',
-  `paytime` int(10) DEFAULT NULL COMMENT '支付时间',
-  `ip` varchar(50) DEFAULT NULL COMMENT 'IP地址',
-  `useragent` varchar(255) DEFAULT NULL COMMENT 'UserAgent',
-  `memo` varchar(255) DEFAULT NULL COMMENT '备注',
-  `createtime` int(10) DEFAULT NULL COMMENT '添加时间',
-  `updatetime` int(10) DEFAULT NULL COMMENT '更新时间',
-  `status` enum('created','paid','expired') DEFAULT 'created' COMMENT '状态'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='充值表';
+INSERT INTO `gf_group` (`id`, `name`, `avatar`, `createtime`, `updatetime`, `create_user_id`, `user_id`) VALUES
+(1, 'go学习群', 'https://zhiyu.web.xmchuangyi.com/static/img/no_img.jpg', NULL, NULL, 1, 1);
 
 -- --------------------------------------------------------
 
 --
--- 表的结构 `gf_sms`
+-- 表的结构 `gf_group_user`
 --
 
-CREATE TABLE `gf_sms` (
-  `id` int(10) UNSIGNED NOT NULL COMMENT 'ID',
-  `event` varchar(30) NOT NULL DEFAULT '' COMMENT '事件',
-  `mobile` varchar(20) NOT NULL DEFAULT '' COMMENT '手机号',
-  `code` varchar(10) NOT NULL DEFAULT '' COMMENT '验证码',
-  `times` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '验证次数',
-  `ip` varchar(30) NOT NULL DEFAULT '' COMMENT 'IP',
-  `createtime` int(10) UNSIGNED DEFAULT '0' COMMENT '创建时间'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='短信验证码表' ROW_FORMAT=COMPACT;
-
--- --------------------------------------------------------
+CREATE TABLE `gf_group_user` (
+  `id` int(11) UNSIGNED NOT NULL COMMENT 'ID',
+  `group_id` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '群ID',
+  `user_id` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '用户ID',
+  `nickname` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '用户群昵称',
+  `createtime` int(10) UNSIGNED DEFAULT NULL COMMENT '创建时间',
+  `updatetime` int(10) UNSIGNED DEFAULT NULL COMMENT '更新时间'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='群用户表';
 
 --
--- 表的结构 `gf_test`
+-- 转存表中的数据 `gf_group_user`
 --
 
-CREATE TABLE `gf_test` (
-  `id` int(10) UNSIGNED NOT NULL COMMENT 'ID',
-  `admin_id` int(10) NOT NULL DEFAULT '0' COMMENT '管理员ID',
-  `category_id` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '分类ID(单选)',
-  `category_ids` varchar(100) NOT NULL COMMENT '分类ID(多选)',
-  `week` enum('monday','tuesday','wednesday') NOT NULL COMMENT '星期(单选):monday=星期一,tuesday=星期二,wednesday=星期三',
-  `flag` set('hot','index','recommend') NOT NULL DEFAULT '' COMMENT '标志(多选):hot=热门,index=首页,recommend=推荐',
-  `genderdata` enum('male','female') NOT NULL DEFAULT 'male' COMMENT '性别(单选):male=男,female=女',
-  `hobbydata` set('music','reading','swimming') NOT NULL COMMENT '爱好(多选):music=音乐,reading=读书,swimming=游泳',
-  `title` varchar(50) NOT NULL DEFAULT '' COMMENT '标题',
-  `content` text NOT NULL COMMENT '内容',
-  `image` varchar(100) NOT NULL DEFAULT '' COMMENT '图片',
-  `images` varchar(1500) NOT NULL DEFAULT '' COMMENT '图片组',
-  `attachfile` varchar(100) NOT NULL DEFAULT '' COMMENT '附件',
-  `keywords` varchar(100) NOT NULL DEFAULT '' COMMENT '关键字',
-  `description` varchar(255) NOT NULL DEFAULT '' COMMENT '描述',
-  `city` varchar(100) NOT NULL DEFAULT '' COMMENT '省市',
-  `json` varchar(255) DEFAULT NULL COMMENT '配置:key=名称,value=值',
-  `price` float(10,2) UNSIGNED NOT NULL DEFAULT '0.00' COMMENT '价格',
-  `views` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '点击',
-  `startdate` date DEFAULT NULL COMMENT '开始日期',
-  `activitytime` datetime DEFAULT NULL COMMENT '活动时间(datetime)',
-  `year` year(4) DEFAULT NULL COMMENT '年',
-  `times` time DEFAULT NULL COMMENT '时间',
-  `refreshtime` int(10) DEFAULT NULL COMMENT '刷新时间(int)',
-  `createtime` int(10) DEFAULT NULL COMMENT '创建时间',
-  `updatetime` int(10) DEFAULT NULL COMMENT '更新时间',
-  `deletetime` int(10) DEFAULT NULL COMMENT '删除时间',
-  `weigh` int(10) NOT NULL DEFAULT '0' COMMENT '权重',
-  `switch` tinyint(1) NOT NULL DEFAULT '0' COMMENT '开关',
-  `status` enum('normal','hidden') NOT NULL DEFAULT 'normal' COMMENT '状态',
-  `state` enum('0','1','2') NOT NULL DEFAULT '1' COMMENT '状态值:0=禁用,1=正常,2=推荐'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='测试表' ROW_FORMAT=COMPACT;
-
---
--- 转存表中的数据 `gf_test`
---
-
-INSERT INTO `gf_test` (`id`, `admin_id`, `category_id`, `category_ids`, `week`, `flag`, `genderdata`, `hobbydata`, `title`, `content`, `image`, `images`, `attachfile`, `keywords`, `description`, `city`, `json`, `price`, `views`, `startdate`, `activitytime`, `year`, `times`, `refreshtime`, `createtime`, `updatetime`, `deletetime`, `weigh`, `switch`, `status`, `state`) VALUES
-(1, 0, 12, '12,13', 'monday', 'hot,index', 'male', 'music,reading', '我是一篇测试文章', '<p>我是测试内容</p>', '/assets/img/avatar.png', '/assets/img/avatar.png,/assets/img/qrcode.png', '/assets/img/avatar.png', '关键字', '描述', '广西壮族自治区/百色市/平果县', '{\"a\":\"1\",\"b\":\"2\"}', 0.00, 0, '2017-07-10', '2017-07-10 18:24:45', 2017, '18:24:45', 1499682285, 1499682526, 1499682526, NULL, 0, 1, 'normal', '1');
+INSERT INTO `gf_group_user` (`id`, `group_id`, `user_id`, `nickname`, `createtime`, `updatetime`) VALUES
+(1, 1, 1, 'aa', NULL, NULL),
+(2, 1, 2, 'bb', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -4656,7 +4386,6 @@ CREATE TABLE `gf_third` (
 
 CREATE TABLE `gf_user` (
   `id` int(10) UNSIGNED NOT NULL COMMENT 'ID',
-  `group_id` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '组别ID',
   `username` varchar(32) NOT NULL DEFAULT '' COMMENT '用户名',
   `nickname` varchar(50) NOT NULL DEFAULT '' COMMENT '昵称',
   `password` varchar(32) NOT NULL DEFAULT '' COMMENT '密码',
@@ -4664,124 +4393,27 @@ CREATE TABLE `gf_user` (
   `email` varchar(100) NOT NULL DEFAULT '' COMMENT '电子邮箱',
   `mobile` varchar(11) NOT NULL DEFAULT '' COMMENT '手机号',
   `avatar` varchar(255) NOT NULL DEFAULT '' COMMENT '头像',
-  `level` tinyint(1) UNSIGNED NOT NULL DEFAULT '0' COMMENT '等级',
   `gender` tinyint(1) UNSIGNED NOT NULL DEFAULT '0' COMMENT '性别',
   `birthday` date DEFAULT NULL COMMENT '生日',
-  `bio` varchar(100) NOT NULL DEFAULT '' COMMENT '格言',
-  `money` decimal(10,2) UNSIGNED NOT NULL DEFAULT '0.00' COMMENT '余额',
-  `score` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '积分',
-  `successions` int(10) UNSIGNED NOT NULL DEFAULT '1' COMMENT '连续登录天数',
-  `maxsuccessions` int(10) UNSIGNED NOT NULL DEFAULT '1' COMMENT '最大连续登录天数',
+  `sign` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '签名',
   `prevtime` int(10) DEFAULT NULL COMMENT '上次登录时间',
   `logintime` int(10) DEFAULT NULL COMMENT '登录时间',
   `loginip` varchar(50) NOT NULL DEFAULT '' COMMENT '登录IP',
-  `loginfailure` tinyint(1) UNSIGNED NOT NULL DEFAULT '0' COMMENT '失败次数',
   `joinip` varchar(50) NOT NULL DEFAULT '' COMMENT '加入IP',
   `jointime` int(10) DEFAULT NULL COMMENT '加入时间',
   `createtime` int(10) DEFAULT NULL COMMENT '创建时间',
   `updatetime` int(10) DEFAULT NULL COMMENT '更新时间',
-  `token` varchar(50) NOT NULL DEFAULT '' COMMENT 'Token',
-  `status` varchar(30) NOT NULL DEFAULT '' COMMENT '状态',
-  `verification` varchar(255) NOT NULL DEFAULT '' COMMENT '验证'
+  `status` enum('normal','disable') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'normal' COMMENT '用户状态:normal:正常,disable:禁用',
+  `im_status` enum('offline','online','hide') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'offline' COMMENT 'im状态;offlie:离线,online:在线,hide:隐身'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='会员表' ROW_FORMAT=COMPACT;
 
 --
 -- 转存表中的数据 `gf_user`
 --
 
-INSERT INTO `gf_user` (`id`, `group_id`, `username`, `nickname`, `password`, `salt`, `email`, `mobile`, `avatar`, `level`, `gender`, `birthday`, `bio`, `money`, `score`, `successions`, `maxsuccessions`, `prevtime`, `logintime`, `loginip`, `loginfailure`, `joinip`, `jointime`, `createtime`, `updatetime`, `token`, `status`, `verification`) VALUES
-(1, 1, 'admin', 'admin', 'c13f62012fd6a8fdf06b3452a94430e5', 'rpR6Bv', 'admin@163.com', '13888888888', '', 0, 0, '2017-04-15', '', '0.00', 0, 1, 1, 1584951412, 1584951417, '172.20.0.1', 0, '127.0.0.1', 1491461418, 0, 1584951417, '', 'normal', '');
-
--- --------------------------------------------------------
-
---
--- 表的结构 `gf_user_group`
---
-
-CREATE TABLE `gf_user_group` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `name` varchar(50) DEFAULT '' COMMENT '组名',
-  `rules` text COMMENT '权限节点',
-  `createtime` int(10) DEFAULT NULL COMMENT '添加时间',
-  `updatetime` int(10) DEFAULT NULL COMMENT '更新时间',
-  `status` enum('normal','hidden') DEFAULT NULL COMMENT '状态'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='会员组表' ROW_FORMAT=COMPACT;
-
---
--- 转存表中的数据 `gf_user_group`
---
-
-INSERT INTO `gf_user_group` (`id`, `name`, `rules`, `createtime`, `updatetime`, `status`) VALUES
-(1, '默认组', '1,2,3,4,5,6,7,8,9,10,11,12', 1515386468, 1516168298, 'normal');
-
--- --------------------------------------------------------
-
---
--- 表的结构 `gf_user_money_log`
---
-
-CREATE TABLE `gf_user_money_log` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `user_id` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '会员ID',
-  `money` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '变更余额',
-  `before` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '变更前余额',
-  `after` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '变更后余额',
-  `memo` varchar(255) NOT NULL DEFAULT '' COMMENT '备注',
-  `createtime` int(10) DEFAULT NULL COMMENT '创建时间'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='会员余额变动表' ROW_FORMAT=COMPACT;
-
--- --------------------------------------------------------
-
---
--- 表的结构 `gf_user_rule`
---
-
-CREATE TABLE `gf_user_rule` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `pid` int(10) DEFAULT NULL COMMENT '父ID',
-  `name` varchar(50) DEFAULT NULL COMMENT '名称',
-  `title` varchar(50) DEFAULT '' COMMENT '标题',
-  `remark` varchar(100) DEFAULT NULL COMMENT '备注',
-  `ismenu` tinyint(1) DEFAULT NULL COMMENT '是否菜单',
-  `createtime` int(10) DEFAULT NULL COMMENT '创建时间',
-  `updatetime` int(10) DEFAULT NULL COMMENT '更新时间',
-  `weigh` int(10) DEFAULT '0' COMMENT '权重',
-  `status` enum('normal','hidden') DEFAULT NULL COMMENT '状态'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='会员规则表' ROW_FORMAT=COMPACT;
-
---
--- 转存表中的数据 `gf_user_rule`
---
-
-INSERT INTO `gf_user_rule` (`id`, `pid`, `name`, `title`, `remark`, `ismenu`, `createtime`, `updatetime`, `weigh`, `status`) VALUES
-(1, 0, 'index', '前台', '', 1, 1516168079, 1516168079, 1, 'normal'),
-(2, 0, 'api', 'API接口', '', 1, 1516168062, 1516168062, 2, 'normal'),
-(3, 1, 'user', '会员模块', '', 1, 1515386221, 1516168103, 12, 'normal'),
-(4, 2, 'user', '会员模块', '', 1, 1515386221, 1516168092, 11, 'normal'),
-(5, 3, 'index/user/login', '登录', '', 0, 1515386247, 1515386247, 5, 'normal'),
-(6, 3, 'index/user/register', '注册', '', 0, 1515386262, 1516015236, 7, 'normal'),
-(7, 3, 'index/user/index', '会员中心', '', 0, 1516015012, 1516015012, 9, 'normal'),
-(8, 3, 'index/user/profile', '个人资料', '', 0, 1516015012, 1516015012, 4, 'normal'),
-(9, 4, 'api/user/login', '登录', '', 0, 1515386247, 1515386247, 6, 'normal'),
-(10, 4, 'api/user/register', '注册', '', 0, 1515386262, 1516015236, 8, 'normal'),
-(11, 4, 'api/user/index', '会员中心', '', 0, 1516015012, 1516015012, 10, 'normal'),
-(12, 4, 'api/user/profile', '个人资料', '', 0, 1516015012, 1516015012, 3, 'normal');
-
--- --------------------------------------------------------
-
---
--- 表的结构 `gf_user_score_log`
---
-
-CREATE TABLE `gf_user_score_log` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `user_id` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '会员ID',
-  `score` int(10) NOT NULL DEFAULT '0' COMMENT '变更积分',
-  `before` int(10) NOT NULL DEFAULT '0' COMMENT '变更前积分',
-  `after` int(10) NOT NULL DEFAULT '0' COMMENT '变更后积分',
-  `memo` varchar(255) NOT NULL DEFAULT '' COMMENT '备注',
-  `createtime` int(10) DEFAULT NULL COMMENT '创建时间'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='会员积分变动表' ROW_FORMAT=COMPACT;
+INSERT INTO `gf_user` (`id`, `username`, `nickname`, `password`, `salt`, `email`, `mobile`, `avatar`, `gender`, `birthday`, `sign`, `prevtime`, `logintime`, `loginip`, `joinip`, `jointime`, `createtime`, `updatetime`, `status`, `im_status`) VALUES
+(1, 'admin', 'hhhjx', 'c13f62012fd6a8fdf06b3452a94430e5', 'rpR6Bv', 'admin@163.com', '13888888888', 'http://tva3.sinaimg.cn/crop.0.0.512.512.180/8693225ajw8f2rt20ptykj20e80e8weu.jpg', 0, '2017-04-15', '坚持学习', 1585128029, 1585558191, '172.20.0.1', '127.0.0.1', 1491461418, 0, 1585558191, 'normal', 'online'),
+(2, 'admin2', 'admin2', 'c13f62012fd6a8fdf06b3452a94430e5', 'rpR6Bv', 'admin@163.com', '13888882888', 'http://tva3.sinaimg.cn/crop.0.0.512.512.180/8693225ajw8f2rt20ptykj20e80e8weu.jpg', 0, '2017-04-15', '坚持学习', 1585128029, 1585558191, '172.20.0.1', '127.0.0.1', 1491461418, 0, 1585558191, 'normal', 'online');
 
 -- --------------------------------------------------------
 
@@ -4804,34 +4436,13 @@ CREATE TABLE `gf_user_token` (
 INSERT INTO `gf_user_token` (`id`, `token`, `user_id`, `createtime`, `expiretime`) VALUES
 (1, '634e3a487fd745a6b69c1e2de5a80376', 1, 1584951101, 1587543101),
 (2, 'cb13646f474bfcb222d6e4374ccdc835', 1, 1584951412, 1587543412),
-(3, 'a2a69c254ccd3942c6b74c017fe96f3c', 1, 1584951417, 1587543417);
-
--- --------------------------------------------------------
-
---
--- 表的结构 `gf_version`
---
-
-CREATE TABLE `gf_version` (
-  `id` int(11) NOT NULL COMMENT 'ID',
-  `oldversion` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '旧版本号',
-  `newversion` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '新版本号',
-  `packagesize` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '包大小',
-  `content` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '升级内容',
-  `downloadurl` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '下载地址',
-  `enforce` tinyint(1) UNSIGNED NOT NULL DEFAULT '0' COMMENT '强制更新',
-  `createtime` int(10) NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `updatetime` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '更新时间',
-  `weigh` int(10) NOT NULL DEFAULT '0' COMMENT '权重',
-  `status` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '状态'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='版本表' ROW_FORMAT=COMPACT;
-
---
--- 转存表中的数据 `gf_version`
---
-
-INSERT INTO `gf_version` (`id`, `oldversion`, `newversion`, `packagesize`, `content`, `downloadurl`, `enforce`, `createtime`, `updatetime`, `weigh`, `status`) VALUES
-(1, '1.1.1,2', '1.2.1', '20M', '更新内容', 'https://www.fastadmin.net/download.html', 1, 1520425318, 0, 0, 'normal');
+(3, 'a2a69c254ccd3942c6b74c017fe96f3c', 1, 1584951417, 1587543417),
+(4, '1aad10efa613235320ee67c8889933be', 1, 1585056969, 1587648969),
+(5, '5ffab5dfcf5928abdb0ee9f7b4a559e3', 1, 1585057015, 1587649015),
+(6, '57be7e8149d437b96297b7b744ed7ab0', 1, 1585098973, 1587690973),
+(7, '38e7430b827168b3932b545a50e6a64a', 1, 1585128029, 1587720029),
+(8, 'e7f791e8c895defa21e5269b4021945c', 1, 1585128029, 1587720029),
+(9, 'e4a28408cb75b28f17eb201c339ec8e2', 2, 1585558191, 1588150191);
 
 --
 -- 转储表的索引
@@ -4909,10 +4520,16 @@ ALTER TABLE `gf_config`
   ADD UNIQUE KEY `name` (`name`);
 
 --
--- 表的索引 `gf_ems`
+-- 表的索引 `gf_friend`
 --
-ALTER TABLE `gf_ems`
-  ADD PRIMARY KEY (`id`) USING BTREE;
+ALTER TABLE `gf_friend`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- 表的索引 `gf_friend_group`
+--
+ALTER TABLE `gf_friend_group`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- 表的索引 `gf_group`
@@ -4921,21 +4538,9 @@ ALTER TABLE `gf_group`
   ADD PRIMARY KEY (`id`);
 
 --
--- 表的索引 `gf_recharge_order`
+-- 表的索引 `gf_group_user`
 --
-ALTER TABLE `gf_recharge_order`
-  ADD PRIMARY KEY (`id`);
-
---
--- 表的索引 `gf_sms`
---
-ALTER TABLE `gf_sms`
-  ADD PRIMARY KEY (`id`);
-
---
--- 表的索引 `gf_test`
---
-ALTER TABLE `gf_test`
+ALTER TABLE `gf_group_user`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -4956,40 +4561,10 @@ ALTER TABLE `gf_user`
   ADD KEY `mobile` (`mobile`);
 
 --
--- 表的索引 `gf_user_group`
---
-ALTER TABLE `gf_user_group`
-  ADD PRIMARY KEY (`id`);
-
---
--- 表的索引 `gf_user_money_log`
---
-ALTER TABLE `gf_user_money_log`
-  ADD PRIMARY KEY (`id`);
-
---
--- 表的索引 `gf_user_rule`
---
-ALTER TABLE `gf_user_rule`
-  ADD PRIMARY KEY (`id`);
-
---
--- 表的索引 `gf_user_score_log`
---
-ALTER TABLE `gf_user_score_log`
-  ADD PRIMARY KEY (`id`);
-
---
 -- 表的索引 `gf_user_token`
 --
 ALTER TABLE `gf_user_token`
   ADD PRIMARY KEY (`id`);
-
---
--- 表的索引 `gf_version`
---
-ALTER TABLE `gf_version`
-  ADD PRIMARY KEY (`id`) USING BTREE;
 
 --
 -- 在导出的表使用AUTO_INCREMENT
@@ -5005,7 +4580,7 @@ ALTER TABLE `gf_admin`
 -- 使用表AUTO_INCREMENT `gf_admin_log`
 --
 ALTER TABLE `gf_admin_log`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID', AUTO_INCREMENT=216;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID';
 
 --
 -- 使用表AUTO_INCREMENT `gf_area`
@@ -5041,7 +4616,7 @@ ALTER TABLE `gf_category`
 -- 使用表AUTO_INCREMENT `gf_command`
 --
 ALTER TABLE `gf_command`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID', AUTO_INCREMENT=20;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID';
 
 --
 -- 使用表AUTO_INCREMENT `gf_config`
@@ -5050,34 +4625,28 @@ ALTER TABLE `gf_config`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
--- 使用表AUTO_INCREMENT `gf_ems`
+-- 使用表AUTO_INCREMENT `gf_friend`
 --
-ALTER TABLE `gf_ems`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID';
+ALTER TABLE `gf_friend`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID', AUTO_INCREMENT=3;
+
+--
+-- 使用表AUTO_INCREMENT `gf_friend_group`
+--
+ALTER TABLE `gf_friend_group`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID', AUTO_INCREMENT=3;
 
 --
 -- 使用表AUTO_INCREMENT `gf_group`
 --
 ALTER TABLE `gf_group`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID';
-
---
--- 使用表AUTO_INCREMENT `gf_recharge_order`
---
-ALTER TABLE `gf_recharge_order`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID';
-
---
--- 使用表AUTO_INCREMENT `gf_sms`
---
-ALTER TABLE `gf_sms`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID';
-
---
--- 使用表AUTO_INCREMENT `gf_test`
---
-ALTER TABLE `gf_test`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID', AUTO_INCREMENT=2;
+
+--
+-- 使用表AUTO_INCREMENT `gf_group_user`
+--
+ALTER TABLE `gf_group_user`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID', AUTO_INCREMENT=3;
 
 --
 -- 使用表AUTO_INCREMENT `gf_third`
@@ -5089,43 +4658,13 @@ ALTER TABLE `gf_third`
 -- 使用表AUTO_INCREMENT `gf_user`
 --
 ALTER TABLE `gf_user`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID', AUTO_INCREMENT=2;
-
---
--- 使用表AUTO_INCREMENT `gf_user_group`
---
-ALTER TABLE `gf_user_group`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- 使用表AUTO_INCREMENT `gf_user_money_log`
---
-ALTER TABLE `gf_user_money_log`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- 使用表AUTO_INCREMENT `gf_user_rule`
---
-ALTER TABLE `gf_user_rule`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
-
---
--- 使用表AUTO_INCREMENT `gf_user_score_log`
---
-ALTER TABLE `gf_user_score_log`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID', AUTO_INCREMENT=3;
 
 --
 -- 使用表AUTO_INCREMENT `gf_user_token`
 --
 ALTER TABLE `gf_user_token`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID', AUTO_INCREMENT=4;
-
---
--- 使用表AUTO_INCREMENT `gf_version`
---
-ALTER TABLE `gf_version`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID', AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID', AUTO_INCREMENT=10;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

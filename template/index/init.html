@@ -4,42 +4,44 @@
         var data = {
             "token": token
         }
+        //建立WebSocket通讯
+        //注意：如果你要兼容ie8+，建议你采用 socket.io 的版本。下面是以原生WS为例
+
+        var socket = new WebSocket('ws://localhost:8199/chat');
+        //连接成功时触发
+        socket.onopen = function () {
+            socket.send(JSON.stringify({
+                type: 'ping'
+                , data: {}
+                , token: token
+
+            }));
+            //确认加入连接
+            socket.send(JSON.stringify({
+                type: 'confirmJoin'
+                , data: {}
+                , token: token
+
+            }));
+        };
+        //关闭
+        socket.onclose = function () {
+            socket.send(JSON.stringify({
+                type: 'close'
+                , data: {}
+                , token: token
+
+            }));
+        };
+
+        socket.onclose = function (res) {
+            console.log(res, '关闭')
+            layer.msg('掉线了')
+        };
         layui.use('layim', function (layim) {
-            //建立WebSocket通讯
-            //注意：如果你要兼容ie8+，建议你采用 socket.io 的版本。下面是以原生WS为例
-
-            var socket = new WebSocket('ws://localhost:8199/chat');
-            //连接成功时触发
-            socket.onopen = function () {
-                socket.send(JSON.stringify({
-                    type: 'ping' //随便定义，用于在服务端区分消息类型
-                    , data: {}
-                    , token: token
-
-                }));
-                //确认加入连接
-                socket.send(JSON.stringify({
-                    type: 'confirmJoin' //随便定义，用于在服务端区分消息类型
-                    , data: {}
-                    , token: token
-
-                }));
-            };
-            //关闭
-            socket.onclose = function () {
-                socket.send(JSON.stringify({
-                    type: 'close' //随便定义，用于在服务端区分消息类型
-                    , data: {}
-                    , token: token
-
-                }));
-            };
-            //监听收到的聊天消息，假设你服务端emit的事件名为：chatMessage
+            //监听收到的聊天消息
             socket.onmessage = function (res) {
                 resp = JSON.parse(res.data);
-                console.log(resp)
-                console.log(resp.data)
-
                 if (resp.type === 'friend') {
                     layim.getMessage(resp.data)
                 }
@@ -50,10 +52,7 @@
                     layim.setFriendStatus(resp.data, 'offline'); //设置指定好友在线，即头像取消置灰
                 }
             };
-            socket.onclose = function (res) {
-                console.log(res, '关闭')
-                layer.msg('掉线了')
-            };
+
             //基础配置
             layim.config({
 

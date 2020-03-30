@@ -45,7 +45,7 @@ func (c *Controller) FriendChat(msg *MsgReq) error {
 	//数据添加到数据库...
 
 	//如果接收人在线， 发送消息
-	f := users.Get(freq.ToUserID)
+	f := userIds.Get(freq.ToUserID)
 	if f != nil {
 		one, err := user.FindOne("id=?", freq.FormUserID)
 		if err != nil {

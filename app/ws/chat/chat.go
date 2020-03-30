@@ -15,8 +15,8 @@ import (
 )
 
 var (
-	//uses 用户
-	users = gmap.New(true)
+	users   = gmap.New(true) //存储{ws:userID}
+	userIds = gmap.New(true) //存储{userID:ws}
 )
 
 //MsgReq 接收消息结构体
@@ -49,11 +49,13 @@ func (c *Controller) WebSocket(r *ghttp.Request) {
 		r.Exit()
 	}
 	c.ws = ws
-
+	users.Set(ws, 0)
 	for {
 		_, msgByte, err := ws.ReadMessage()
 		if err != nil {
-			fmt.Println("没了")
+			//断开连接处理
+			c.closeConn()
+			fmt.Println("断开连接")
 			return
 		}
 		// json解析
@@ -74,10 +76,9 @@ func (c *Controller) WebSocket(r *ghttp.Request) {
 		}
 		//发送消息
 		switch msg.Type {
-		case "confirmJoin": //加入连接
+		case "confirmJoin": //确认连接
 			c.joinConn(UserID)
 		case "close": //退出连接
-			c.closeConn(UserID)
 		case "ping": //心跳检测
 			c.write(MsgResp{"ping", "pong"})
 			c.write(MsgResp{"welcome", "欢迎" + gconv.String(UserID)})
@@ -112,22 +113,33 @@ func getUserID(token string) (uint, error) {
 }
 
 //closeConn 断开连接处理
-func (c *Controller) closeConn(UserID uint) {
-	users.Remove(UserID)
+func (c *Controller) closeConn() {
+	UserID := users.Get(c.ws)
+	users.Remove(c.ws)
 	//状态修改为下线，并通知好友
-	user.Model.Data("im_status", "offline").Where("id=?", UserID).Update()
-	err := c.writeFriends(UserID, &MsgResp{
-		Type: "offline",
-		Data: UserID,
-	})
-	if err != nil {
-		fmt.Println(err.Error())
+	if UserID != 0 {
+		UserID, ok := UserID.(uint)
+		if !ok {
+			fmt.Println("It's not ok for type uint")
+			return
+		}
+		userIds.Remove(UserID)
+		user.Model.Data("im_status", "offline").Where("id=?", UserID).Update()
+		err := c.writeFriends(UserID, &MsgResp{
+			Type: "offline",
+			Data: UserID,
+		})
+		if err != nil {
+			fmt.Println(err.Error())
+		}
 	}
+
 }
 
 //joinConn 加入连接处理
 func (c *Controller) joinConn(UserID uint) {
-	users.Set(UserID, c.ws)
+	users.Set(c.ws, UserID)
+	userIds.Set(UserID, c.ws)
 	//状态修改为在线，并通知好友
 	user.Model.Data("im_status", "online").Where("id=?", UserID).Update()
 	err := c.writeFriends(UserID, &MsgResp{
@@ -153,11 +165,10 @@ func (c *Controller) writeFriends(UserID uint, resp *MsgResp) error {
 		fmt.Println("没有可通知的好友")
 		return nil
 	}
-	fmt.Printf("%#v", users)
 	var toUserID uint
 	for _, id := range ids {
 		toUserID = id.Uint()
-		f := users.Get(toUserID)
+		f := userIds.Get(toUserID)
 		if f != nil {
 			f.(*ghttp.WebSocket).WriteMessage(ghttp.WS_MSG_TEXT, data)
 		}
