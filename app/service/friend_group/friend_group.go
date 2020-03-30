@@ -41,8 +41,8 @@ func GetListByUserID(UserID uint) ([]*GroupInfo, error) {
 							ID:       val["friend_id"].Uint(),
 							Username: val["nickname"].String(),
 							Avatar:   val["avatar"].String(),
-							Sign:     val["bio"].String(),
-							Status:   val["status"].String(),
+							Sign:     val["sign"].String(),
+							Status:   val["im_status"].String(),
 						})
 					}
 				}

@@ -52,16 +52,19 @@ func (c *Controller) FriendChat(msg *MsgReq) error {
 			return err
 		}
 		now := gtime.Timestamp()
-		resp := &FriendResp{
-			Username:  one.Nickname,
-			Avatar:    one.Avatar,
-			ID:        one.Id,
-			Type:      "friend",
-			Content:   freq.Content,
-			Cid:       1,
-			Mine:      false,
-			FromID:    one.Id,
-			Timestamp: gconv.Uint(now) * 1000,
+		resp := &MsgResp{
+			Type: "friend",
+			Data: &FriendResp{
+				Username:  one.Nickname,
+				Avatar:    one.Avatar,
+				ID:        one.Id,
+				Type:      "friend",
+				Content:   freq.Content,
+				Cid:       1,
+				Mine:      false,
+				FromID:    one.Id,
+				Timestamp: gconv.Uint(now) * 1000,
+			},
 		}
 		data, err := gjson.Encode(resp)
 		if err != nil {

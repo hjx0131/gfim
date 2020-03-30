@@ -32,7 +32,7 @@ func GetUserListByID(ID uint) ([]*UserInfo, error) {
 				ID:       item["id"].Uint(),
 				Username: item["nickname"].String(),
 				Avatar:   item["avatar"].String(),
-				Sign:     item["bio"].String(),
+				Sign:     item["sign"].String(),
 			}
 		}
 	}

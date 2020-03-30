@@ -26,6 +26,11 @@ func init() {
 			"mainTpl": "index/init.html",
 		})
 	})
+	s.BindHandler("/chatlog", func(r *ghttp.Request) {
+		r.Response.WriteTpl("layout.html", g.Map{
+			"mainTpl": "index/chatlog.html",
+		})
+	})
 	ctlUser := new(user.Controller)
 	ctlGroup := new(group.Controller)
 	s.Group("/api", func(group *ghttp.RouterGroup) {

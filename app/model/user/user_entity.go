@@ -12,34 +12,26 @@ import (
 
 // Entity is the golang structure for table gf_user.
 type Entity struct {
-    Id             uint        `orm:"id,primary"     json:"id"`             // ID                
-    GroupId        uint        `orm:"group_id"       json:"group_id"`       // 组别ID            
-    Username       string      `orm:"username"       json:"username"`       // 用户名            
-    Nickname       string      `orm:"nickname"       json:"nickname"`       // 昵称              
-    Password       string      `orm:"password"       json:"password"`       // 密码              
-    Salt           string      `orm:"salt"           json:"salt"`           // 密码盐            
-    Email          string      `orm:"email"          json:"email"`          // 电子邮箱          
-    Mobile         string      `orm:"mobile"         json:"mobile"`         // 手机号            
-    Avatar         string      `orm:"avatar"         json:"avatar"`         // 头像              
-    Level          uint        `orm:"level"          json:"level"`          // 等级              
-    Gender         uint        `orm:"gender"         json:"gender"`         // 性别              
-    Birthday       *gtime.Time `orm:"birthday"       json:"birthday"`       // 生日              
-    Bio            string      `orm:"bio"            json:"bio"`            // 格言              
-    Money          float64     `orm:"money"          json:"money"`          // 余额              
-    Score          uint        `orm:"score"          json:"score"`          // 积分              
-    Successions    uint        `orm:"successions"    json:"successions"`    // 连续登录天数      
-    Maxsuccessions uint        `orm:"maxsuccessions" json:"maxsuccessions"` // 最大连续登录天数  
-    Prevtime       int         `orm:"prevtime"       json:"prevtime"`       // 上次登录时间      
-    Logintime      int         `orm:"logintime"      json:"logintime"`      // 登录时间          
-    Loginip        string      `orm:"loginip"        json:"loginip"`        // 登录IP            
-    Loginfailure   uint        `orm:"loginfailure"   json:"loginfailure"`   // 失败次数          
-    Joinip         string      `orm:"joinip"         json:"joinip"`         // 加入IP            
-    Jointime       int         `orm:"jointime"       json:"jointime"`       // 加入时间          
-    Createtime     int         `orm:"createtime"     json:"createtime"`     // 创建时间          
-    Updatetime     int         `orm:"updatetime"     json:"updatetime"`     // 更新时间          
-    Token          string      `orm:"token"          json:"token"`          // Token             
-    Status         string      `orm:"status"         json:"status"`         // 状态              
-    Verification   string      `orm:"verification"   json:"verification"`   // 验证              
+    Id         uint        `orm:"id,primary" json:"id"`         // ID                                        
+    Username   string      `orm:"username"   json:"username"`   // 用户名                                    
+    Nickname   string      `orm:"nickname"   json:"nickname"`   // 昵称                                      
+    Password   string      `orm:"password"   json:"password"`   // 密码                                      
+    Salt       string      `orm:"salt"       json:"salt"`       // 密码盐                                    
+    Email      string      `orm:"email"      json:"email"`      // 电子邮箱                                  
+    Mobile     string      `orm:"mobile"     json:"mobile"`     // 手机号                                    
+    Avatar     string      `orm:"avatar"     json:"avatar"`     // 头像                                      
+    Gender     uint        `orm:"gender"     json:"gender"`     // 性别                                      
+    Birthday   *gtime.Time `orm:"birthday"   json:"birthday"`   // 生日                                      
+    Sign       string      `orm:"sign"       json:"sign"`       // 签名                                      
+    Prevtime   int         `orm:"prevtime"   json:"prevtime"`   // 上次登录时间                              
+    Logintime  int         `orm:"logintime"  json:"logintime"`  // 登录时间                                  
+    Loginip    string      `orm:"loginip"    json:"loginip"`    // 登录IP                                    
+    Joinip     string      `orm:"joinip"     json:"joinip"`     // 加入IP                                    
+    Jointime   int         `orm:"jointime"   json:"jointime"`   // 加入时间                                  
+    Createtime int         `orm:"createtime" json:"createtime"` // 创建时间                                  
+    Updatetime int         `orm:"updatetime" json:"updatetime"` // 更新时间                                  
+    Status     string      `orm:"status"     json:"status"`     // 用户状态:normal:正常,disable:禁用         
+    ImStatus   string      `orm:"im_status"  json:"im_status"`  // im状态;offlie:离线,online:在线,hide:隐身  
 }
 
 // OmitEmpty sets OPTION_OMITEMPTY option for the model, which automatically filers

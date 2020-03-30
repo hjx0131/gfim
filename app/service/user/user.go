@@ -124,8 +124,8 @@ func GetMine(ID uint) (*Mine, error) {
 	mine := &Mine{
 		Username: u.Nickname,
 		ID:       u.Id,
-		Status:   "online",
-		Sign:     u.Bio,
+		Status:   u.ImStatus,
+		Sign:     u.Sign,
 		Avatar:   u.Avatar,
 	}
 	return mine, nil

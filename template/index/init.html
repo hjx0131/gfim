@@ -17,16 +17,42 @@
                     , token: token
 
                 }));
-            };
+                //确认加入连接
+                socket.send(JSON.stringify({
+                    type: 'confirmJoin' //随便定义，用于在服务端区分消息类型
+                    , data: {}
+                    , token: token
 
+                }));
+            };
+            //关闭
+            socket.onclose = function () {
+                socket.send(JSON.stringify({
+                    type: 'close' //随便定义，用于在服务端区分消息类型
+                    , data: {}
+                    , token: token
+
+                }));
+            };
             //监听收到的聊天消息，假设你服务端emit的事件名为：chatMessage
             socket.onmessage = function (res) {
-                console.log(res)
-                data = JSON.parse(res.data);
-                console.log(data)
-                if (data.type === 'friend') {
-                    layim.getMessage(data)
+                resp = JSON.parse(res.data);
+                console.log(resp)
+                console.log(resp.data)
+
+                if (resp.type === 'friend') {
+                    layim.getMessage(resp.data)
                 }
+                if (resp.type === 'online') {
+                    layim.setFriendStatus(resp.data, 'online'); //设置指定好友在线，即头像取消置灰
+                }
+                if (resp.type === 'offline') {
+                    layim.setFriendStatus(resp.data, 'offline'); //设置指定好友在线，即头像取消置灰
+                }
+            };
+            socket.onclose = function (res) {
+                console.log(res, '关闭')
+                layer.msg('掉线了')
             };
             //基础配置
             layim.config({
@@ -64,7 +90,7 @@
 
                 , msgbox: '/resource/layui/css/modules/layim/html/msgbox.html' //消息盒子页面地址，若不开启，剔除该项即可
                 , find: '/resource/layui/css/modules/layim/html/find.html' //发现页面地址，若不开启，剔除该项即可
-                , chatLog: '/resource/layui/css/modules/layim/html/chatlog.html' //聊天记录页面地址，若不开启，剔除该项即可
+                , chatLog: '/chatlog' //聊天记录页面地址，若不开启，剔除该项即可
             });
             layim.on('sendMessage', function (res) {
                 console.log(res)
@@ -82,6 +108,11 @@
                     , data: data
                 }));
             })
+            layim.on('sign', function (value) {
+                console.log(value); //获得新的签名
+
+                //此时，你就可以通过Ajax将新的签名同步到数据库中了。
+            });
         });      
     </script>
 </body>

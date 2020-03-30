@@ -1,6 +1,9 @@
 package chat
 
 import (
+	"fmt"
+	"gfim/app/model/friend"
+	"gfim/app/model/user"
 	"gfim/app/service/user_token"
 
 	"github.com/gogf/gf/container/gmap"
@@ -12,8 +15,6 @@ import (
 )
 
 var (
-	//usersConn 用户连接
-	usersConn = gmap.New(true)
 	//uses 用户
 	users = gmap.New(true)
 )
@@ -43,15 +44,16 @@ func (c *Controller) WebSocket(r *ghttp.Request) {
 	// 初始化WebSocket请求
 	ws, err := r.WebSocket()
 	if err != nil {
+		user.Model.Data("im_status", "offline").Update()
 		glog.Error(err)
 		r.Exit()
 	}
 	c.ws = ws
+
 	for {
 		_, msgByte, err := ws.ReadMessage()
 		if err != nil {
-			users.Remove(usersConn.Get(ws))
-			usersConn.Remove(ws)
+			fmt.Println("没了")
 			return
 		}
 		// json解析
@@ -70,10 +72,12 @@ func (c *Controller) WebSocket(r *ghttp.Request) {
 			c.write(MsgResp{"error", err.Error()})
 			continue
 		}
-		usersConn.Set(ws, UserID)
-		users.Set(UserID, ws)
 		//发送消息
 		switch msg.Type {
+		case "confirmJoin": //加入连接
+			c.joinConn(UserID)
+		case "close": //退出连接
+			c.closeConn(UserID)
 		case "ping": //心跳检测
 			c.write(MsgResp{"ping", "pong"})
 			c.write(MsgResp{"welcome", "欢迎" + gconv.String(UserID)})
@@ -94,6 +98,8 @@ func (c *Controller) write(msg MsgResp) error {
 	}
 	return c.ws.WriteMessage(ghttp.WS_MSG_TEXT, data)
 }
+
+//getUserID 获取UserID
 func getUserID(token string) (uint, error) {
 	data := &user_token.GetIDInput{
 		Token: token,
@@ -103,4 +109,58 @@ func getUserID(token string) (uint, error) {
 		return 0, e
 	}
 	return UserID, nil
+}
+
+//closeConn 断开连接处理
+func (c *Controller) closeConn(UserID uint) {
+	users.Remove(UserID)
+	//状态修改为下线，并通知好友
+	user.Model.Data("im_status", "offline").Where("id=?", UserID).Update()
+	err := c.writeFriends(UserID, &MsgResp{
+		Type: "offline",
+		Data: UserID,
+	})
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+}
+
+//joinConn 加入连接处理
+func (c *Controller) joinConn(UserID uint) {
+	users.Set(UserID, c.ws)
+	//状态修改为在线，并通知好友
+	user.Model.Data("im_status", "online").Where("id=?", UserID).Update()
+	err := c.writeFriends(UserID, &MsgResp{
+		Type: "online",
+		Data: UserID,
+	})
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+}
+
+//writeFriends 发送消息给所有好友,状态切换通知等
+func (c *Controller) writeFriends(UserID uint, resp *MsgResp) error {
+	data, err := gjson.Encode(resp)
+	if err != nil {
+		return err
+	}
+	ids, err := friend.GetFriendUserIds(UserID)
+	if err != nil {
+		return err
+	}
+	if ids == nil {
+		fmt.Println("没有可通知的好友")
+		return nil
+	}
+	fmt.Printf("%#v", users)
+	var toUserID uint
+	for _, id := range ids {
+		toUserID = id.Uint()
+		f := users.Get(toUserID)
+		if f != nil {
+			f.(*ghttp.WebSocket).WriteMessage(ghttp.WS_MSG_TEXT, data)
+		}
+	}
+	return nil
 }
