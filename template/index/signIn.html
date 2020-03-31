@@ -95,6 +95,9 @@
         </div>
     </form>
     <script>
+        if (getToken()) {
+            window.location.href = '/profile';
+        }
         layui.use('form', function () {
             var form = layui.form()
             //监听提交

@@ -37,12 +37,17 @@ func GetListByUserID(UserID uint) ([]*GroupInfo, error) {
 			if flist != nil {
 				for _, val := range flist {
 					if val["friend_group_id"].Uint() == item.Id {
+						imStatus := val["im_status"].String()
+						//隐身状态显示离线
+						if imStatus == "hide" {
+							imStatus = "offline"
+						}
 						f = append(f, &FriendInfo{
 							ID:       val["friend_id"].Uint(),
 							Username: val["nickname"].String(),
 							Avatar:   val["avatar"].String(),
 							Sign:     val["sign"].String(),
-							Status:   val["im_status"].String(),
+							Status:   imStatus,
 						})
 					}
 				}

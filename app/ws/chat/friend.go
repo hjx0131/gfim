@@ -12,9 +12,9 @@ import (
 
 //FriendReq 好友聊天请求格式
 type FriendReq struct {
-	FormUserID uint   `json:"from_user_id" v:"from_user_id@required#发送人不能为空`
-	ToUserID   uint   `json:"to_user_id" v:"to_user_id@required#接收人不能为空`
-	Content    string `json:"content" v:"content@required#内容不能为空`
+	FormUserID uint   `json:"from_user_id" v:"from_user_id@required#发送人不能为空"`
+	ToUserID   uint   `json:"to_user_id" v:"to_user_id@required#接收人不能为空"`
+	Content    string `json:"content" v:"content@required#内容不能为空"`
 }
 
 // FriendResp 好友聊天返回格式

@@ -9,6 +9,7 @@
     <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
 </head>
 <script>
+    var token = getToken()
     function interceptor(res) {
         if (res.code != 0) {
             layer.msg(res.msg)
@@ -27,5 +28,12 @@
     }
     function getToken() {
         return localStorage.getItem("token")
+    }
+    function socketData(type = "", data = {}) {
+        return JSON.stringify({
+            type: type
+            , data: data
+            , token: token,
+        })
     }
 </script>

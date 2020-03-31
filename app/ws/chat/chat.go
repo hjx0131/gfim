@@ -56,7 +56,7 @@ func (c *Controller) WebSocket(r *ghttp.Request) {
 			//断开连接处理
 			c.closeConn()
 			fmt.Println("断开连接")
-			return
+			break
 		}
 		// json解析
 		if err := gjson.DecodeTo(msgByte, msg); err != nil {
@@ -69,7 +69,7 @@ func (c *Controller) WebSocket(r *ghttp.Request) {
 			continue
 		}
 		// 检验token
-		UserID, err := getUserID(msg.Token)
+		userID, err := getUserID(msg.Token)
 		if err != nil {
 			c.write(MsgResp{"error", err.Error()})
 			continue
@@ -77,21 +77,47 @@ func (c *Controller) WebSocket(r *ghttp.Request) {
 		//发送消息
 		switch msg.Type {
 		case "confirmJoin": //确认连接
-			c.joinConn(UserID)
+			c.joinConn(userID)
 		case "close": //退出连接
 		case "ping": //心跳检测
 			c.write(MsgResp{"ping", "pong"})
-			c.write(MsgResp{"welcome", "欢迎" + gconv.String(UserID)})
+			c.write(MsgResp{"welcome", "欢迎" + gconv.String(userID)})
 		case "friend": //好友聊天
 			err := c.FriendChat(msg)
 			if err != nil {
 				c.write(MsgResp{"error", err.Error()})
-				continue
+			}
+		case "updateSign": //修改签名
+			sign, ok := msg.Data.(string)
+			if !ok {
+				fmt.Println("It's not ok for type sign")
+			}
+			user.Model.Data("sign", sign).Where("id=?", userID).Update()
+		case "updateImStatus":
+			imStatus, ok := msg.Data.(string)
+			if !ok {
+				fmt.Println("It's not ok for type string")
+			}
+			user.Model.Data("im_status", imStatus).Where("id=?", userID).Update()
+			//通知好友
+			var msgType string
+			if imStatus == "online" {
+				msgType = "online"
+			} else if imStatus == "hide" {
+				msgType = "offline"
+			}
+			err := c.writeFriends(userID, &MsgResp{
+				Type: msgType,
+				Data: userID,
+			})
+			if err != nil {
+				fmt.Println(err.Error())
 			}
 		}
-
 	}
 }
+
+//write 发送消息给当前客户端
 func (c *Controller) write(msg MsgResp) error {
 	data, err := gjson.Encode(msg)
 	if err != nil {
@@ -105,29 +131,30 @@ func getUserID(token string) (uint, error) {
 	data := &user_token.GetIDInput{
 		Token: token,
 	}
-	UserID, e := user_token.GetUserID(data)
+	userID, e := user_token.GetUserID(data)
 	if e != nil {
 		return 0, e
 	}
-	return UserID, nil
+	return userID, nil
 }
 
 //closeConn 断开连接处理
 func (c *Controller) closeConn() {
-	UserID := users.Get(c.ws)
+	userID := users.Get(c.ws)
+	fmt.Println(userID)
 	users.Remove(c.ws)
 	//状态修改为下线，并通知好友
-	if UserID != 0 {
-		UserID, ok := UserID.(uint)
+	if userID != 0 {
+		userID, ok := userID.(uint)
 		if !ok {
 			fmt.Println("It's not ok for type uint")
 			return
 		}
-		userIds.Remove(UserID)
-		user.Model.Data("im_status", "offline").Where("id=?", UserID).Update()
-		err := c.writeFriends(UserID, &MsgResp{
+		userIds.Remove(userID)
+		user.Model.Data("im_status", "offline").Where("id=?", userID).Update()
+		err := c.writeFriends(userID, &MsgResp{
 			Type: "offline",
-			Data: UserID,
+			Data: userID,
 		})
 		if err != nil {
 			fmt.Println(err.Error())
@@ -137,14 +164,14 @@ func (c *Controller) closeConn() {
 }
 
 //joinConn 加入连接处理
-func (c *Controller) joinConn(UserID uint) {
-	users.Set(c.ws, UserID)
-	userIds.Set(UserID, c.ws)
+func (c *Controller) joinConn(userID uint) {
+	users.Set(c.ws, userID)
+	userIds.Set(userID, c.ws)
 	//状态修改为在线，并通知好友
-	user.Model.Data("im_status", "online").Where("id=?", UserID).Update()
-	err := c.writeFriends(UserID, &MsgResp{
+	user.Model.Data("im_status", "online").Where("id=?", userID).Update()
+	err := c.writeFriends(userID, &MsgResp{
 		Type: "online",
-		Data: UserID,
+		Data: userID,
 	})
 	if err != nil {
 		fmt.Println(err.Error())
@@ -152,12 +179,12 @@ func (c *Controller) joinConn(UserID uint) {
 }
 
 //writeFriends 发送消息给所有好友,状态切换通知等
-func (c *Controller) writeFriends(UserID uint, resp *MsgResp) error {
+func (c *Controller) writeFriends(userID uint, resp *MsgResp) error {
 	data, err := gjson.Encode(resp)
 	if err != nil {
 		return err
 	}
-	ids, err := friend.GetFriendUserIds(UserID)
+	ids, err := friend.GetFriendUserIds(userID)
 	if err != nil {
 		return err
 	}

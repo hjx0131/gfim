@@ -2,7 +2,6 @@ package router
 
 import (
 	"gfim/app/api/group"
-	"gfim/app/api/hello"
 	"gfim/app/api/user"
 	"gfim/app/http/middleware"
 	"gfim/app/ws/chat"
@@ -13,12 +12,17 @@ import (
 
 func init() {
 	s := g.Server()
-	s.Group("/", func(group *ghttp.RouterGroup) {
-		group.ALL("/", hello.Hello)
-	})
+	// s.Group("/", func(group *ghttp.RouterGroup) {
+	// 	group.ALL("/", hello.Hello)
+	// })
 	s.BindHandler("/signIn", func(r *ghttp.Request) {
 		r.Response.WriteTpl("layout.html", g.Map{
 			"mainTpl": "index/signIn.html",
+		})
+	})
+	s.BindHandler("/", func(r *ghttp.Request) {
+		r.Response.WriteTpl("layout.html", g.Map{
+			"mainTpl": "index/init.html",
 		})
 	})
 	s.BindHandler("/profile", func(r *ghttp.Request) {
@@ -29,6 +33,11 @@ func init() {
 	s.BindHandler("/chatlog", func(r *ghttp.Request) {
 		r.Response.WriteTpl("layout.html", g.Map{
 			"mainTpl": "index/chatlog.html",
+		})
+	})
+	s.BindHandler("/msgbox", func(r *ghttp.Request) {
+		r.Response.WriteTpl("layout.html", g.Map{
+			"mainTpl": "index/msgbox.html",
 		})
 	})
 	ctlUser := new(user.Controller)

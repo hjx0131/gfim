@@ -1,117 +1,104 @@
 <body>
     <script>
-        var token = getToken()
-        var data = {
-            "token": token
+        if (!token) {
+            window.location.href = '/signIn';
         }
         //建立WebSocket通讯
         //注意：如果你要兼容ie8+，建议你采用 socket.io 的版本。下面是以原生WS为例
-
         var socket = new WebSocket('ws://localhost:8199/chat');
         //连接成功时触发
         socket.onopen = function () {
-            socket.send(JSON.stringify({
-                type: 'ping'
-                , data: {}
-                , token: token
-
-            }));
+            //ping
+            socket.send(socketData('ping'));
             //确认加入连接
-            socket.send(JSON.stringify({
-                type: 'confirmJoin'
-                , data: {}
-                , token: token
-
-            }));
+            socket.send(socketData('confirmJoin'));
         };
         //关闭
         socket.onclose = function () {
-            socket.send(JSON.stringify({
-                type: 'close'
-                , data: {}
-                , token: token
-
-            }));
+            socket.send(socketData('close'));
         };
 
         socket.onclose = function (res) {
-            console.log(res, '关闭')
-            layer.msg('掉线了')
+            console.log('掉线了')
         };
-        layui.use('layim', function (layim) {
-            //监听收到的聊天消息
-            socket.onmessage = function (res) {
-                resp = JSON.parse(res.data);
-                if (resp.type === 'friend') {
-                    layim.getMessage(resp.data)
-                }
-                if (resp.type === 'online') {
-                    layim.setFriendStatus(resp.data, 'online'); //设置指定好友在线，即头像取消置灰
-                }
-                if (resp.type === 'offline') {
-                    layim.setFriendStatus(resp.data, 'offline'); //设置指定好友在线，即头像取消置灰
-                }
-            };
 
-            //基础配置
-            layim.config({
+        layui.use('layer', function () {
+            var load = layer.load(1, { time: 500 })
 
-                init: {
-                    url: "/api/user/profile"
-                    , type: 'get' //默认get，一般可不填
-                    , data: data //额外参数
-                } //获取主面板列表信息，下文会做进一步介绍
+        });
+        //延迟500毫秒，保证先连接ws，修改状态为在线
+        setTimeout(function () {
+            layui.use('layim', function (layim) {
+                //监听收到的聊天消息
+                socket.onmessage = function (res) {
+                    resp = JSON.parse(res.data);
+                    if (resp.type === 'friend') {
+                        layim.getMessage(resp.data)
+                    }
+                    if (resp.type === 'online') {
+                        layim.setFriendStatus(resp.data, 'online'); //设置指定好友在线，即头像取消置灰
+                    }
+                    if (resp.type === 'offline') {
+                        layim.setFriendStatus(resp.data, 'offline'); //设置指定好友在线，即头像取消置灰
+                    }
+                };
+                //基础配置
+                layim.config({
+                    init: {
+                        url: "/api/user/profile"
+                        , type: 'get' //默认get，一般可不填
+                        , data: {
+                            token: token
+                        } //额外参数
+                    } //获取主面板列表信息，下文会做进一步介绍
 
-                //获取群员接口（返回的数据格式见下文）
-                , members: {
-                    url: '/api/group/userList' //接口地址（返回的数据格式见下文）
-                    , type: 'get' //默认get，一般可不填
-                    , data: data //额外参数
-                }
+                    //获取群员接口（返回的数据格式见下文）
+                    , members: {
+                        url: '/api/group/userList' //接口地址（返回的数据格式见下文）
+                        , type: 'get' //默认get，一般可不填
+                        , data: {
+                            token: token
+                        } //额外参数
+                    }
 
-                //上传图片接口（返回的数据格式见下文），若不开启图片上传，剔除该项即可
-                , uploadImage: {
-                    url: '' //接口地址
-                    , type: 'post' //默认post
-                }
+                    //上传图片接口（返回的数据格式见下文），若不开启图片上传，剔除该项即可
+                    , uploadImage: {
+                        url: '' //接口地址
+                        , type: 'post' //默认post
+                    }
 
-                //上传文件接口（返回的数据格式见下文），若不开启文件上传，剔除该项即可
-                , uploadFile: {
-                    url: '' //接口地址
-                    , type: 'post' //默认post
-                }
-                //扩展工具栏，下文会做进一步介绍（如果无需扩展，剔除该项即可）
-                , tool: [{
-                    alias: 'code' //工具别名
-                    , title: '代码' //工具名称
-                    , icon: '&#xe64e;' //工具图标，参考图标文档
-                }]
+                    //上传文件接口（返回的数据格式见下文），若不开启文件上传，剔除该项即可
+                    , uploadFile: {
+                        url: '' //接口地址
+                        , type: 'post' //默认post
+                    }
+                    //扩展工具栏，下文会做进一步介绍（如果无需扩展，剔除该项即可）
+                    , tool: [{
+                        alias: 'code' //工具别名
+                        , title: '代码' //工具名称
+                        , icon: '&#xe64e;' //工具图标，参考图标文档
+                    }]
 
-                , msgbox: '/resource/layui/css/modules/layim/html/msgbox.html' //消息盒子页面地址，若不开启，剔除该项即可
-                , find: '/resource/layui/css/modules/layim/html/find.html' //发现页面地址，若不开启，剔除该项即可
-                , chatLog: '/chatlog' //聊天记录页面地址，若不开启，剔除该项即可
+                    , msgbox: '/msgbox' //消息盒子页面地址，若不开启，剔除该项即可
+                    , find: '/resource/layui/css/modules/layim/html/find.html' //发现页面地址，若不开启，剔除该项即可
+                    , chatLog: '/chatlog' //聊天记录页面地址，若不开启，剔除该项即可
+                });
+                layim.on('sendMessage', function (res) {
+                    //监听到上述消息后，就可以轻松地发送socket了，如：
+                    socket.send(socketData('friend', {
+                        from_user_id: res.mine.id,
+                        to_user_id: res.to.id,
+                        content: res.mine.content
+                    }));
+                })
+                layim.on('sign', function (value) {
+                    socket.send(socketData("updateSign", value));
+                });
+                layim.on('online', function (status) {
+                    console.log(status); //获得online或者hide
+                    socket.send(socketData("updateImStatus", status));
+                });
             });
-            layim.on('sendMessage', function (res) {
-                console.log(res)
-                var mine = res.mine; //包含我发送的消息及我的信息
-                var to = res.to; //对方的信息
-                var data = {
-                    from_user_id: res.mine.id,
-                    to_user_id: res.to.id,
-                    content: res.mine.content
-                }
-                console.log(res, 112312)
-                //监听到上述消息后，就可以轻松地发送socket了，如：
-                socket.send(JSON.stringify({
-                    type: 'friend' //随便定义，用于在服务端区分消息类型
-                    , data: data
-                }));
-            })
-            layim.on('sign', function (value) {
-                console.log(value); //获得新的签名
-
-                //此时，你就可以通过Ajax将新的签名同步到数据库中了。
-            });
-        });      
+        }, 500)
     </script>
 </body>
