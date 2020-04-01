@@ -49,12 +49,11 @@ func (c *Controller) WebSocket(r *ghttp.Request) {
 		r.Exit()
 	}
 	c.ws = ws
-	users.Set(ws, 0)
 	for {
 		_, msgByte, err := ws.ReadMessage()
 		if err != nil {
 			//断开连接处理
-			c.closeConn()
+			c.closeConn(ws)
 			fmt.Println("断开连接")
 			break
 		}
@@ -93,7 +92,7 @@ func (c *Controller) WebSocket(r *ghttp.Request) {
 				fmt.Println("It's not ok for type sign")
 			}
 			user.Model.Data("sign", sign).Where("id=?", userID).Update()
-		case "updateImStatus":
+		case "updateImStatus": //切换状态,在线或者隐身
 			imStatus, ok := msg.Data.(string)
 			if !ok {
 				fmt.Println("It's not ok for type string")
@@ -139,10 +138,11 @@ func getUserID(token string) (uint, error) {
 }
 
 //closeConn 断开连接处理
-func (c *Controller) closeConn() {
-	userID := users.Get(c.ws)
+func (c *Controller) closeConn(ws *ghttp.WebSocket) {
+	userID := users.Get(ws)
 	fmt.Println(userID)
-	users.Remove(c.ws)
+	fmt.Printf("close user_id:%d\n", userID)
+	users.Remove(ws)
 	//状态修改为下线，并通知好友
 	if userID != 0 {
 		userID, ok := userID.(uint)
@@ -165,6 +165,7 @@ func (c *Controller) closeConn() {
 
 //joinConn 加入连接处理
 func (c *Controller) joinConn(userID uint) {
+	fmt.Printf("join user_id:%d\n", userID)
 	users.Set(c.ws, userID)
 	userIds.Set(userID, c.ws)
 	//状态修改为在线，并通知好友

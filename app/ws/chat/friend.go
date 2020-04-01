@@ -1,9 +1,12 @@
 package chat
 
 import (
+	"fmt"
 	"gfim/app/model/user"
+	"gfim/app/model/user_record"
 
 	"github.com/gogf/gf/encoding/gjson"
+	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
 	"github.com/gogf/gf/os/gtime"
 	"github.com/gogf/gf/util/gconv"
@@ -42,8 +45,20 @@ func (c *Controller) FriendChat(msg *MsgReq) error {
 	if err := gvalid.CheckStruct(freq, nil); err != nil {
 		return err
 	}
-	//数据添加到数据库...
+	now := gtime.Timestamp()
 
+	//数据添加到数据库...
+	res, err := user_record.Model.Insert(g.Map{
+		"user_id":    freq.FormUserID,
+		"friend_id":  freq.ToUserID,
+		"content":    freq.Content,
+		"createtime": now,
+	})
+	if err != nil {
+		return err
+	}
+	recordID, _ := res.LastInsertId()
+	fmt.Println()
 	//如果接收人在线， 发送消息
 	f := userIds.Get(freq.ToUserID)
 	if f != nil {
@@ -51,7 +66,6 @@ func (c *Controller) FriendChat(msg *MsgReq) error {
 		if err != nil {
 			return err
 		}
-		now := gtime.Timestamp()
 		resp := &MsgResp{
 			Type: "friend",
 			Data: &FriendResp{
@@ -60,7 +74,7 @@ func (c *Controller) FriendChat(msg *MsgReq) error {
 				ID:        one.Id,
 				Type:      "friend",
 				Content:   freq.Content,
-				Cid:       1,
+				Cid:       gconv.Uint(recordID),
 				Mine:      false,
 				FromID:    one.Id,
 				Timestamp: gconv.Uint(now) * 1000,

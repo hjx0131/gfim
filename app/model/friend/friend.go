@@ -21,7 +21,7 @@ func GetListByUserID(UserID uint) (gdb.Result, error) {
 	return list, nil
 }
 
-//GetFriendUserIds 获取好友id列
+//GetFriendUserIds 获取好友id列表
 func GetFriendUserIds(UserID uint) ([]*gvar.Var, error) {
 	list, err := g.DB().
 		Table(Table).

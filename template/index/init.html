@@ -98,6 +98,21 @@
                     console.log(status); //获得online或者hide
                     socket.send(socketData("updateImStatus", status));
                 });
+                //每次窗口打开或切换，即更新对方的状态
+                layim.on('chatChange', function (res) {
+                    var type = res.data.type;
+                    if (type === 'friend') {
+                        layim.setChatStatus('<span style="color:#FF5722;">在线</span>'); //模拟标注好友在线状态
+                    } else if (type === 'group') {
+                        //模拟系统消息
+                        layim.getMessage({
+                            system: true //系统消息
+                            , id: 111111111
+                            , type: "group"
+                            , content: '贤心加入群聊'
+                        });
+                    }
+                });
             });
         }, 500)
     </script>
