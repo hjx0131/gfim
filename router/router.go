@@ -2,7 +2,9 @@ package router
 
 import (
 	"gfim/app/api/group"
+	"gfim/app/api/record"
 	"gfim/app/api/user"
+
 	"gfim/app/http/middleware"
 	"gfim/app/ws/chat"
 
@@ -42,6 +44,8 @@ func init() {
 	})
 	ctlUser := new(user.Controller)
 	ctlGroup := new(group.Controller)
+	ctlRecord := new(record.Controller)
+
 	s.Group("/api", func(group *ghttp.RouterGroup) {
 		group.Middleware(middleware.CORS)
 		group.Group("/user/signIn", func(group *ghttp.RouterGroup) {
@@ -53,6 +57,9 @@ func init() {
 		})
 		group.Group("/group/userList", func(group *ghttp.RouterGroup) {
 			group.ALL("/", ctlGroup.UserList)
+		})
+		group.Group("/record/getData", func(group *ghttp.RouterGroup) {
+			group.ALL("/", ctlRecord.GetData)
 		})
 	})
 	ctlChat := new(chat.Controller)

@@ -2,7 +2,6 @@ package chat
 
 import (
 	"fmt"
-	"gfim/app/model/friend"
 	"gfim/app/model/user"
 	"gfim/app/service/user_token"
 
@@ -83,6 +82,11 @@ func (c *Controller) WebSocket(r *ghttp.Request) {
 			c.write(MsgResp{"welcome", "欢迎" + gconv.String(userID)})
 		case "friend": //好友聊天
 			err := c.FriendChat(msg)
+			if err != nil {
+				c.write(MsgResp{"error", err.Error()})
+			}
+		case "group": //群聊
+			err := c.GroupChat(msg)
 			if err != nil {
 				c.write(MsgResp{"error", err.Error()})
 			}
@@ -177,29 +181,4 @@ func (c *Controller) joinConn(userID uint) {
 	if err != nil {
 		fmt.Println(err.Error())
 	}
-}
-
-//writeFriends 发送消息给所有好友,状态切换通知等
-func (c *Controller) writeFriends(userID uint, resp *MsgResp) error {
-	data, err := gjson.Encode(resp)
-	if err != nil {
-		return err
-	}
-	ids, err := friend.GetFriendUserIds(userID)
-	if err != nil {
-		return err
-	}
-	if ids == nil {
-		fmt.Println("没有可通知的好友")
-		return nil
-	}
-	var toUserID uint
-	for _, id := range ids {
-		toUserID = id.Uint()
-		f := userIds.Get(toUserID)
-		if f != nil {
-			f.(*ghttp.WebSocket).WriteMessage(ghttp.WS_MSG_TEXT, data)
-		}
-	}
-	return nil
 }

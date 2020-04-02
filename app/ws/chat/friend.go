@@ -2,6 +2,7 @@ package chat
 
 import (
 	"fmt"
+	"gfim/app/model/friend"
 	"gfim/app/model/user"
 	"gfim/app/model/user_record"
 
@@ -85,6 +86,31 @@ func (c *Controller) FriendChat(msg *MsgReq) error {
 			return err
 		}
 		f.(*ghttp.WebSocket).WriteMessage(ghttp.WS_MSG_TEXT, data)
+	}
+	return nil
+}
+
+//writeFriends 发送消息给所有好友,状态切换通知等
+func (c *Controller) writeFriends(userID uint, resp *MsgResp) error {
+	data, err := gjson.Encode(resp)
+	if err != nil {
+		return err
+	}
+	ids, err := friend.GetFriendUserIds(userID)
+	if err != nil {
+		return err
+	}
+	if ids == nil {
+		fmt.Println("没有可通知的好友")
+		return nil
+	}
+	var toUserID uint
+	for _, id := range ids {
+		toUserID = id.Uint()
+		f := userIds.Get(toUserID)
+		if f != nil {
+			f.(*ghttp.WebSocket).WriteMessage(ghttp.WS_MSG_TEXT, data)
+		}
 	}
 	return nil
 }

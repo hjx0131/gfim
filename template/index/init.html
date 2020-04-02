@@ -35,6 +35,9 @@
                     if (resp.type === 'friend') {
                         layim.getMessage(resp.data)
                     }
+                    if (resp.type === 'group') {
+                        layim.getMessage(resp.data)
+                    }
                     if (resp.type === 'online') {
                         layim.setFriendStatus(resp.data, 'online'); //设置指定好友在线，即头像取消置灰
                     }
@@ -84,12 +87,23 @@
                     , chatLog: '/chatlog' //聊天记录页面地址，若不开启，剔除该项即可
                 });
                 layim.on('sendMessage', function (res) {
-                    //监听到上述消息后，就可以轻松地发送socket了，如：
-                    socket.send(socketData('friend', {
-                        from_user_id: res.mine.id,
-                        to_user_id: res.to.id,
-                        content: res.mine.content
-                    }));
+                    console.log(res, 'res')
+                    if (res.to.type == "friend") {
+                        //监听到上述消息后，就可以轻松地发送socket了，如：
+                        socket.send(socketData('friend', {
+                            from_user_id: res.mine.id,
+                            to_user_id: res.to.id,
+                            content: res.mine.content
+                        }));
+                    }
+                    if (res.to.type == "group") {
+                        //监听到上述消息后，就可以轻松地发送socket了，如：
+                        socket.send(socketData('group', {
+                            user_id: res.mine.id,
+                            group_id: res.to.id,
+                            content: res.mine.content
+                        }));
+                    }
                 })
                 layim.on('sign', function (value) {
                     socket.send(socketData("updateSign", value));
@@ -100,17 +114,18 @@
                 });
                 //每次窗口打开或切换，即更新对方的状态
                 layim.on('chatChange', function (res) {
+                    console.log(res, '???')
                     var type = res.data.type;
                     if (type === 'friend') {
-                        layim.setChatStatus('<span style="color:#FF5722;">在线</span>'); //模拟标注好友在线状态
+                        layim.setChatStatus(); //模拟标注好友在线状态
                     } else if (type === 'group') {
                         //模拟系统消息
-                        layim.getMessage({
-                            system: true //系统消息
-                            , id: 111111111
-                            , type: "group"
-                            , content: '贤心加入群聊'
-                        });
+                        // layim.getMessage({
+                        //     system: true //系统消息
+                        //     , id: 111111111
+                        //     , type: "group"
+                        //     , content: '贤心加入群聊'
+                        // });
                     }
                 });
             });
