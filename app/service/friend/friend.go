@@ -5,7 +5,7 @@ import (
 )
 
 //UserFriendList 用户好友列表
-func UserFriendList(UserID uint) (interface{}, error) {
-	list, err := friend.GetListByUserID(UserID)
+func UserFriendList(userID uint) (interface{}, error) {
+	list, err := friend.GetListByUserID(userID)
 	return list, err
 }

@@ -130,3 +130,35 @@ func GetMine(ID uint) (*Mine, error) {
 	}
 	return mine, nil
 }
+
+//SearchRequst 查找所需要的参数
+type SearchRequst struct {
+	Wd    string `json:"wd"`
+	Page  int    `json:"page"`
+	Limit int    `json:"limit"`
+}
+
+//Search 查找用户
+func Search(req *SearchRequst) ([]*Mine, error) {
+	where := make(map[interface{}]interface{})
+	if req.Wd != "" {
+		where["nickname like ?"] = "%" + req.Wd + "%"
+	}
+	list, err := user.GetListByWhere(where, req.Page, req.Limit)
+	if err != nil {
+		return nil, err
+	}
+	res := make([]*Mine, len(list))
+	if list != nil {
+		for index, item := range list {
+			res[index] = &Mine{
+				ID:       item.Id,
+				Username: item.Nickname,
+				Status:   item.ImStatus,
+				Sign:     item.Sign,
+				Avatar:   item.Avatar,
+			}
+		}
+	}
+	return res, nil
+}

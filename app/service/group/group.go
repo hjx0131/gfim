@@ -40,9 +40,9 @@ func GetUserListByID(ID uint) ([]*UserInfo, error) {
 }
 
 //GetListByUserID 根据用户ID获取群列表
-func GetListByUserID(UserID uint) ([]*Info, error) {
+func GetListByUserID(userID uint) ([]*Info, error) {
 	list, err := group.Model.As("g").
-		Where("u.user_id=?", UserID).
+		Where("u.user_id=?", userID).
 		InnerJoin("gf_group_user u", "u.group_id=g.id").
 		Fields("g.id,g.name,g.avatar").
 		All()

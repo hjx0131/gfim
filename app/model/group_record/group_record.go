@@ -6,14 +6,14 @@ import (
 )
 
 //GetListAndTotal 获取好友聊天记录和聊天总数
-func GetListAndTotal(GroupID uint, Page, Limit int) (gdb.Result, int, error) {
+func GetListAndTotal(groupID uint, page, limit int) (gdb.Result, int, error) {
 	list, err := g.DB().
 		Table(Table).
 		As("g").
 		InnerJoin("gf_user u", "u.id=g.user_id").
-		Where("g.group_id=?", GroupID).
+		Where("g.group_id=?", groupID).
 		Fields("g.user_id,g.content,g.createtime,u.nickname,u.avatar").
-		Page(Page, Limit).
+		Page(page, limit).
 		All()
 	if err != nil {
 		return nil, 0, err
@@ -22,7 +22,7 @@ func GetListAndTotal(GroupID uint, Page, Limit int) (gdb.Result, int, error) {
 		Table(Table).
 		As("g").
 		InnerJoin("gf_user u", "u.id=g.user_id").
-		Where("g.group_id=?", GroupID).
+		Where("g.group_id=?", groupID).
 		Count()
 	if err != nil {
 		return list, 0, err

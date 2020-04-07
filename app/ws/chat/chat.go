@@ -43,7 +43,6 @@ func (c *Controller) WebSocket(r *ghttp.Request) {
 	// 初始化WebSocket请求
 	ws, err := r.WebSocket()
 	if err != nil {
-		user.Model.Data("im_status", "offline").Update()
 		glog.Error(err)
 		r.Exit()
 	}

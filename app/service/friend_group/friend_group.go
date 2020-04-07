@@ -22,14 +22,14 @@ type FriendInfo struct {
 }
 
 // GetListByUserID 根据用户ID获取好友分组列表
-func GetListByUserID(UserID uint) ([]*GroupInfo, error) {
+func GetListByUserID(userID uint) ([]*GroupInfo, error) {
 	//好友群组列表
-	glist, err := friend_group.GetListByUserID(UserID)
+	glist, err := friend_group.GetListByUserID(userID)
 	if err != nil {
 		return nil, err
 	}
 	//好友列表
-	flist, _ := friend.GetListByUserID(UserID)
+	flist, _ := friend.GetListByUserID(userID)
 	res := make([]*GroupInfo, len(glist))
 	if glist != nil {
 		for index, item := range glist {

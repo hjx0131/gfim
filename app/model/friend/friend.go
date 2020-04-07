@@ -7,12 +7,12 @@ import (
 )
 
 //GetListByUserID 获取好友列表
-func GetListByUserID(UserID uint) (gdb.Result, error) {
+func GetListByUserID(userID uint) (gdb.Result, error) {
 	list, err := g.DB().
 		Table(Table).
 		As("f").
 		InnerJoin("gf_user u", "u.id=f.friend_id").
-		Where("f.user_id=?", UserID).
+		Where("f.user_id=?", userID).
 		Fields("f.*,u.nickname,u.avatar,u.im_status,u.sign").
 		All()
 	if err != nil {
@@ -22,10 +22,10 @@ func GetListByUserID(UserID uint) (gdb.Result, error) {
 }
 
 //GetFriendUserIds 获取好友id列表
-func GetFriendUserIds(UserID uint) ([]*gvar.Var, error) {
+func GetFriendUserIds(userID uint) ([]*gvar.Var, error) {
 	list, err := g.DB().
 		Table(Table).
-		Array("friend_id", "user_id=?", UserID)
+		Array("friend_id", "user_id=?", userID)
 	if err != nil {
 		return nil, err
 	}

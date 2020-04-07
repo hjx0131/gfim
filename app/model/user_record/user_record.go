@@ -6,21 +6,21 @@ import (
 )
 
 //GetListAndTotal 获取好友聊天记录和聊天总数
-func GetListAndTotal(UserID, FriendID uint, Page, Limit int) (gdb.Result, int, error) {
+func GetListAndTotal(userID, friendID uint, page, limit int) (gdb.Result, int, error) {
 	list, err := g.DB().
 		Table(Table).
 		As("f").
 		InnerJoin("gf_user u", "u.id=f.user_id").
 		Where(g.Map{
-			"f.user_id":   UserID,
-			"f.friend_id": FriendID,
+			"f.user_id":   userID,
+			"f.friend_id": friendID,
 		}).
 		Or(g.Map{
-			"f.user_id":   FriendID,
-			"f.friend_id": UserID,
+			"f.user_id":   friendID,
+			"f.friend_id": userID,
 		}).
 		Fields("f.user_id,f.content,f.createtime,u.nickname,u.avatar").
-		Page(Page, Limit).
+		Page(page, limit).
 		All()
 	if err != nil {
 		return nil, 0, err
@@ -30,12 +30,12 @@ func GetListAndTotal(UserID, FriendID uint, Page, Limit int) (gdb.Result, int, e
 		As("f").
 		InnerJoin("gf_user u", "u.id=f.user_id").
 		Where(g.Map{
-			"f.user_id": UserID,
-			"friend_id": FriendID,
+			"f.user_id": userID,
+			"friend_id": friendID,
 		}).
 		Or(g.Map{
-			"f.user_id":   FriendID,
-			"f.friend_id": UserID,
+			"f.user_id":   friendID,
+			"f.friend_id": userID,
 		}).
 		Count()
 	if err != nil {

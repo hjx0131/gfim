@@ -42,6 +42,11 @@ func init() {
 			"mainTpl": "index/msgbox.html",
 		})
 	})
+	s.BindHandler("/find", func(r *ghttp.Request) {
+		r.Response.WriteTpl("layout.html", g.Map{
+			"mainTpl": "index/find.html",
+		})
+	})
 	ctlUser := new(user.Controller)
 	ctlGroup := new(group.Controller)
 	ctlRecord := new(record.Controller)
@@ -54,6 +59,9 @@ func init() {
 		group.Middleware(middleware.Auth)
 		group.Group("/user/profile", func(group *ghttp.RouterGroup) {
 			group.ALL("/", ctlUser.Profile)
+		})
+		group.Group("/user/search", func(group *ghttp.RouterGroup) {
+			group.ALL("/", ctlUser.Search)
 		})
 		group.Group("/group/userList", func(group *ghttp.RouterGroup) {
 			group.ALL("/", ctlGroup.UserList)

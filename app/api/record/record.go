@@ -26,7 +26,6 @@ func (c *Controller) GetData(r *ghttp.Request) {
 	var data *GetRecordRequest
 	if err := r.Parse(&data); err != nil {
 		c.Fail(r, err.Error())
-
 	}
 	switch data.Type {
 	case "friend":
