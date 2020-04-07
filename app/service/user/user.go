@@ -2,8 +2,10 @@ package user
 
 import (
 	"errors"
+	"gfim/app/model/friend"
 	"gfim/app/model/user"
 	"gfim/app/model/user_token"
+
 	"gfim/library/auth"
 
 	"github.com/gogf/gf/crypto/gmd5"
@@ -145,8 +147,20 @@ type SearchResp struct {
 }
 
 //Search 查找用户
-func Search(req *SearchRequst) (*SearchResp, error) {
+func Search(req *SearchRequst, userID uint) (*SearchResp, error) {
 	where := make(map[interface{}]interface{})
+
+	friends, _ := friend.GetFriendUserIds(userID)
+	ids := make([]uint, len(friends))
+	if friends != nil {
+		for index, item := range friends {
+			ids[index] = item.Uint()
+		}
+	}
+	ids = append(ids, userID)
+
+	//自己和好友不查找
+	where["id not in (?)"] = ids
 	if req.Wd != "" {
 		where["nickname like ?"] = "%" + req.Wd + "%"
 	}

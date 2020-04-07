@@ -39,8 +39,8 @@ func (c *Controller) SignIn(r *ghttp.Request) {
 
 //Profile 主面板
 func (c *Controller) Profile(r *ghttp.Request) {
-	ID := c.GetUserID(r)
-	data, e := user.Profile(ID)
+	id := c.GetUserID(r)
+	data, e := user.Profile(id)
 	if e != nil {
 		c.Fail(r, e.Error())
 	}
@@ -49,11 +49,12 @@ func (c *Controller) Profile(r *ghttp.Request) {
 
 //Search 搜索用户
 func (c *Controller) Search(r *ghttp.Request) {
+	id := c.GetUserID(r)
 	var data *user.SearchRequst
 	if err := r.Parse(&data); err != nil {
 		c.Fail(r, err.Error())
 	}
-	resp, err := user.Search(data)
+	resp, err := user.Search(data, id)
 	if err != nil {
 		c.Fail(r, err.Error())
 	}
