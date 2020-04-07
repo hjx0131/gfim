@@ -1,6 +1,6 @@
 package user
 
-//GetListByWhere 关键字搜索用户
+//GetListByWhere 根据条件获取列表
 func GetListByWhere(where map[interface{}]interface{}, page, limit int) ([]*Entity, error) {
 	list, e := Model.
 		Where(where).
@@ -10,4 +10,15 @@ func GetListByWhere(where map[interface{}]interface{}, page, limit int) ([]*Enti
 		return nil, e
 	}
 	return list, e
+}
+
+//GetCountByWhere 根据条件获取总数
+func GetCountByWhere(where map[interface{}]interface{}) (int, error) {
+	count, err := Model.
+		Where(where).
+		Count()
+	if err != nil {
+		return 0, err
+	}
+	return count, nil
 }

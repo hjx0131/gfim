@@ -53,12 +53,9 @@ func (c *Controller) Search(r *ghttp.Request) {
 	if err := r.Parse(&data); err != nil {
 		c.Fail(r, err.Error())
 	}
-	list, err := user.Search(data)
+	resp, err := user.Search(data)
 	if err != nil {
 		c.Fail(r, err.Error())
-	}
-	resp := map[string][]*user.Mine{
-		"list": list,
 	}
 	c.Success(r, resp)
 }

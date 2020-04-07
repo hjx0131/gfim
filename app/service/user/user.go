@@ -131,20 +131,43 @@ func GetMine(ID uint) (*Mine, error) {
 	return mine, nil
 }
 
-//SearchRequst 查找所需要的参数
+//SearchRequst 查找用户所需要的参数
 type SearchRequst struct {
 	Wd    string `json:"wd"`
 	Page  int    `json:"page"`
 	Limit int    `json:"limit"`
 }
 
+//SearchResp 查找用户返回格式
+type SearchResp struct {
+	List  []*Mine `json:"list"`  //列表
+	Count int     `json:"count"` //总数
+}
+
 //Search 查找用户
-func Search(req *SearchRequst) ([]*Mine, error) {
+func Search(req *SearchRequst) (*SearchResp, error) {
 	where := make(map[interface{}]interface{})
 	if req.Wd != "" {
 		where["nickname like ?"] = "%" + req.Wd + "%"
 	}
-	list, err := user.GetListByWhere(where, req.Page, req.Limit)
+	list, err := SearchList(where, req.Page, req.Limit)
+	if err != nil {
+		return nil, err
+	}
+	count, err := SearchCount(where)
+	if err != nil {
+		return nil, err
+	}
+	resp := &SearchResp{
+		List:  list,
+		Count: count,
+	}
+	return resp, nil
+}
+
+//SearchList 查找用户列表
+func SearchList(where map[interface{}]interface{}, page, limit int) ([]*Mine, error) {
+	list, err := user.GetListByWhere(where, page, limit)
 	if err != nil {
 		return nil, err
 	}
@@ -161,4 +184,13 @@ func Search(req *SearchRequst) ([]*Mine, error) {
 		}
 	}
 	return res, nil
+}
+
+//SearchCount 查找用户总数
+func SearchCount(where map[interface{}]interface{}) (int, error) {
+	count, err := user.GetCountByWhere(where)
+	if err != nil {
+		return 0, err
+	}
+	return count, nil
 }

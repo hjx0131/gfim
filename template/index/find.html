@@ -1,4 +1,15 @@
 <style type="text/css">
+    .gray {
+        -webkit-filter: grayscale(100%);
+        -moz-filter: grayscale(100%);
+        -ms-filter: grayscale(100%);
+        -o-filter: grayscale(100%);
+
+        filter: grayscale(100%);
+
+        filter: gray;
+    }
+
     .layui-find-list li img {
         position: absolute;
         left: 15px;
@@ -45,7 +56,7 @@
         cursor: pointer;
     }
 
-    .lay_page {
+    /* .lay_page {
         position: fixed;
         bottom: 0;
         margin-left: -15px;
@@ -58,10 +69,13 @@
         width: 105px;
         margin: 0 auto;
         display: block
-    }
+    } */
 </style>
 <script>
     layui.use(['layim', 'laypage', 'form'], function () {
+        var page = 1
+        var limit = 8
+        var total = 0
         var layim = layui.layim
             , layer = layui.layer
             , laytpl = layui.laytpl
@@ -70,145 +84,9 @@
             , laypage = layui.laypage;
         // var url = '../../../../../../'+cache.base.getRecommend.url || {};  //获得URL参数。
 
-        $(function () { getRecommend(); });
-        function getRecommend() {
-            //测试数据 
-            var data = {
-                "code": 0,
-                "msg": "",
-                "data": [
-                    {
-                        "memberIdx": "122",
-                        "memberName": "1",
-                        "signature": "",
-                        "memberAge": "1",
-                        "memberSex": "0"
-                        , "avatar": 'http://ossguoshan.oss-cn-shanghai.aliyuncs.com/1570845.jpg'
-                    },
-                    {
-                        "memberIdx": "3",
-                        "memberName": "3",
-                        "signature": "",
-                        "memberAge": "3",
-                        "memberSex": "0"
-                        , "avatar": 'http://ossguoshan.oss-cn-shanghai.aliyuncs.com/1570845.jpg'
-                    },
-                    {
-                        "memberIdx": "1",
-                        "memberName": "11",
-                        "signature": "",
-                        "memberAge": "1",
-                        "memberSex": "0"
-                        , "avatar": 'http://ossguoshan.oss-cn-shanghai.aliyuncs.com/1570845.jpg'
-                    },
-                    {
-                        "memberIdx": "910992",
-                        "memberName": "清风",
-                        "signature": "星光灿烂",
-                        "memberAge": "23",
-                        "memberSex": "1"
-                        , "avatar": 'http://ossguoshan.oss-cn-shanghai.aliyuncs.com/910992.jpg'
-                    },
-                    {
-                        "memberIdx": "12",
-                        "memberName": "1",
-                        "signature": "",
-                        "memberAge": "1",
-                        "memberSex": "0"
-                        , "avatar": 'http://ossguoshan.oss-cn-shanghai.aliyuncs.com/1570845.jpg'
-                    },
-                    {
-                        "memberIdx": "911088",
-                        "memberName": "豆浆",
-                        "signature": "本人是一个开朗的人",
-                        "memberAge": "25",
-                        "memberSex": "0"
-                        , "avatar": 'http://ossguoshan.oss-cn-shanghai.aliyuncs.com/911088.jpg'
-                    },
-                    {
-                        "memberIdx": "911067",
-                        "memberName": "爱咋咋地",
-                        "signature": "一个优秀的人",
-                        "memberAge": "18",
-                        "memberSex": "0"
-                        , "avatar": 'http://ossguoshan.oss-cn-shanghai.aliyuncs.com/911067.jpg'
-                    },
-                    {
-                        "memberIdx": "1570855",
-                        "memberName": "回眸淡然笑",
-                        "signature": "有钱的自由，没钱的幻想！",
-                        "memberAge": "20",
-                        "memberSex": "2"
-                        , "avatar": 'http://ossguoshan.oss-cn-shanghai.aliyuncs.com/1570855.jpg'
-                    },
-                    {
-                        "memberIdx": "911117",
-                        "memberName": "美的不要不要的",
-                        "signature": "The world makes way for the man who knows where he is going.",
-                        "memberAge": "21",
-                        "memberSex": "2"
-                        , "avatar": 'http://ossguoshan.oss-cn-shanghai.aliyuncs.com/911117.jpg'
-                    },
-                    {
-                        "memberIdx": "1570868",
-                        "memberName": "圆圆",
-                        "signature": "各有各的活法",
-                        "memberAge": "40",
-                        "memberSex": "0"
-                        , "avatar": 'http://ossguoshan.oss-cn-shanghai.aliyuncs.com/empty2.jpg'
-                    },
-                    {
-                        "memberIdx": "911085",
-                        "memberName": "清晨",
-                        "signature": "你不进步就在后退，不做温水里的癞疙宝",
-                        "memberAge": "48",
-                        "memberSex": "2"
-                        , "avatar": 'http://ossguoshan.oss-cn-shanghai.aliyuncs.com/911085.jpg'
-                    },
-                    {
-                        "memberIdx": "911100",
-                        "memberName": "等待",
-                        "signature": "陪伴是最长情的告白",
-                        "memberAge": "19",
-                        "memberSex": "2"
-                        , "avatar": 'http://ossguoshan.oss-cn-shanghai.aliyuncs.com/911100.jpg'
-                    },
-                    {
-                        "memberIdx": "911058",
-                        "memberName": "实力派",
-                        "signature": "善 是一个美好",
-                        "memberAge": "30",
-                        "memberSex": "1"
-                        , "avatar": 'http://ossguoshan.oss-cn-shanghai.aliyuncs.com/911058.jpg'
-                    },
-                    {
-                        "memberIdx": "1570845",
-                        "memberName": "花海",
-                        "signature": "我就不写签名< (ˉ^ˉ)>",
-                        "memberAge": "20",
-                        "memberSex": "1"
-                        , "avatar": 'http://ossguoshan.oss-cn-shanghai.aliyuncs.com/1570845.jpg'
-                    },
-                    {
-                        "memberIdx": "22",
-                        "memberName": "2",
-                        "signature": "",
-                        "memberAge": "2",
-                        "memberSex": "0"
-                        , "avatar": 'http://ossguoshan.oss-cn-shanghai.aliyuncs.com/1570845.jpg'
-                    }
-                ]
-            };
-            // $.get(url,{type:'get'},function(res){
-            // var data = eval('(' + res + ')');
-            var html = laytpl(LAY_tpl.value).render({
-                data: data.data,
-                legend: '推荐好友',
-                type: 'friend'
-            });
-            $('#LAY_view').html(html);
-            // });		
-        }
+        $(function () {
+            searchData("friend", "", "推荐好友")
+        });
         $('body').on('click', '.add', function () {//添加好友
             var othis = $(this), type = othis.data('type');
             //弹出添加好友框
@@ -220,7 +98,7 @@
         //     parent.layui.im.createGroup(othis);
         // });
         $('body').on('click', '.back', function () {//返回推荐好友
-            getRecommend();
+            searchData("friend", "", "推荐好友")
             $("#LAY_page").css("display", "none");
         });
 
@@ -233,47 +111,41 @@
             $("#LAY_page").css("display", "block");
             var othis = $(this), input = othis.parents('.layui-col-space3').find('input').val();
             var addType = $('input:radio:checked').val();
-            console.log(input);
-            // if (input) {
-            //这里需要从服务器获取数据然后进行填充
-            //以下为示例
-            // 		var url = '../../../../../../'+cache.base.findFriendTotal.url || {}; 
-            // $.get(url,{type:addType,value:input}, function(data){
-            // 	var res = eval('(' + data + ')');
-            // 	if(res.code != 0){
-            // 	    return layer.msg(res.msg);
-            // 	}		
-            // 	laypage.render({
-            // 	  elem: 'LAY_page'
-            // 	  ,count: res.data.count
-            // 	  ,limit: res.data.limit
-            // 	  ,prev: '<i class="layui-icon">&#58970;</i>'
-            // 	  ,next: '<i class="layui-icon">&#xe65b;</i>'
-            // 	  ,layout: ['prev', 'next']
-            // 	  ,curr: res.data.limit
-            // 	  ,jump: function(obj, first){
-            // 	    //obj包含了当前分页的所有参数，比如：
-            // 	    var url = '../../../../../../'+cache.base.findFriend.url || {};    
-            // 	    //首次不执行
-            // 	    if(first){
-            // 	      var page = res.data.limit;
-            // 	    }else{
-            // 	      var page = obj.curr;
-            // 	    }  
-            // 		$.get(url,{type:addType,value:input,page: obj.curr || 1},function(res){
-            // 		  	var data = eval('(' + res + ')');
-            // 			var html = laytpl(LAY_tpl.value).render({
-            // 			    data: data.data,
-            // 			    legend:'<a class="back"><i class="layui-icon">&#xe65c;</>返回</a> 查找结果',
-            // 			    type:addType
-            // 			});
-            // 			$('#LAY_view').html(html);	
-            // 	  	});
-            // 	  }
-            // 	});    
-            // });
-            //      }
+            page = 1
+            searchData("friend", input, "查找结果")
         });
+        function getPage(cpage, type = "friend", wd, legend) {
+            pages = Math.ceil(total / limit) > 0 ? Math.ceil(total / limit) : 1
+            laypage({
+                cont: 'LAY_page'
+                , curr: cpage
+                , pages: pages
+                , groups: 10 //连续显示分页数
+                , jump: function (obj, first) {
+                    page = obj.curr
+                    if (!first) {
+                        searchData(type, wd, legend)
+                    }
+                }
+            });
+        }
+        function searchData(type = "friend", wd, legend) {
+            var url = "/api/user/search";
+            if (type == "group") {
+                url = "/api/group/search";
+            }
+            var param = '?token=' + token + '&page=' + page + "&limit=" + limit + "&wd=" + wd
+            $.get(url + param, {}, function (res) {
+                total = res.data.count
+                var html = laytpl(LAY_tpl.value).render({
+                    data: res.data.list,
+                    type: type,
+                    legend: legend
+                });
+                $('#LAY_view').html(html);
+                getPage(page, type, wd, legend)
+            }, 'JSON')
+        }
     });
 </script>
 </head>
@@ -283,7 +155,7 @@
         <div class="layui-container" style="padding:0">
             <div class="layui-row layui-col-space3">
                 <div class="layui-col-xs7 mt15">
-                    <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入汇员号/昵称/手机号/邮箱"
+                    <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入关键字"
                         class="layui-input">
                 </div>
                 <div class="layui-col-xs1 mt15">
@@ -305,10 +177,14 @@
 				{{# if(d.type == 'friend'){ }}
 					{{#  layui.each(d.data, function(index, item){ }}
 					<div class="layui-col-xs3 layui-find-list">
-						<li layim-event="add" data-type="friend" data-index="0" data-uid="{{ item.memberIdx }}" data-name="{{item.memberName}}">
-							<img src="{{item.avatar}}">
-							<span>{{item.memberName}}({{item.memberIdx}})</span>
-							<p>{{item.signature}}  {{#  if(item.signature == ''){ }}我很懒，懒得写签名{{#  } }} </p>
+						<li layim-event="add" data-type="friend" data-index="0" data-uid="{{ item.id }}" data-name="{{item.usernamme}}">
+                            {{# if (item.status == "online"){ }}
+                            <img  src="{{item.avatar}}">
+                            {{# }else{ }}
+                            <img class="gray" src="{{item.avatar}}">
+                            {{# } }}
+							<span>{{item.username}}</span>
+							<p>{{item.sign}}  {{#  if(item.sign == ''){ }}我很懒，懒得写签名{{#  } }} </p>
 							<button class="layui-btn layui-btn-mini btncolor add" data-type="friend"><i class="layui-icon">&#xe654;</i>加好友</button>
 						</li>
 					</div>
@@ -317,8 +193,8 @@
 					{{#  layui.each(d.data, function(index, item){ }}
 					<div class="layui-col-xs3 layui-find-list">
 						<li layim-event="add" data-type="group" data-approval="{{ item.approval }}" data-index="0" data-uid="{{ item.groupIdx }}" data-name="{{item.groupName}}">
-							<img src="{{item.groupIdx}}.jpg">
-							<span>{{item.groupName}}({{item.groupIdx}})</span>
+							<img src="{{item.avatar}}">
+							<span>{{item.nickname}}({{item.groupIdx}})</span>
 							<p>{{item.des}}  {{#  if(item.des == ''){ }}无{{#  } }} </p>
 							<button class="layui-btn layui-btn-mini btncolor add" data-type="group"><i class="layui-icon">&#xe654;</i>加群</button>
 						</li>
@@ -327,8 +203,9 @@
 				{{# } }}
 			</div>	
         </textarea>
-
-            <div class="lay_page" id="LAY_page"></div>
+            <div style="text-align:center">
+                <div class="lay_page" id="LAY_page"></div>
+            </div>
         </div>
     </div>
 </body>
