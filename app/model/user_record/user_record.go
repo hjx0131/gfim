@@ -19,7 +19,7 @@ func GetListAndTotal(userID, friendID uint, page, limit int) (gdb.Result, int, e
 			"f.user_id":   friendID,
 			"f.friend_id": userID,
 		}).
-		Fields("f.user_id,f.content,f.createtime,u.nickname,u.avatar").
+		Fields("f.user_id,f.content,f.create_time,u.nickname,u.avatar").
 		Page(page, limit).
 		All()
 	if err != nil {

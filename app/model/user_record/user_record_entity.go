@@ -11,13 +11,13 @@ import (
 
 // Entity is the golang structure for table gf_user_record.
 type Entity struct {
-    Id         uint   `orm:"id,primary" json:"id"`         // ID                  
-    UserId     uint   `orm:"user_id"    json:"user_id"`    // 发送人              
-    FriendId   uint   `orm:"friend_id"  json:"friend_id"`  // 好友ID              
-    Content    string `orm:"content"    json:"content"`    // 聊天内容            
-    Createtime uint   `orm:"createtime" json:"createtime"` // 创建时间            
-    Deletetime uint   `orm:"deletetime" json:"deletetime"` // 删除时间            
-    IsRead     uint   `orm:"is_read"    json:"is_read"`    // 是否已读;1:是,0:否  
+    Id         uint   `orm:"id,primary"  json:"id"`          // ID                  
+    UserId     uint   `orm:"user_id"     json:"user_id"`     // 发送人              
+    FriendId   uint   `orm:"friend_id"   json:"friend_id"`   // 好友ID              
+    Content    string `orm:"content"     json:"content"`     // 聊天内容            
+    CreateTime uint   `orm:"create_time" json:"create_time"` // 创建时间            
+    DeleteTime uint   `orm:"delete_time" json:"delete_time"` // 删除时间            
+    IsRead     uint   `orm:"is_read"     json:"is_read"`     // 是否已读;1:是,0:否  
 }
 
 // OmitEmpty sets OPTION_OMITEMPTY option for the model, which automatically filers

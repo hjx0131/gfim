@@ -53,7 +53,7 @@ func (c *Controller) FriendChat(msg *MsgReq) error {
 		"user_id":    freq.FormUserID,
 		"friend_id":  freq.ToUserID,
 		"content":    freq.Content,
-		"createtime": now,
+		"create_time": now,
 	})
 	if err != nil {
 		return err

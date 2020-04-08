@@ -12,26 +12,26 @@ import (
 
 // Entity is the golang structure for table gf_user.
 type Entity struct {
-    Id         uint        `orm:"id,primary" json:"id"`         // ID                                        
-    Username   string      `orm:"username"   json:"username"`   // 用户名                                    
-    Nickname   string      `orm:"nickname"   json:"nickname"`   // 昵称                                      
-    Password   string      `orm:"password"   json:"password"`   // 密码                                      
-    Salt       string      `orm:"salt"       json:"salt"`       // 密码盐                                    
-    Email      string      `orm:"email"      json:"email"`      // 电子邮箱                                  
-    Mobile     string      `orm:"mobile"     json:"mobile"`     // 手机号                                    
-    Avatar     string      `orm:"avatar"     json:"avatar"`     // 头像                                      
-    Gender     uint        `orm:"gender"     json:"gender"`     // 性别                                      
-    Birthday   *gtime.Time `orm:"birthday"   json:"birthday"`   // 生日                                      
-    Sign       string      `orm:"sign"       json:"sign"`       // 签名                                      
-    Prevtime   int         `orm:"prevtime"   json:"prevtime"`   // 上次登录时间                              
-    Logintime  int         `orm:"logintime"  json:"logintime"`  // 登录时间                                  
-    Loginip    string      `orm:"loginip"    json:"loginip"`    // 登录IP                                    
-    Joinip     string      `orm:"joinip"     json:"joinip"`     // 加入IP                                    
-    Jointime   int         `orm:"jointime"   json:"jointime"`   // 加入时间                                  
-    Createtime int         `orm:"createtime" json:"createtime"` // 创建时间                                  
-    Updatetime int         `orm:"updatetime" json:"updatetime"` // 更新时间                                  
-    Status     string      `orm:"status"     json:"status"`     // 用户状态:normal:正常,disable:禁用         
-    ImStatus   string      `orm:"im_status"  json:"im_status"`  // im状态;offlie:离线,online:在线,hide:隐身  
+    Id         uint        `orm:"id,primary"  json:"id"`          // ID                                        
+    Username   string      `orm:"username"    json:"username"`    // 用户名                                    
+    Nickname   string      `orm:"nickname"    json:"nickname"`    // 昵称                                      
+    Password   string      `orm:"password"    json:"password"`    // 密码                                      
+    Salt       string      `orm:"salt"        json:"salt"`        // 密码盐                                    
+    Email      string      `orm:"email"       json:"email"`       // 电子邮箱                                  
+    Mobile     string      `orm:"mobile"      json:"mobile"`      // 手机号                                    
+    Avatar     string      `orm:"avatar"      json:"avatar"`      // 头像                                      
+    Gender     uint        `orm:"gender"      json:"gender"`      // 性别                                      
+    Birthday   *gtime.Time `orm:"birthday"    json:"birthday"`    // 生日                                      
+    Sign       string      `orm:"sign"        json:"sign"`        // 签名                                      
+    PrevTime   uint        `orm:"prev_time"   json:"prev_time"`   // 上次登录时间                              
+    LoginTime  uint        `orm:"login_time"  json:"login_time"`  // 登录时间                                  
+    LoginIp    string      `orm:"login_ip"    json:"login_ip"`    // 登录IP                                    
+    JoinIp     string      `orm:"join_ip"     json:"join_ip"`     // 加入IP                                    
+    JoinTime   uint        `orm:"join_time"   json:"join_time"`   // 加入时间                                  
+    CreateTime uint        `orm:"create_time" json:"create_time"` // 创建时间                                  
+    UpdateTime uint        `orm:"update_time" json:"update_time"` // 更新时间                                  
+    Status     string      `orm:"status"      json:"status"`      // 用户状态:normal:正常,disable:禁用         
+    ImStatus   string      `orm:"im_status"   json:"im_status"`   // im状态;offlie:离线,online:在线,hide:隐身  
 }
 
 // OmitEmpty sets OPTION_OMITEMPTY option for the model, which automatically filers

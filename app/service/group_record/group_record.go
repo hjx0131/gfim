@@ -35,7 +35,7 @@ func GetListAndTotal(req *GetListRequest) (interface{}, error) {
 				ID:        item["user_id"].Uint(),
 				Username:  item["nickname"].String(),
 				Avatar:    item["avatar"].String(),
-				Timestamp: item["createtime"].Int() * 1000,
+				Timestamp: item["create_time"].Int() * 1000,
 				Content:   item["content"].String(),
 			}
 		}

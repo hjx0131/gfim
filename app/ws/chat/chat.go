@@ -39,7 +39,6 @@ type Controller struct {
 //WebSocket ws
 func (c *Controller) WebSocket(r *ghttp.Request) {
 	msg := &MsgReq{}
-
 	// 初始化WebSocket请求
 	ws, err := r.WebSocket()
 	if err != nil {
@@ -163,7 +162,6 @@ func (c *Controller) closeConn(ws *ghttp.WebSocket) {
 			fmt.Println(err.Error())
 		}
 	}
-
 }
 
 //joinConn 加入连接处理

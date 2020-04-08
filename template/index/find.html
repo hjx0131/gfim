@@ -82,15 +82,26 @@
             , form = layui.form
             , $ = layui.jquery
             , laypage = layui.laypage;
-        // var url = '../../../../../../'+cache.base.getRecommend.url || {};  //获得URL参数。
-
         $(function () {
-            searchData("friend", "", "推荐好友")
+            searchData("recommend", "", "推荐好友")
         });
         $('body').on('click', '.add', function () {//添加好友
-            var othis = $(this), type = othis.data('type');
+            var othis = $(this)
+            username = othis.parent().attr("data-username")
+            avatar = othis.parent().attr("data-avatar")
+            console.log(username, avatar)
+            type = othis.data('type')
             //弹出添加好友框
-            // parent.layui.im.addFriendGroup(othis,type);
+            parent.layui.layim.add({
+                type: 'friend' //friend：申请加好友、group：申请加群
+                , username: username //好友昵称，若申请加群，参数为：groupname
+                , avatar: avatar //头像
+                , submit: function (group, remark, index) { //一般在此执行Ajax和WS，以通知对方
+                    console.log(group); //获取选择的好友分组ID，若为添加群，则不返回值
+                    console.log(remark); //获取附加信息
+                    layer.close(index); //关闭改面板
+                }
+            });
         });
         //下一篇分享创建群的html
         // $('body').on('click', '.createGroup', function () {//创建群
@@ -130,9 +141,13 @@
             });
         }
         function searchData(type = "friend", wd, legend) {
-            var url = "/api/user/search";
+            var url = "";
             if (type == "group") {
                 url = "/api/group/search";
+            } else if (type == "recommend") {
+                url = "/api/user/recommend";
+            } else {
+                url = "/api/user/search";
             }
             var param = '?token=' + token + '&page=' + page + "&limit=" + limit + "&wd=" + wd
             $.get(url + param, {}, function (res) {
@@ -177,12 +192,8 @@
 				{{# if(d.type == 'friend'){ }}
 					{{#  layui.each(d.data, function(index, item){ }}
 					<div class="layui-col-xs3 layui-find-list">
-						<li layim-event="add" data-type="friend" data-index="0" data-uid="{{ item.id }}" data-name="{{item.usernamme}}">
-                            {{# if (item.status == "online"){ }}
-                            <img  src="{{item.avatar}}">
-                            {{# }else{ }}
-                            <img class="gray" src="{{item.avatar}}">
-                            {{# } }}
+						<li layim-event="add"  data-type="friend" data-index="{{index}}" data-uid="{{ item.id }}" data-username="{{item.username}}"  data-avatar="{{item.avatar}}">
+                            <img class="{{item.status == 'online' ? '' : 'gray'}}" src="{{item.avatar}}">
 							<span>{{item.username}}</span>
 							<p>{{item.sign}}  {{#  if(item.sign == ''){ }}我很懒，懒得写签名{{#  } }} </p>
 							<button class="layui-btn layui-btn-mini btncolor add" data-type="friend"><i class="layui-icon">&#xe654;</i>加好友</button>

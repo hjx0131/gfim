@@ -40,10 +40,10 @@ func SignIn(username, password string) (string, error) {
 	token := auth.CreateToken()
 	now := gtime.Timestamp()
 	_, e := user_token.Insert(g.Map{
-		"token":      token,
-		"user_id":    one.Id,
-		"createtime": now,
-		"expiretime": now + TokenValidTime,
+		"token":       token,
+		"user_id":     one.Id,
+		"create_time": now,
+		"expire_time": now + TokenValidTime,
 	})
 	if e != nil {
 		return "", e
@@ -57,9 +57,9 @@ func SignIn(username, password string) (string, error) {
 func signInUpdate(u *user.Entity) {
 	now := gtime.Timestamp()
 	user.Update(g.Map{
-		"logintime":  now,
-		"prevtime":   u.Logintime,
-		"updatetime": now,
+		"login_time":  now,
+		"prev_time":   u.LoginTime,
+		"update_time": now,
 	})
 }
 
@@ -149,18 +149,6 @@ type SearchResp struct {
 //Search 查找用户
 func Search(req *SearchRequst, userID uint) (*SearchResp, error) {
 	where := make(map[interface{}]interface{})
-
-	friends, _ := friend.GetFriendUserIds(userID)
-	ids := make([]uint, len(friends))
-	if friends != nil {
-		for index, item := range friends {
-			ids[index] = item.Uint()
-		}
-	}
-	ids = append(ids, userID)
-
-	//自己和好友不查找
-	where["id not in (?)"] = ids
 	if req.Wd != "" {
 		where["nickname like ?"] = "%" + req.Wd + "%"
 	}
@@ -207,4 +195,35 @@ func SearchCount(where map[interface{}]interface{}) (int, error) {
 		return 0, err
 	}
 	return count, nil
+}
+
+//Recommend  推荐用户
+func Recommend(req *SearchRequst, userID uint) (*SearchResp, error) {
+	where := make(map[interface{}]interface{})
+	friends, _ := friend.GetFriendUserIds(userID)
+	ids := make([]uint, len(friends))
+	if friends != nil {
+		for index, item := range friends {
+			ids[index] = item.Uint()
+		}
+	}
+	ids = append(ids, userID)
+	//自己和好友不推荐
+	where["id not in (?)"] = ids
+	if req.Wd != "" {
+		where["nickname like ?"] = "%" + req.Wd + "%"
+	}
+	list, err := SearchList(where, req.Page, req.Limit)
+	if err != nil {
+		return nil, err
+	}
+	count, err := SearchCount(where)
+	if err != nil {
+		return nil, err
+	}
+	resp := &SearchResp{
+		List:  list,
+		Count: count,
+	}
+	return resp, nil
 }

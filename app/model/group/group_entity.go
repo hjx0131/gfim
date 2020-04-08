@@ -14,8 +14,8 @@ type Entity struct {
     Id           uint   `orm:"id,primary"     json:"id"`             // ID          
     Name         string `orm:"name"           json:"name"`           // 群名        
     Avatar       string `orm:"avatar"         json:"avatar"`         // 头像        
-    Createtime   uint   `orm:"createtime"     json:"createtime"`     // 创建时间    
-    Updatetime   uint   `orm:"updatetime"     json:"updatetime"`     // 更新时间    
+    CreateTime   uint   `orm:"create_time"    json:"create_time"`    // 创建时间    
+    UpdateTime   uint   `orm:"update_time"    json:"update_time"`    // 更新时间    
     CreateUserId uint   `orm:"create_user_id" json:"create_user_id"` // 创始人ID    
     UserId       uint   `orm:"user_id"        json:"user_id"`        // 所属用户ID  
 }

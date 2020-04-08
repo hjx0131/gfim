@@ -27,7 +27,7 @@ func GetUserID(data *GetIDInput) (uint, error) {
 		return 0, errors.New("token无效")
 	}
 	now := gtime.Timestamp()
-	if now > int64(one.Expiretime) {
+	if now > int64(one.ExpireTime) {
 		return 0, errors.New("token已过期")
 	}
 	return one.UserId, nil

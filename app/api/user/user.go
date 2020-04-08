@@ -23,18 +23,15 @@ func (c *Controller) SignIn(r *ghttp.Request) {
 	var data *SignInRequest
 	if err := r.Parse(&data); err != nil {
 		c.Fail(r, err.Error())
-
 	}
 	token, err := user.SignIn(data.Username, data.Password)
 	if err != nil {
 		c.Fail(r, err.Error())
-
 	}
 	resp := map[string]string{
 		"token": token,
 	}
 	c.Success(r, resp)
-
 }
 
 //Profile 主面板
@@ -55,6 +52,20 @@ func (c *Controller) Search(r *ghttp.Request) {
 		c.Fail(r, err.Error())
 	}
 	resp, err := user.Search(data, id)
+	if err != nil {
+		c.Fail(r, err.Error())
+	}
+	c.Success(r, resp)
+}
+
+//Recommend 推荐用户
+func (c *Controller) Recommend(r *ghttp.Request) {
+	id := c.GetUserID(r)
+	var data *user.SearchRequst
+	if err := r.Parse(&data); err != nil {
+		c.Fail(r, err.Error())
+	}
+	resp, err := user.Recommend(data, id)
 	if err != nil {
 		c.Fail(r, err.Error())
 	}

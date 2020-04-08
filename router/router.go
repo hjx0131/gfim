@@ -14,9 +14,6 @@ import (
 
 func init() {
 	s := g.Server()
-	// s.Group("/", func(group *ghttp.RouterGroup) {
-	// 	group.ALL("/", hello.Hello)
-	// })
 	s.BindHandler("/signIn", func(r *ghttp.Request) {
 		r.Response.WriteTpl("layout.html", g.Map{
 			"mainTpl": "index/signIn.html",
@@ -59,6 +56,9 @@ func init() {
 		group.Middleware(middleware.Auth)
 		group.Group("/user/profile", func(group *ghttp.RouterGroup) {
 			group.ALL("/", ctlUser.Profile)
+		})
+		group.Group("/user/recommend", func(group *ghttp.RouterGroup) {
+			group.ALL("/", ctlUser.Recommend)
 		})
 		group.Group("/user/search", func(group *ghttp.RouterGroup) {
 			group.ALL("/", ctlUser.Search)

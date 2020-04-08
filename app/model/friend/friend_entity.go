@@ -15,7 +15,7 @@ type Entity struct {
     UserId        uint   `orm:"user_id"         json:"user_id"`         // 用户ID      
     FriendId      uint   `orm:"friend_id"       json:"friend_id"`       // 好友ID      
     FriendGroupId uint   `orm:"friend_group_id" json:"friend_group_id"` // 好友分组ID  
-    Createtime    uint   `orm:"createtime"      json:"createtime"`      // 创建时间    
+    CreateTime    uint   `orm:"create_time"     json:"create_time"`     // 创建时间    
     Remark        string `orm:"remark"          json:"remark"`          // 好友备注    
 }
 

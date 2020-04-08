@@ -11,11 +11,11 @@ import (
 
 // Entity is the golang structure for table gf_user_token.
 type Entity struct {
-    Id         uint   `orm:"id,primary" json:"id"`         // ID        
-    Token      string `orm:"token"      json:"token"`      // Token     
-    UserId     uint   `orm:"user_id"    json:"user_id"`    // 会员ID    
-    Createtime int    `orm:"createtime" json:"createtime"` // 创建时间  
-    Expiretime int    `orm:"expiretime" json:"expiretime"` // 过期时间  
+    Id         uint   `orm:"id,primary"  json:"id"`          // ID        
+    Token      string `orm:"token"       json:"token"`       // Token     
+    UserId     uint   `orm:"user_id"     json:"user_id"`     // 会员ID    
+    CreateTime uint   `orm:"create_time" json:"create_time"` // 创建时间  
+    ExpireTime uint   `orm:"expire_time" json:"expire_time"` // 过期时间  
 }
 
 // OmitEmpty sets OPTION_OMITEMPTY option for the model, which automatically filers

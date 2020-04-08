@@ -11,11 +11,11 @@ import (
 
 // Entity is the golang structure for table gf_friend_group.
 type Entity struct {
-    Id         uint   `orm:"id,primary" json:"id"`         // ID                 
-    UserId     uint   `orm:"user_id"    json:"user_id"`    // 用户ID,0:系统默认  
-    Name       string `orm:"name"       json:"name"`       // 好友分组名称       
-    Createtime uint   `orm:"createtime" json:"createtime"` // 创建时间           
-    Updatetime uint   `orm:"updatetime" json:"updatetime"` // 更新时间           
+    Id         uint   `orm:"id,primary"  json:"id"`          // ID                 
+    UserId     uint   `orm:"user_id"     json:"user_id"`     // 用户ID,0:系统默认  
+    Name       string `orm:"name"        json:"name"`        // 好友分组名称       
+    CreateTime uint   `orm:"create_time" json:"create_time"` // 创建时间           
+    UpdateTime uint   `orm:"update_time" json:"update_time"` // 更新时间           
 }
 
 // OmitEmpty sets OPTION_OMITEMPTY option for the model, which automatically filers

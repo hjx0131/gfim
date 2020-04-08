@@ -12,7 +12,7 @@ func GetGroupUserList(groupID uint) (gdb.Result, error) {
 		As("g").
 		InnerJoin("gf_user u", "u.id=g.user_id").
 		Where("g.group_id=?", groupID).
-		Fields("g.user_id,g.group_id,g.createtime,u.nickname,u.avatar").
+		Fields("g.user_id,g.group_id,g.create_time,u.nickname,u.avatar").
 		All()
 	if err != nil {
 		return nil, err

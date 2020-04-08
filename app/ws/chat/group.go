@@ -49,10 +49,10 @@ func (c *Controller) GroupChat(msg *MsgReq) error {
 
 	//数据添加到数据库...
 	res, err := group_record.Model.Insert(g.Map{
-		"user_id":    freq.UserID,
-		"group_id":   freq.GroupID,
-		"content":    freq.Content,
-		"createtime": now,
+		"user_id":     freq.UserID,
+		"group_id":    freq.GroupID,
+		"content":     freq.Content,
+		"create_time": now,
 	})
 	if err != nil {
 		return err
