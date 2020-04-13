@@ -36,6 +36,11 @@ type Controller struct {
 	ws *ghttp.WebSocket
 }
 
+//CountData 统计数据
+type CountData struct {
+	Total int `json:"total"`
+}
+
 //WebSocket ws
 func (c *Controller) WebSocket(r *ghttp.Request) {
 	msg := &MsgReq{}
@@ -52,41 +57,43 @@ func (c *Controller) WebSocket(r *ghttp.Request) {
 			//断开连接处理
 			c.closeConn(ws)
 			fmt.Println("断开连接")
+			countData()
 			break
 		}
 		// json解析
 		if err := gjson.DecodeTo(msgByte, msg); err != nil {
-			c.write(MsgResp{"error", "消息格式不正确: " + err.Error()})
+			c.write(&MsgResp{"error", "消息格式不正确: " + err.Error()})
 			continue
 		}
 		// 数据校验
 		if err := gvalid.CheckStruct(msg, nil); err != nil {
-			c.write(MsgResp{"error", err.String()})
+			c.write(&MsgResp{"invalidParam", err.String()})
 			continue
 		}
 		// 检验token
 		userID, err := getUserID(msg.Token)
 		if err != nil {
-			c.write(MsgResp{"error", err.Error()})
+			c.write(&MsgResp{"invalidToken", err.Error()})
 			continue
 		}
 		//发送消息
 		switch msg.Type {
 		case "confirmJoin": //确认连接
 			c.joinConn(userID)
+			countData()
 		case "close": //退出连接
 		case "ping": //心跳检测
-			c.write(MsgResp{"ping", "pong"})
-			c.write(MsgResp{"welcome", "欢迎" + gconv.String(userID)})
+			c.write(&MsgResp{"ping", "pong"})
+			c.write(&MsgResp{"welcome", "欢迎" + gconv.String(userID)})
 		case "friend": //好友聊天
 			err := c.FriendChat(msg)
 			if err != nil {
-				c.write(MsgResp{"error", err.Error()})
+				c.write(&MsgResp{"error", err.Error()})
 			}
 		case "group": //群聊
 			err := c.GroupChat(msg)
 			if err != nil {
-				c.write(MsgResp{"error", err.Error()})
+				c.write(&MsgResp{"error", err.Error()})
 			}
 		case "updateSign": //修改签名
 			sign, ok := msg.Data.(string)
@@ -101,7 +108,7 @@ func (c *Controller) WebSocket(r *ghttp.Request) {
 			}
 			user.Model.Data("im_status", imStatus).Where("id=?", userID).Update()
 			//通知好友
-			var msgType string
+			msgType := ""
 			if imStatus == "online" {
 				msgType = "online"
 			} else if imStatus == "hide" {
@@ -118,13 +125,42 @@ func (c *Controller) WebSocket(r *ghttp.Request) {
 	}
 }
 
-//write 发送消息给当前客户端
-func (c *Controller) write(msg MsgResp) error {
+//countData 统计数据
+func countData() {
+	writeAll(&MsgResp{
+		Type: "count",
+		Data: &CountData{
+			Total: users.Size(),
+		},
+	})
+}
+
+//writeByWs 指定ws发送消息
+func writeByWs(ws *ghttp.WebSocket, msg *MsgResp) error {
 	data, err := gjson.Encode(msg)
 	if err != nil {
 		return err
 	}
-	return c.ws.WriteMessage(ghttp.WS_MSG_TEXT, data)
+	return ws.WriteMessage(ghttp.WS_MSG_TEXT, data)
+}
+
+//writeAll 发送给所有客户端
+func writeAll(msg *MsgResp) {
+	if users != nil {
+		// 遍历map
+		users.Iterator(func(k interface{}, v interface{}) bool {
+			writeByWs(k.(*ghttp.WebSocket), msg)
+			return true
+		})
+	}
+}
+
+//write 发送消息给当前客户端
+func (c *Controller) write(msg *MsgResp) error {
+	if err := writeByWs(c.ws, msg); err != nil {
+		return err
+	}
+	return nil
 }
 
 //getUserID 获取UserID
@@ -152,14 +188,16 @@ func (c *Controller) closeConn(ws *ghttp.WebSocket) {
 			fmt.Println("It's not ok for type uint")
 			return
 		}
-		userIds.Remove(userID)
-		user.Model.Data("im_status", "offline").Where("id=?", userID).Update()
-		err := c.writeFriends(userID, &MsgResp{
-			Type: "offline",
-			Data: userID,
-		})
-		if err != nil {
-			fmt.Println(err.Error())
+		if ws == userIds.Get(userID) {
+			userIds.Remove(userID)
+			user.Model.Data("im_status", "offline").Where("id=?", userID).Update()
+			err := c.writeFriends(userID, &MsgResp{
+				Type: "offline",
+				Data: userID,
+			})
+			if err != nil {
+				fmt.Println(err.Error())
+			}
 		}
 	}
 }
@@ -168,6 +206,18 @@ func (c *Controller) closeConn(ws *ghttp.WebSocket) {
 func (c *Controller) joinConn(userID uint) {
 	fmt.Printf("join user_id:%d\n", userID)
 	users.Set(c.ws, userID)
+	//如果该帐号已在其他客户端登录，通知客户端下线
+	ws, ok := userIds.Get(userID).(*ghttp.WebSocket)
+	if !ok {
+		fmt.Println("It's not ok for type *ghttp.WebSocket")
+	} else {
+		if ws != nil {
+			writeByWs(ws, &MsgResp{
+				Type: "invalidToken",
+				Data: "该帐号已在其他设备登录",
+			})
+		}
+	}
 	userIds.Set(userID, c.ws)
 	//状态修改为在线，并通知好友
 	user.Model.Data("im_status", "online").Where("id=?", userID).Update()

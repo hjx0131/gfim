@@ -3,6 +3,7 @@ package user
 import (
 	"gfim/app/api"
 	"gfim/app/service/user"
+	"gfim/app/service/user_token"
 
 	"github.com/gogf/gf/net/ghttp"
 )
@@ -16,6 +17,11 @@ type Controller struct {
 type SignInRequest struct {
 	Username string `v:"required#账号不能为空"`
 	Password string `v:"required#密码不能为空"`
+}
+
+//SignUpRequest 注册请求参数
+type SignUpRequest struct {
+	user.SignUpInput
 }
 
 //SignIn 登录
@@ -32,6 +38,32 @@ func (c *Controller) SignIn(r *ghttp.Request) {
 		"token": token,
 	}
 	c.Success(r, resp)
+}
+
+//SignUp 注册
+func (c *Controller) SignUp(r *ghttp.Request) {
+	var data *SignUpRequest
+	if err := r.GetStruct(&data); err != nil {
+		c.Fail(r, err.Error())
+	}
+	err := user.SignUp(&data.SignUpInput, r.GetClientIp())
+	if err != nil {
+		c.Fail(r, err.Error())
+	}
+	c.Success(r, nil)
+}
+
+//Logout 注销登录
+func (c *Controller) Logout(r *ghttp.Request) {
+	type logoutRequest struct {
+		user_token.GetIDInput
+	}
+	var data *logoutRequest
+	if err := r.GetStruct(&data); err != nil {
+		c.Fail(r, err.Error())
+	}
+	user_token.Logout(&data.GetIDInput)
+	c.Success(r, nil)
 }
 
 //Profile 主面板

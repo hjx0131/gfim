@@ -24,6 +24,9 @@ func GetUserID(data *GetIDInput) (uint, error) {
 		return 0, err
 	}
 	if one == nil {
+		return 0, errors.New("token不存在")
+	}
+	if one.IsValid == 0 {
 		return 0, errors.New("token无效")
 	}
 	now := gtime.Timestamp()
@@ -31,4 +34,16 @@ func GetUserID(data *GetIDInput) (uint, error) {
 		return 0, errors.New("token已过期")
 	}
 	return one.UserId, nil
+}
+
+//Logout 注销
+func Logout(data *GetIDInput) error {
+	// 输入参数检查
+	if e := gvalid.CheckStruct(data, nil); e != nil {
+		return errors.New(e.String())
+	}
+	user_token.Model.Where("token=?", data.Token).
+		Data("is_valid", 1).
+		Update()
+	return nil
 }

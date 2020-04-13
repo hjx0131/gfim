@@ -5,7 +5,6 @@ import (
 	"gfim/app/model/group_user"
 	"gfim/app/model/user"
 
-	"github.com/gogf/gf/encoding/gjson"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
 	"github.com/gogf/gf/os/gtime"
@@ -33,7 +32,7 @@ type GroupResp struct {
 	Timestamp uint   `json:"timestamp"`
 }
 
-//GroupChat 好友聊天
+//GroupChat 群聊天
 func (c *Controller) GroupChat(msg *MsgReq) error {
 	freq := &GroupReq{}
 	err := gconv.Struct(msg.Data, freq)
@@ -86,11 +85,7 @@ func (c *Controller) GroupChat(msg *MsgReq) error {
 						Timestamp: gconv.Uint(now) * 1000,
 					},
 				}
-				data, err := gjson.Encode(resp)
-				if err != nil {
-					return err
-				}
-				f.(*ghttp.WebSocket).WriteMessage(ghttp.WS_MSG_TEXT, data)
+				writeByWs(f.(*ghttp.WebSocket), resp)
 			}
 
 		}

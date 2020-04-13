@@ -15,12 +15,22 @@ import (
 
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/os/gtime"
+	"github.com/gogf/gf/util/grand"
+	"github.com/gogf/gf/util/gvalid"
 )
 
 const (
 	//TokenValidTime token有效时间
 	TokenValidTime = 60 * 60 * 24 * 30
 )
+
+//SignUpInput 注册输入参数
+type SignUpInput struct {
+	Username  string `v:"required|length:6,16#账号不能为空|账号长度应当在:min到:max之间"`
+	Nickname  string `v:"required#昵称不能为空"`
+	Password  string `v:"required|length:6,16#请输入确认密码|密码长度应当在:min到:max之间"`
+	Password2 string `v:"required|length:6,16|same:Password#密码不能为空|密码长度应当在:min到:max之间|两次密码输入不相等"`
+}
 
 //SignIn 用户登录，成功返回token，否则返回nil
 func SignIn(username, password string) (string, error) {
@@ -36,6 +46,8 @@ func SignIn(username, password string) (string, error) {
 	if checkPassword(one.Password, password, one.Salt) == false {
 		return "", errors.New("密码不正确")
 	}
+	//单点登录,将之前的token设置为失效
+	user_token.InvalidToken(one.Id)
 	//生成token，添加到user_token表
 	token := auth.CreateToken()
 	now := gtime.Timestamp()
@@ -53,6 +65,35 @@ func SignIn(username, password string) (string, error) {
 	return token, nil
 }
 
+//SignUp 用户注册
+func SignUp(data *SignUpInput, ip string) error {
+	// 输入参数检查
+	if e := gvalid.CheckStruct(data, nil); e != nil {
+		return errors.New(e.String())
+	}
+	//检测帐号是否已经存在
+	count, err := user.Model.Where("username=?", data.Username).Count()
+	if err != nil {
+		return err
+	}
+	if count != 0 {
+		return errors.New("用户名已存在")
+	}
+	salt := createSalt()
+	password := encryptPassword(data.Password, salt)
+	now := gtime.Timestamp()
+	user.Insert(g.Map{
+		"username":  data.Username,
+		"nickname":  data.Nickname,
+		"password":  password,
+		"salt":      salt,
+		"avatar":    "http://tva3.sinaimg.cn/crop.0.0.512.512.180/8693225ajw8f2rt20ptykj20e80e8weu.jpg",
+		"join_time": now,
+		"join_ip":   ip,
+	})
+	return nil
+}
+
 //signInUpdate 登录成功后更新状态
 func signInUpdate(u *user.Entity) {
 	now := gtime.Timestamp()
@@ -67,6 +108,11 @@ func signInUpdate(u *user.Entity) {
 func checkPassword(pwd, checkpwd, salt string) bool {
 	final := encryptPassword(checkpwd, salt)
 	return final == pwd
+}
+
+//createSalt 生成随机密码盐
+func createSalt() string {
+	return grand.Letters(6)
 }
 
 //encryptPassword 加密密码 通过md5进行第一次加密后的值拼接密码盐后，再进行第二次md5加密

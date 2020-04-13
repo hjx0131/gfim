@@ -19,6 +19,11 @@ func init() {
 			"mainTpl": "index/signIn.html",
 		})
 	})
+	s.BindHandler("/signUp", func(r *ghttp.Request) {
+		r.Response.WriteTpl("layout.html", g.Map{
+			"mainTpl": "index/signup.html",
+		})
+	})
 	s.BindHandler("/", func(r *ghttp.Request) {
 		r.Response.WriteTpl("layout.html", g.Map{
 			"mainTpl": "index/init.html",
@@ -52,6 +57,12 @@ func init() {
 		group.Middleware(middleware.CORS)
 		group.Group("/user/signIn", func(group *ghttp.RouterGroup) {
 			group.ALL("/", ctlUser.SignIn)
+		})
+		group.Group("/user/signUp", func(group *ghttp.RouterGroup) {
+			group.ALL("/", ctlUser.SignUp)
+		})
+		group.Group("/user/logout", func(group *ghttp.RouterGroup) {
+			group.ALL("/", ctlUser.Logout)
 		})
 		group.Middleware(middleware.Auth)
 		group.Group("/user/profile", func(group *ghttp.RouterGroup) {

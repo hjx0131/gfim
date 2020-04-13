@@ -1,15 +1,39 @@
 <body>
+    <div style="margin-top: 10px;margin-left: 10px;">
+        <div class="layui-btn-container" align="right">
+            <button type="button" class="layui-btn layui-btn-sm logout" onclick="logout()">注销</button>
+            <!-- <button type="button" class="layui-btn layui-btn-sm">按钮二</button>
+            <button type="button" class="layui-btn layui-btn-sm">按钮三</button> -->
+        </div>
+        <p id="onlineTotal" align="center">当前在线人数:0</p>
+    </div>
+
+
     <script>
+        function logout() {
+            $.post('/api/user/logout', { token: token }, function (res) {
+                if (interceptor(res)) {
+                    layer.msg("注销成功~页面跳转中")
+                    setTimeout(function () {
+                        window.location.href = '/signIn';
+                    }, 2000)
+                }
+            }, 'JSON')
+        }
         if (!token) {
             window.location.href = '/signIn';
         }
+        layui.use(['layer', 'layim'], function () {
+            var layer = layui.layer;
+            var load = layer.load(1, { time: 500 })
+        });
         //建立WebSocket通讯
         //注意：如果你要兼容ie8+，建议你采用 socket.io 的版本。下面是以原生WS为例
         var socket = new WebSocket('ws://localhost:8199/chat');
         //连接成功时触发
         socket.onopen = function () {
             //ping
-            socket.send(socketData('ping'));
+            // socket.send(socketData('ping'));
             //确认加入连接
             socket.send(socketData('confirmJoin'));
         };
@@ -17,27 +41,54 @@
         socket.onclose = function () {
             socket.send(socketData('close'));
         };
-        layui.use('layer', function () {
-            var load = layer.load(1, { time: 500 })
-
-        });
+        //监听收到的聊天消息
+        socket.onmessage = function (res) {
+            resp = JSON.parse(res.data);
+            if (resp.type === "invalidToken") {
+                layer.msg(resp.data)
+                //token无效或者过期
+                setTimeout(function () {
+                    window.location.href = "/signIn"
+                }, 2000)
+                return;
+            }
+            if (resp.type === "count") {
+                $("#onlineTotal").html("当前在线人数:" + resp.data.total)
+            }
+        };
         //延迟500毫秒，保证先连接ws，修改状态为在线
         setTimeout(function () {
             layui.use('layim', function (layim) {
                 //监听收到的聊天消息
                 socket.onmessage = function (res) {
                     resp = JSON.parse(res.data);
+                    console.log(resp, 'resp')
+                    //好友聊天
                     if (resp.type === 'friend') {
                         layim.getMessage(resp.data)
                     }
+                    //群聊
                     if (resp.type === 'group') {
                         layim.getMessage(resp.data)
                     }
+                    //好友上线
                     if (resp.type === 'online') {
                         layim.setFriendStatus(resp.data, 'online'); //设置指定好友在线，即头像取消置灰
                     }
+                    //好友离线
                     if (resp.type === 'offline') {
                         layim.setFriendStatus(resp.data, 'offline'); //设置指定好友在线，即头像取消置灰
+                    }
+                    if (resp.type === "invalidToken") {
+                        layer.msg(resp.data)
+                        //token无效或者过期
+                        setTimeout(function () {
+                            window.location.href = "/signIn"
+                        }, 2000)
+                        return;
+                    }
+                    if (resp.type === "count") {
+                        $("#onlineTotal").html("当前在线人数:" + resp.data.total)
                     }
                 };
                 //基础配置

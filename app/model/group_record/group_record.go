@@ -13,6 +13,7 @@ func GetListAndTotal(groupID uint, page, limit int) (gdb.Result, int, error) {
 		InnerJoin("gf_user u", "u.id=g.user_id").
 		Where("g.group_id=?", groupID).
 		Fields("g.user_id,g.content,g.create_time,u.nickname,u.avatar").
+		Order("g.id desc").
 		Page(page, limit).
 		All()
 	if err != nil {

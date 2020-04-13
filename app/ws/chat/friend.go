@@ -6,7 +6,6 @@ import (
 	"gfim/app/model/user"
 	"gfim/app/model/user_record"
 
-	"github.com/gogf/gf/encoding/gjson"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
 	"github.com/gogf/gf/os/gtime"
@@ -50,16 +49,15 @@ func (c *Controller) FriendChat(msg *MsgReq) error {
 
 	//数据添加到数据库...
 	res, err := user_record.Model.Insert(g.Map{
-		"user_id":    freq.FormUserID,
-		"friend_id":  freq.ToUserID,
-		"content":    freq.Content,
+		"user_id":     freq.FormUserID,
+		"friend_id":   freq.ToUserID,
+		"content":     freq.Content,
 		"create_time": now,
 	})
 	if err != nil {
 		return err
 	}
 	recordID, _ := res.LastInsertId()
-	fmt.Println()
 	//如果接收人在线， 发送消息
 	f := userIds.Get(freq.ToUserID)
 	if f != nil {
@@ -81,21 +79,14 @@ func (c *Controller) FriendChat(msg *MsgReq) error {
 				Timestamp: gconv.Uint(now) * 1000,
 			},
 		}
-		data, err := gjson.Encode(resp)
-		if err != nil {
-			return err
-		}
-		f.(*ghttp.WebSocket).WriteMessage(ghttp.WS_MSG_TEXT, data)
+		writeByWs(f.(*ghttp.WebSocket), resp)
+		// .WriteMessage(ghttp.WS_MSG_TEXT, data)
 	}
 	return nil
 }
 
 //writeFriends 发送消息给所有好友,状态切换通知等
 func (c *Controller) writeFriends(userID uint, resp *MsgResp) error {
-	data, err := gjson.Encode(resp)
-	if err != nil {
-		return err
-	}
 	ids, err := friend.GetFriendUserIds(userID)
 	if err != nil {
 		return err
@@ -109,7 +100,9 @@ func (c *Controller) writeFriends(userID uint, resp *MsgResp) error {
 		toUserID = id.Uint()
 		f := userIds.Get(toUserID)
 		if f != nil {
-			f.(*ghttp.WebSocket).WriteMessage(ghttp.WS_MSG_TEXT, data)
+			writeByWs(f.(*ghttp.WebSocket), resp)
+
+			// f.(*ghttp.WebSocket).WriteMessage(ghttp.WS_MSG_TEXT, data)
 		}
 	}
 	return nil

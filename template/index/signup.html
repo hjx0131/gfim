@@ -70,12 +70,19 @@
     <form class="layui-form">
         <div class="container">
             <div class="layui-form-mid layui-word-aux">
-                <img id="logoid" src="/resource/image/signIn.png" height="35">
+                <p style="text-align:center">用户注册</p>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">用户名</label>
                 <div class="layui-input-block">
                     <input type="text" name="username" required lay-verify="required" placeholder="请输入用户名"
+                        autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">昵称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="nickname" required lay-verify="required" placeholder="请输入昵称"
                         autocomplete="off" class="layui-input">
                 </div>
             </div>
@@ -87,13 +94,19 @@
                 </div>
             </div>
             <div class="layui-form-item">
+                <label class="layui-form-label">确认密码</label>
+                <div class="layui-input-inline">
+                    <input type="password" name="Password2" required lay-verify="required" placeholder="请再次输入密码"
+                        autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
                 <div class="layui-input-block">
-                    <button class="layui-btn" lay-submit lay-filter="formDemo">登陆</button>
+                    <button class="layui-btn" lay-submit lay-filter="formDemo">注册</button>
                 </div>
             </div>
             <div style="text-align:center">
-                <a href="/" class="font-set">忘记密码?</a> <a href="/signUp" class="font-set">立即注册</a>
-
+                <a href="/signIn" class="font-set">已有帐号?去登录</a>
             </div>
         </div>
     </form>
@@ -105,15 +118,12 @@
             var form = layui.form()
             //监听提交
             form.on('submit(formDemo)', function (data) {
-                $.post('/api/user/signIn', data.field, function (res) {
+                $.post('/api/user/signUp', data.field, function (res) {
                     if (interceptor(res)) {
-                        if (res.data.token) {
-                            setToken(res.data.token)
-                            layer.msg("登录成功，页面跳转中~")
-                            setTimeout(function () {
-                                window.location.href = '/profile';
-                            }, 2000)
-                        }
+                        layer.msg("注册成功，页面跳转中~")
+                        setTimeout(function () {
+                            window.location.href = '/signIn';
+                        }, 2000)
                     }
                 }, 'JSON')
                 return false;

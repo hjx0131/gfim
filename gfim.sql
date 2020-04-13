@@ -256,7 +256,8 @@ CREATE TABLE `gf_user_token` (
   `token` varchar(50) NOT NULL COMMENT 'Token',
   `user_id` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '会员ID',
   `create_time` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `expire_time` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '过期时间'
+  `expire_time` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '过期时间',
+  `is_valid` tinyint(3) unsigned DEFAULT '1' COMMENT '是否有效 1有效 0无效'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='会员Token表' ROW_FORMAT=COMPACT;
 
 --

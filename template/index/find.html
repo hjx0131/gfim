@@ -189,7 +189,7 @@
 			  <legend>{{ d.legend}}</legend>
 			</fieldset>	
 			<div class="layui-row ">
-				{{# if(d.type == 'friend'){ }}
+				{{# if(d.type == 'friend' || d.type == 'recommend'){ }}
 					{{#  layui.each(d.data, function(index, item){ }}
 					<div class="layui-col-xs3 layui-find-list">
 						<li layim-event="add"  data-type="friend" data-index="{{index}}" data-uid="{{ item.id }}" data-username="{{item.username}}"  data-avatar="{{item.avatar}}">
