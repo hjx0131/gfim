@@ -221,7 +221,8 @@ CREATE TABLE `gf_user_record` (
   `content` varchar(1000) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '聊天内容',
   `create_time` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '创建时间',
   `delete_time` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '删除时间',
-  `is_read` tinyint(3) UNSIGNED NOT NULL DEFAULT '0' COMMENT '是否已读;1:是,0:否'
+  `is_read` tinyint(3) UNSIGNED NOT NULL DEFAULT '0' COMMENT '是否已读;1:是,0:否',
+  `is_notify` tinyint(3) UNSIGNED NOT NULL DEFAULT '0' COMMENT '是否通知;1:是,0:否'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户聊天记录';
 
 --

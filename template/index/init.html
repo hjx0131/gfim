@@ -2,14 +2,17 @@
     <div style="margin-top: 10px;margin-left: 10px;">
         <div class="layui-btn-container" align="right">
             <button type="button" class="layui-btn layui-btn-sm logout" onclick="logout()">注销</button>
-            <!-- <button type="button" class="layui-btn layui-btn-sm">按钮二</button>
-            <button type="button" class="layui-btn layui-btn-sm">按钮三</button> -->
+            <button type="button" class="layui-btn layui-btn-sm" onclick="getNotify()">获取通知</button>
+            <!-- <button type="button" class="layui-btn layui-btn-sm">按钮三</button> -->
         </div>
         <p id="onlineTotal" align="center">当前在线人数:0</p>
     </div>
 
 
     <script>
+        function getNotify() {
+            socket.send(socketData('getNotify'));
+        }
         function logout() {
             $.post('/api/user/logout', { token: token }, function (res) {
                 if (interceptor(res)) {
@@ -59,38 +62,6 @@
         //延迟500毫秒，保证先连接ws，修改状态为在线
         setTimeout(function () {
             layui.use('layim', function (layim) {
-                //监听收到的聊天消息
-                socket.onmessage = function (res) {
-                    resp = JSON.parse(res.data);
-                    console.log(resp, 'resp')
-                    //好友聊天
-                    if (resp.type === 'friend') {
-                        layim.getMessage(resp.data)
-                    }
-                    //群聊
-                    if (resp.type === 'group') {
-                        layim.getMessage(resp.data)
-                    }
-                    //好友上线
-                    if (resp.type === 'online') {
-                        layim.setFriendStatus(resp.data, 'online'); //设置指定好友在线，即头像取消置灰
-                    }
-                    //好友离线
-                    if (resp.type === 'offline') {
-                        layim.setFriendStatus(resp.data, 'offline'); //设置指定好友在线，即头像取消置灰
-                    }
-                    if (resp.type === "invalidToken") {
-                        layer.msg(resp.data)
-                        //token无效或者过期
-                        setTimeout(function () {
-                            window.location.href = "/signIn"
-                        }, 2000)
-                        return;
-                    }
-                    if (resp.type === "count") {
-                        $("#onlineTotal").html("当前在线人数:" + resp.data.total)
-                    }
-                };
                 //基础配置
                 layim.config({
                     init: {
@@ -175,6 +146,48 @@
                         // });
                     }
                 });
+                getNotify()
+                //监听收到的聊天消息
+                socket.onmessage = function (res) {
+                    resp = JSON.parse(res.data);
+                    console.log(resp, 'resp')
+                    //好友聊天
+                    if (resp.type === 'friend') {
+                        layim.getMessage(resp.data)
+                    }
+                    if (resp.type == "getNotify") {
+                        layim.getMessage(resp.data)
+                    }
+                    //群聊
+                    if (resp.type === 'group') {
+                        layim.getMessage(resp.data)
+                    }
+                    //好友上线
+                    if (resp.type === 'online') {
+                        layim.setFriendStatus(resp.data, 'online'); //设置指定好友在线，即头像取消置灰
+                    }
+                    //好友离线
+                    if (resp.type === 'offline') {
+                        layim.setFriendStatus(resp.data, 'offline'); //设置指定好友在线，即头像取消置灰
+                        layim.getMessage({
+                            system: true //系统消息
+                            , id: 1111111 //聊天窗口ID
+                            , type: "friend" //聊天窗口类型
+                            , content: '对方已掉线'
+                        });
+                    }
+                    if (resp.type === "invalidToken") {
+                        layer.msg(resp.data)
+                        //token无效或者过期
+                        setTimeout(function () {
+                            window.location.href = "/signIn"
+                        }, 2000)
+                        return;
+                    }
+                    if (resp.type === "count") {
+                        $("#onlineTotal").html("当前在线人数:" + resp.data.total)
+                    }
+                };
             });
         }, 500)
 

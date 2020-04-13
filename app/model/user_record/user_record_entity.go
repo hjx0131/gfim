@@ -18,6 +18,7 @@ type Entity struct {
     CreateTime uint   `orm:"create_time" json:"create_time"` // 创建时间            
     DeleteTime uint   `orm:"delete_time" json:"delete_time"` // 删除时间            
     IsRead     uint   `orm:"is_read"     json:"is_read"`     // 是否已读;1:是,0:否  
+    IsNotify   uint   `orm:"is_notify"   json:"is_notify"`   // 是否通知 1是 0否    
 }
 
 // OmitEmpty sets OPTION_OMITEMPTY option for the model, which automatically filers

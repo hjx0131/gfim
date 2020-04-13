@@ -81,6 +81,8 @@ func (c *Controller) WebSocket(r *ghttp.Request) {
 		case "confirmJoin": //确认连接
 			c.joinConn(userID)
 			countData()
+		case "getNotify": //获取通知
+			c.notifyUserRecord(userID)
 		case "close": //退出连接
 		case "ping": //心跳检测
 			c.write(&MsgResp{"ping", "pong"})

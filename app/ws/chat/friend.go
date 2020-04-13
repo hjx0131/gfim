@@ -80,6 +80,10 @@ func (c *Controller) FriendChat(msg *MsgReq) error {
 			},
 		}
 		writeByWs(f.(*ghttp.WebSocket), resp)
+		//修改为已通知
+		user_record.Model.Where("id=?", recordID).
+			Data("is_notify", 1).
+			Update()
 		// .WriteMessage(ghttp.WS_MSG_TEXT, data)
 	}
 	return nil
@@ -106,4 +110,39 @@ func (c *Controller) writeFriends(userID uint, resp *MsgResp) error {
 		}
 	}
 	return nil
+}
+
+//notifyUserRecord 推送好友留言(未通知的聊天记录)
+func (c *Controller) notifyUserRecord(userID uint) error {
+	list, err := user_record.GetNoNotifyRecord(userID)
+	if err != nil {
+		return err
+	}
+	if list != nil {
+		for _, item := range list {
+			resp := &MsgResp{
+				Type: "getNotify",
+				Data: &FriendResp{
+					Username:  item["nickname"].String(),
+					Avatar:    item["avatar"].String(),
+					ID:        item["user_id"].Uint(),
+					Type:      "friend",
+					Content:   item["content"].String(),
+					Cid:       item["id"].Uint(),
+					Mine:      false,
+					FromID:    item["user_id"].Uint(),
+					Timestamp: item["create_time"].Uint() * 1000,
+				},
+			}
+			c.write(resp)
+		}
+		//修改为已通知
+		user_record.Model.
+			Where("friend_id=?", userID).
+			Where("is_notify", 0).
+			Data("is_notify", 1).
+			Update()
+	}
+	return nil
+
 }
