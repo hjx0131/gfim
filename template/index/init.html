@@ -1,17 +1,77 @@
-<body>
-    <div style="margin-top: 10px;margin-left: 10px;">
-        <div class="layui-btn-container" align="right">
-            <button type="button" class="layui-btn layui-btn-sm logout" onclick="logout()">注销</button>
-            <!-- <button type="button" class="layui-btn layui-btn-sm" onclick="getNotify()">获取通知</button> -->
-            <!-- <button type="button" class="layui-btn layui-btn-sm">按钮三</button> -->
+<body class="layui-layout-body">
+    <div class="layui-layout layui-layout-admin">
+        <div class="layui-header">
+            <div class="layui-logo">gfim</div>
+            <ul class="layui-nav layui-layout-right">
+                <li class="layui-nav-item">
+                    <div id="view">
+
+                    </div>
+                    <textarea id="LAY_tpl" style="display:none;">
+                        <a href="javascript:;">
+                            <img src="{{d.data.avatar}}" class="layui-nav-img">
+                            {{d.data.username}}
+                        </a>
+                    </textarea>
+
+                    <dl class="layui-nav-child">
+                        <dd><a href="">基本资料</a></dd>
+                        <dd><a href="">安全设置</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item"><a href="javascript:void(0)" onclick="logout()">退出</a></li>
+            </ul>
         </div>
-        <p id="onlineTotal" align="center">当前在线人数:0</p>
+
+        <div class="layui-side layui-bg-black">
+            <div class="layui-side-scroll">
+                <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+                <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                    <li class="layui-nav-item layui-nav-itemed">
+                        <a class="" href="javascript:;">好友管理</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="javascript:;">列表一</a></dd>
+                            <dd><a href="javascript:;">列表二</a></dd>
+                            <dd><a href="javascript:;">列表三</a></dd>
+                            <dd><a href="">超链接</a></dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">解决方案</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="javascript:;">列表一</a></dd>
+                            <dd><a href="javascript:;">列表二</a></dd>
+                            <dd><a href="">超链接</a></dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item"><a href="">云市场</a></li>
+                    <li class="layui-nav-item"><a href="">发布商品</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="layui-body">
+            <!-- 内容主体区域 -->
+            <div style="padding: 15px;">
+                <p id="onlineTotal" align="center">当前在线人数:0</p>
+
+            </div>
+        </div>
+
+        <div class="layui-footer">
+            <!-- 底部固定区域 -->
+            © 2020 ICP证：闽ICP备20005696号
+        </div>
     </div>
+    <script>
+        //JavaScript代码区域
+        layui.use('element', function () {
+            var element = layui.element;
 
-
+        });
+    </script>
     <script>
         var ws_socket
-
         function test11() {
             console.log(123)
         }
@@ -28,7 +88,9 @@
                 }
             }, 'JSON')
         }
-        layui.use(['layim', 'layer'], function () {
+        layui.use(['layim', 'layer', 'laytpl'], function () {
+            var laytpl = layui.laytpl;
+            console.log(laytpl, '1231321')
             var layim = layui.layim
             var layer = layui.layer
             var socket = new WebSocket('ws://localhost:8199/chat');
@@ -87,6 +149,13 @@
                 }
                 //主面板渲染成功后
                 layim.on('ready', function (options) {
+                    console.log(laytpl)
+                    console.log(LAY_tpl.value, 'LAY_tpl.value')
+                    var html = laytpl(LAY_tpl.value).render({
+                        data: layui.layim.cache().mine
+                    });
+                    $('#view').html(html);
+                    console.log(html)
                     //获取未通知的好友消息
                     socket.send(socketData('getNotify'));
                 });
