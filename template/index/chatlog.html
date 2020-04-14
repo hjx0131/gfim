@@ -35,14 +35,16 @@
       var total = 0
       loadData()
       function getPage(cpage) {
-        pages = Math.ceil(total / limit) > 0 ? Math.ceil(total / limit) : 1
-        laypage({
-          cont: 'LAY_page'
+        laypage.render({
+          elem: 'LAY_page'
+          , count: total
+          , limit: limit
           , curr: cpage
-          , pages: pages
+          , layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
           , groups: 5 //连续显示分页数
           , jump: function (obj, first) {
-            page = obj.curr
+            page = obj.curr //得到当前页，以便向服务端请求对应页的数据
+            limit = obj.limit //得到每页显示的条数
             if (!first) {
               loadData()
             }

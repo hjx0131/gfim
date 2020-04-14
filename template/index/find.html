@@ -77,7 +77,7 @@
     layui.use(['layim', 'laypage', 'form'], function () {
         // console.log(parent, 'parent');
         var page = 1
-        var limit = 8
+        var limit = 10
         var total = 0
         var layim = layui.layim
             , layer = layui.layer
@@ -138,14 +138,16 @@
             searchData("friend", input, "查找结果")
         });
         function getPage(cpage, type = "friend", wd, legend) {
-            pages = Math.ceil(total / limit) > 0 ? Math.ceil(total / limit) : 1
-            laypage({
-                cont: 'LAY_page'
+            laypage.render({
+                elem: 'LAY_page'
+                , count: total
+                , limit: limit
                 , curr: cpage
-                , pages: pages
                 , groups: 10 //连续显示分页数
+                , layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
                 , jump: function (obj, first) {
-                    page = obj.curr
+                    page = obj.curr //得到当前页，以便向服务端请求对应页的数据
+                    limit = obj.limit //得到每页显示的条数
                     if (!first) {
                         searchData(type, wd, legend)
                     }

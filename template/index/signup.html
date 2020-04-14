@@ -115,7 +115,7 @@
         //     window.location.href = '/profile';
         // }
         layui.use('form', function () {
-            var form = layui.form()
+            var form = layui.form;
             //监听提交
             form.on('submit(formDemo)', function (data) {
                 $.post('/api/user/signUp', data.field, function (res) {
