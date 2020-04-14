@@ -80,6 +80,7 @@ func (c *Controller) WebSocket(r *ghttp.Request) {
 		switch msg.Type {
 		case "confirmJoin": //确认连接
 			c.joinConn(userID)
+			c.write(&MsgResp{"initlayim", "initlayim"})
 			countData()
 		case "getNotify": //获取通知
 			c.notifyUserRecord(userID)

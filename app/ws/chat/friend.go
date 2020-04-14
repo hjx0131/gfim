@@ -37,7 +37,6 @@ type FriendResp struct {
 func (c *Controller) FriendChat(msg *MsgReq) error {
 	freq := &FriendReq{}
 	err := gconv.Struct(msg.Data, freq)
-
 	if err != nil {
 		panic(err)
 	}
@@ -46,7 +45,6 @@ func (c *Controller) FriendChat(msg *MsgReq) error {
 		return err
 	}
 	now := gtime.Timestamp()
-
 	//数据添加到数据库...
 	res, err := user_record.Model.Insert(g.Map{
 		"user_id":     freq.FormUserID,
@@ -84,12 +82,11 @@ func (c *Controller) FriendChat(msg *MsgReq) error {
 		user_record.Model.Where("id=?", recordID).
 			Data("is_notify", 1).
 			Update()
-		// .WriteMessage(ghttp.WS_MSG_TEXT, data)
 	}
 	return nil
 }
 
-//writeFriends 发送消息给所有好友,状态切换通知等
+//writeFriends 发送统一的消息给所有好友,状态切换通知等
 func (c *Controller) writeFriends(userID uint, resp *MsgResp) error {
 	ids, err := friend.GetFriendUserIds(userID)
 	if err != nil {
@@ -105,8 +102,6 @@ func (c *Controller) writeFriends(userID uint, resp *MsgResp) error {
 		f := userIds.Get(toUserID)
 		if f != nil {
 			writeByWs(f.(*ghttp.WebSocket), resp)
-
-			// f.(*ghttp.WebSocket).WriteMessage(ghttp.WS_MSG_TEXT, data)
 		}
 	}
 	return nil
@@ -118,24 +113,26 @@ func (c *Controller) notifyUserRecord(userID uint) error {
 	if err != nil {
 		return err
 	}
+	data := make([]*FriendResp, len(list))
 	if list != nil {
-		for _, item := range list {
-			resp := &MsgResp{
-				Type: "getNotify",
-				Data: &FriendResp{
-					Username:  item["nickname"].String(),
-					Avatar:    item["avatar"].String(),
-					ID:        item["user_id"].Uint(),
-					Type:      "friend",
-					Content:   item["content"].String(),
-					Cid:       item["id"].Uint(),
-					Mine:      false,
-					FromID:    item["user_id"].Uint(),
-					Timestamp: item["create_time"].Uint() * 1000,
-				},
+		for index, item := range list {
+			data[index] = &FriendResp{
+				Username:  item["nickname"].String(),
+				Avatar:    item["avatar"].String(),
+				ID:        item["user_id"].Uint(),
+				Type:      "friend",
+				Content:   item["content"].String(),
+				Cid:       item["id"].Uint(),
+				Mine:      false,
+				FromID:    item["user_id"].Uint(),
+				Timestamp: item["create_time"].Uint() * 1000,
 			}
-			c.write(resp)
 		}
+		resp := &MsgResp{
+			Type: "getNotify",
+			Data: data,
+		}
+		c.write(resp)
 		//修改为已通知
 		user_record.Model.
 			Where("friend_id=?", userID).
@@ -144,5 +141,25 @@ func (c *Controller) notifyUserRecord(userID uint) error {
 			Update()
 	}
 	return nil
+}
 
+type applyFriendReq struct {
+	FriendID      uint   `json:"friend_id" v:"friend_id@required#好友不能为空"`
+	FriendGroupID uint   `json:"friend_group_id" v:"friend_group_id@required#好友分组不能为空"`
+	Remark        string `json:"remark"`
+}
+
+//applyFriend 好友申请
+func (c *Controller) applyFriend(msg *MsgReq) error {
+	freq := &applyFriendReq{}
+	err := gconv.Struct(msg.Data, freq)
+
+	if err != nil {
+		panic(err)
+	}
+	// 数据校验
+	if err := gvalid.CheckStruct(freq, nil); err != nil {
+		return err
+	}
+	return nil
 }

@@ -72,7 +72,10 @@
     } */
 </style>
 <script>
+    //获取上一个页面的websocket
+    var socket = window.parent.ws_socket
     layui.use(['layim', 'laypage', 'form'], function () {
+        // console.log(parent, 'parent');
         var page = 1
         var limit = 8
         var total = 0
@@ -87,10 +90,14 @@
         });
         $('body').on('click', '.add', function () {//添加好友
             var othis = $(this)
+            id = othis.parent().attr("data-id")
             username = othis.parent().attr("data-username")
             avatar = othis.parent().attr("data-avatar")
             console.log(username, avatar)
             type = othis.data('type')
+            if (type == "friend") {
+
+            }
             //弹出添加好友框
             parent.layui.layim.add({
                 type: 'friend' //friend：申请加好友、group：申请加群
@@ -100,6 +107,11 @@
                     console.log(group); //获取选择的好友分组ID，若为添加群，则不返回值
                     console.log(remark); //获取附加信息
                     layer.close(index); //关闭改面板
+                    socket.send(socketData('addFriend', {
+                        friend_group_id: group,
+                        friend_id: id,
+                        remark: remark,
+                    }));
                 }
             });
         });
@@ -192,7 +204,7 @@
 				{{# if(d.type == 'friend' || d.type == 'recommend'){ }}
 					{{#  layui.each(d.data, function(index, item){ }}
 					<div class="layui-col-xs3 layui-find-list">
-						<li layim-event="add"  data-type="friend" data-index="{{index}}" data-uid="{{ item.id }}" data-username="{{item.username}}"  data-avatar="{{item.avatar}}">
+						<li layim-event="add"  data-type="friend" data-index="{{index}}" data-id="{{ item.id }}" data-username="{{item.username}}"  data-avatar="{{item.avatar}}">
                             <img class="{{item.status == 'online' ? '' : 'gray'}}" src="{{item.avatar}}">
 							<span>{{item.username}}</span>
 							<p>{{item.sign}}  {{#  if(item.sign == ''){ }}我很懒，懒得写签名{{#  } }} </p>
@@ -203,7 +215,7 @@
 				{{# }else{ }}
 					{{#  layui.each(d.data, function(index, item){ }}
 					<div class="layui-col-xs3 layui-find-list">
-						<li layim-event="add" data-type="group" data-approval="{{ item.approval }}" data-index="0" data-uid="{{ item.groupIdx }}" data-name="{{item.groupName}}">
+						<li layim-event="add" data-type="group" data-approval="{{ item.approval }}" data-index="0" data-id="{{ item.groupIdx }}" data-name="{{item.groupName}}">
 							<img src="{{item.avatar}}">
 							<span>{{item.nickname}}({{item.groupIdx}})</span>
 							<p>{{item.des}}  {{#  if(item.des == ''){ }}无{{#  } }} </p>

@@ -2,7 +2,7 @@
     <div style="margin-top: 10px;margin-left: 10px;">
         <div class="layui-btn-container" align="right">
             <button type="button" class="layui-btn layui-btn-sm logout" onclick="logout()">注销</button>
-            <button type="button" class="layui-btn layui-btn-sm" onclick="getNotify()">获取通知</button>
+            <!-- <button type="button" class="layui-btn layui-btn-sm" onclick="getNotify()">获取通知</button> -->
             <!-- <button type="button" class="layui-btn layui-btn-sm">按钮三</button> -->
         </div>
         <p id="onlineTotal" align="center">当前在线人数:0</p>
@@ -10,8 +10,13 @@
 
 
     <script>
-        function getNotify() {
-            socket.send(socketData('getNotify'));
+        var ws_socket
+
+        function test11() {
+            console.log(123)
+        }
+        if (!token) {
+            window.location.href = '/signIn';
         }
         function logout() {
             $.post('/api/user/logout', { token: token }, function (res) {
@@ -23,173 +28,154 @@
                 }
             }, 'JSON')
         }
-        if (!token) {
-            window.location.href = '/signIn';
-        }
-        layui.use(['layer', 'layim'], function () {
-            var layer = layui.layer;
-            var load = layer.load(1, { time: 500 })
-        });
-        //建立WebSocket通讯
-        //注意：如果你要兼容ie8+，建议你采用 socket.io 的版本。下面是以原生WS为例
-        var socket = new WebSocket('ws://localhost:8199/chat');
-        //连接成功时触发
-        socket.onopen = function () {
-            //ping
-            // socket.send(socketData('ping'));
-            //确认加入连接
-            socket.send(socketData('confirmJoin'));
-        };
-        //关闭
-        socket.onclose = function () {
-            socket.send(socketData('close'));
-        };
-        //监听收到的聊天消息
-        socket.onmessage = function (res) {
-            resp = JSON.parse(res.data);
-            if (resp.type === "invalidToken") {
-                layer.msg(resp.data)
-                //token无效或者过期
-                setTimeout(function () {
-                    window.location.href = "/signIn"
-                }, 2000)
-                return;
-            }
-            if (resp.type === "count") {
-                $("#onlineTotal").html("当前在线人数:" + resp.data.total)
-            }
-        };
-        //延迟500毫秒，保证先连接ws，修改状态为在线
-        setTimeout(function () {
-            layui.use('layim', function (layim) {
-                //基础配置
-                layim.config({
-                    init: {
-                        url: "/api/user/profile"
-                        , type: 'get' //默认get，一般可不填
-                        , data: {
-                            token: token
-                        } //额外参数
-                    } //获取主面板列表信息，下文会做进一步介绍
+        layui.use(['layim', 'layer'], function () {
+            var layim = layui.layim
+            var layer = layui.layer
+            var socket = new WebSocket('ws://localhost:8199/chat');
+            ws_socket = socket;
+            //连接成功时触发
+            socket.onopen = function () {
+                //确认加入连接
+                socket.send(socketData('confirmJoin'));
+            };
+            //监听收到的聊天消息
+            socket.onmessage = function (res) {
+                resp = JSON.parse(res.data);
+                console.log(resp, 'resp')
+                //配置im
+                if (resp.type === 'initlayim') {
+                    // 初始化layim
+                    layim.config({
+                        init: {
+                            url: "/api/user/profile"
+                            , type: 'get' //默认get，一般可不填
+                            , data: {
+                                token: token
+                            } //额外参数
+                        } //获取主面板列表信息，下文会做进一步介绍
 
-                    //获取群员接口（返回的数据格式见下文）
-                    , members: {
-                        url: '/api/group/userList' //接口地址（返回的数据格式见下文）
-                        , type: 'get' //默认get，一般可不填
-                        , data: {
-                            token: token
-                        } //额外参数
-                    }
+                        //获取群员接口（返回的数据格式见下文）
+                        , members: {
+                            url: '/api/group/userList' //接口地址（返回的数据格式见下文）
+                            , type: 'get' //默认get，一般可不填
+                            , data: {
+                                token: token
+                            } //额外参数
+                        }
 
-                    //上传图片接口（返回的数据格式见下文），若不开启图片上传，剔除该项即可
-                    , uploadImage: {
-                        url: '' //接口地址
-                        , type: 'post' //默认post
-                    }
+                        //上传图片接口（返回的数据格式见下文），若不开启图片上传，剔除该项即可
+                        , uploadImage: {
+                            url: '' //接口地址
+                            , type: 'post' //默认post
+                        }
 
-                    //上传文件接口（返回的数据格式见下文），若不开启文件上传，剔除该项即可
-                    , uploadFile: {
-                        url: '' //接口地址
-                        , type: 'post' //默认post
-                    }
-                    //扩展工具栏，下文会做进一步介绍（如果无需扩展，剔除该项即可）
-                    , tool: [{
-                        alias: 'code' //工具别名
-                        , title: '代码' //工具名称
-                        , icon: '&#xe64e;' //工具图标，参考图标文档
-                    }]
-                    , msgbox: '/msgbox' //消息盒子页面地址，若不开启，剔除该项即可
-                    , find: '/find' //发现页面地址，若不开启，剔除该项即可
-                    , chatLog: '/chatlog' //聊天记录页面地址，若不开启，剔除该项即可
+                        //上传文件接口（返回的数据格式见下文），若不开启文件上传，剔除该项即可
+                        , uploadFile: {
+                            url: '' //接口地址
+                            , type: 'post' //默认post
+                        }
+                        //扩展工具栏，下文会做进一步介绍（如果无需扩展，剔除该项即可）
+                        , tool: [{
+                            alias: 'code' //工具别名
+                            , title: '代码' //工具名称
+                            , icon: '&#xe64e;' //工具图标，参考图标文档
+                        }]
+                        , msgbox: '/msgbox' //消息盒子页面地址，若不开启，剔除该项即可
+                        , find: '/find' //发现页面地址，若不开启，剔除该项即可
+                        , chatLog: '/chatlog' //聊天记录页面地址，若不开启，剔除该项即可
+                    });
+                }
+                //主面板渲染成功后
+                layim.on('ready', function (options) {
+                    //获取未通知的好友消息
+                    socket.send(socketData('getNotify'));
                 });
-                layim.on('sendMessage', function (res) {
-                    console.log(res, 'res')
-                    if (res.to.type == "friend") {
-                        //监听到上述消息后，就可以轻松地发送socket了，如：
-                        socket.send(socketData('friend', {
-                            from_user_id: res.mine.id,
-                            to_user_id: res.to.id,
-                            content: res.mine.content
-                        }));
-                    }
-                    if (res.to.type == "group") {
-                        //监听到上述消息后，就可以轻松地发送socket了，如：
-                        socket.send(socketData('group', {
-                            user_id: res.mine.id,
-                            group_id: res.to.id,
-                            content: res.mine.content
-                        }));
-                    }
-                })
-                layim.on('sign', function (value) {
-                    socket.send(socketData("updateSign", value));
-                    layim.msgbox(5); //模拟消息盒子有新消息，实际使用时，一般是动态获得
+                //好友聊天
+                if (resp.type === 'friend') {
+                    layim.getMessage(resp.data)
+                }
+                //获取通知
+                if (resp.type == "getNotify") {
+                    console.log(resp.data, 'resp.data')
+                    resp.data.forEach(function (val, index, arr) {
+                        if (val.type === "friend") {
+                            console.log(index)
+                            layim.getMessage(val)
+                        }
+                    });
+                }
+                //群聊
+                if (resp.type === 'group') {
+                    layim.getMessage(resp.data)
+                }
+                //好友上线
+                if (resp.type === 'online') {
+                    layim.setFriendStatus(resp.data, 'online'); //设置指定好友在线，即头像取消置灰
+                }
+                //好友离线
+                if (resp.type === 'offline') {
+                    layim.setFriendStatus(resp.data, 'offline'); //设置指定好友在线，即头像取消置灰
+                }
+                //无效token
+                if (resp.type === "invalidToken") {
+                    layer.msg(resp.data)
+                    //token无效或者过期
+                    setTimeout(function () {
+                        window.location.href = "/signIn"
+                    }, 2000)
+                    return;
+                }
+                //数据统计
+                if (resp.type === "count") {
+                    $("#onlineTotal").html("当前在线人数:" + resp.data.total)
+                }
+            };
+            //监听发送消息
+            layim.on('sendMessage', function (res) {
+                console.log(res, 'sendMessage')
+                if (res.to.type == "friend") {
+                    //好友消息
+                    socket.send(socketData('friend', {
+                        from_user_id: res.mine.id,
+                        to_user_id: res.to.id,
+                        content: res.mine.content
+                    }));
+                }
+                if (res.to.type == "group") {
+                    //群消息
+                    socket.send(socketData('group', {
+                        user_id: res.mine.id,
+                        group_id: res.to.id,
+                        content: res.mine.content
+                    }));
+                }
+            })
+            //监听修改签名
+            layim.on('sign', function (value) {
+                socket.send(socketData("updateSign", value));
+                layim.msgbox(5); //模拟消息盒子有新消息，实际使用时，一般是动态获得
 
-                });
-                layim.on('online', function (status) {
-                    console.log(status); //获得online或者hide
-                    socket.send(socketData("updateImStatus", status));
-                });
-                //每次窗口打开或切换，即更新对方的状态
-                layim.on('chatChange', function (res) {
-                    console.log(res, '???')
-                    var type = res.data.type;
-                    if (type === 'friend') {
-                        layim.setChatStatus(); //模拟标注好友在线状态
-                    } else if (type === 'group') {
-                        //模拟系统消息
-                        // layim.getMessage({
-                        //     system: true //系统消息
-                        //     , id: 111111111
-                        //     , type: "group"
-                        //     , content: '贤心加入群聊'
-                        // });
-                    }
-                });
-                getNotify()
-                //监听收到的聊天消息
-                socket.onmessage = function (res) {
-                    resp = JSON.parse(res.data);
-                    console.log(resp, 'resp')
-                    //好友聊天
-                    if (resp.type === 'friend') {
-                        layim.getMessage(resp.data)
-                    }
-                    if (resp.type == "getNotify") {
-                        layim.getMessage(resp.data)
-                    }
-                    //群聊
-                    if (resp.type === 'group') {
-                        layim.getMessage(resp.data)
-                    }
-                    //好友上线
-                    if (resp.type === 'online') {
-                        layim.setFriendStatus(resp.data, 'online'); //设置指定好友在线，即头像取消置灰
-                    }
-                    //好友离线
-                    if (resp.type === 'offline') {
-                        layim.setFriendStatus(resp.data, 'offline'); //设置指定好友在线，即头像取消置灰
-                        layim.getMessage({
-                            system: true //系统消息
-                            , id: 1111111 //聊天窗口ID
-                            , type: "friend" //聊天窗口类型
-                            , content: '对方已掉线'
-                        });
-                    }
-                    if (resp.type === "invalidToken") {
-                        layer.msg(resp.data)
-                        //token无效或者过期
-                        setTimeout(function () {
-                            window.location.href = "/signIn"
-                        }, 2000)
-                        return;
-                    }
-                    if (resp.type === "count") {
-                        $("#onlineTotal").html("当前在线人数:" + resp.data.total)
-                    }
-                };
             });
-        }, 500)
-
+            //监听切换在线状态
+            layim.on('online', function (status) {
+                console.log(status); //获得online或者hide
+                socket.send(socketData("updateImStatus", status));
+            });
+            //每次窗口打开或切换，即更新对方的状态
+            layim.on('chatChange', function (res) {
+                var type = res.data.type;
+                if (type === 'friend') {
+                    layim.setChatStatus(); //模拟标注好友在线状态
+                } else if (type === 'group') {
+                    //模拟系统消息
+                    // layim.getMessage({
+                    //     system: true //系统消息
+                    //     , id: 111111111
+                    //     , type: "group"
+                    //     , content: '贤心加入群聊'
+                    // });
+                }
+            });
+        })
     </script>
 </body>
