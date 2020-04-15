@@ -12,6 +12,7 @@ import (
 
 	"gfim/app/service/friend_group"
 	"gfim/app/service/group"
+	"gfim/library/avatar"
 
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/os/gtime"
@@ -87,7 +88,7 @@ func SignUp(data *SignUpInput, ip string) error {
 		"nickname":  data.Nickname,
 		"password":  password,
 		"salt":      salt,
-		"avatar":    "http://tva3.sinaimg.cn/crop.0.0.512.512.180/8693225ajw8f2rt20ptykj20e80e8weu.jpg",
+		"avatar":    avatar.NewRandom(data.Username),
 		"join_time": now,
 		"join_ip":   ip,
 	})
