@@ -110,22 +110,18 @@
             </div>
         </div>
     </form>
-    <script>
-        // if (getToken()) {
-        //     window.location.href = '/profile';
-        // }
+    <script type="module">
+        import { signUp } from "/resource/js/api/auth.js";
         layui.use('form', function () {
             var form = layui.form;
             //监听提交
             form.on('submit(formDemo)', function (data) {
-                $.post('/api/user/signUp', data.field, function (res) {
-                    if (interceptor(res)) {
-                        layer.msg("注册成功，页面跳转中~")
-                        setTimeout(function () {
-                            window.location.href = '/signIn';
-                        }, 2000)
-                    }
-                }, 'JSON')
+                signUp(data.field).then(response => {
+                    layer.msg("注册成功，页面跳转中~")
+                    setTimeout(function () {
+                        window.location.href = '/signIn';
+                    }, 2000)
+                });
                 return false;
             });
         });

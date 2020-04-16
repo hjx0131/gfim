@@ -96,25 +96,21 @@
             </div>
         </div>
     </form>
-    <script>
-        // if (getToken()) {
-        //     window.location.href = '/profile';
-        // }
+    <script type="module">
+        import { signIn } from "/resource/js/api/auth.js";
+        import { setToken } from "/resource/js/utils/auth.js";
+
         layui.use('form', function () {
             var form = layui.form;
             //监听提交
             form.on('submit(formDemo)', function (data) {
-                $.post('/api/user/signIn', data.field, function (res) {
-                    if (interceptor(res)) {
-                        if (res.data.token) {
-                            setToken(res.data.token)
-                            layer.msg("登录成功，页面跳转中~")
-                            setTimeout(function () {
-                                window.location.href = '/profile';
-                            }, 2000)
-                        }
-                    }
-                }, 'JSON')
+                signIn(data.field).then(response => {
+                    setToken(response.data.token)
+                    layer.msg("登录成功，页面跳转中~")
+                    setTimeout(function () {
+                        window.location.href = '/';
+                    }, 2000)
+                });
                 return false;
             });
         });

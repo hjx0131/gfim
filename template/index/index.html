@@ -19,11 +19,11 @@
                         <dd><a href="">安全设置</a></dd>
                     </dl>
                 </li>
-                <li class="layui-nav-item"><a href="javascript:void(0)" onclick="logout()">退出</a></li>
+                <li class="layui-nav-item"><a href="javascript:void(0)" class="logout">退出</a></li>
             </ul>
         </div>
 
-        <div class="layui-side layui-bg-black">
+        <div class=" layui-side layui-bg-black">
             <div class="layui-side-scroll">
                 <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
                 <ul class="layui-nav layui-nav-tree" lay-filter="test">
@@ -70,31 +70,25 @@
 
         });
     </script>
-    <script>
-        var ws_socket
-        function test11() {
-            console.log(123)
-        }
-        if (!token) {
-            window.location.href = '/signIn';
-        }
-        function logout() {
-            $.post('/api/user/logout', { token: token }, function (res) {
-                if (interceptor(res)) {
-                    layer.msg("注销成功~页面跳转中")
-                    setTimeout(function () {
-                        window.location.href = '/signIn';
-                    }, 2000)
-                }
-            }, 'JSON')
+    <script type="module">
+        import { getToken, removeToken } from "/resource/js/utils/auth.js";
+        import { logout } from "/resource/js/api/auth.js";
+        import { socketData, createSocket, socket } from "/resource/js/chat/socket.js";
+        function logoutHandle() {
+            logout().then(response => {
+                removeToken()
+                layer.msg("退出成功，页面跳转中~")
+                setTimeout(function () {
+                    window.location.href = '/signIn';
+                }, 2000)
+            });
         }
         layui.use(['layim', 'layer', 'laytpl'], function () {
             var laytpl = layui.laytpl;
-            console.log(laytpl, '1231321')
             var layim = layui.layim
             var layer = layui.layer
-            var socket = new WebSocket('ws://localhost:8199/chat');
-            ws_socket = socket;
+            createSocket('ws://localhost:8199/chat');
+            console.log(socket, 'socket')
             //连接成功时触发
             socket.onopen = function () {
                 //确认加入连接
@@ -102,7 +96,7 @@
             };
             //监听收到的聊天消息
             socket.onmessage = function (res) {
-                resp = JSON.parse(res.data);
+                let resp = JSON.parse(res.data);
                 console.log(resp, 'resp')
                 //配置im
                 if (resp.type === 'initlayim') {
@@ -112,7 +106,7 @@
                             url: "/api/user/profile"
                             , type: 'get' //默认get，一般可不填
                             , data: {
-                                token: token
+                                token: getToken()
                             } //额外参数
                         } //获取主面板列表信息，下文会做进一步介绍
 
@@ -121,7 +115,7 @@
                             url: '/api/group/userList' //接口地址（返回的数据格式见下文）
                             , type: 'get' //默认get，一般可不填
                             , data: {
-                                token: token
+                                token: getToken()
                             } //额外参数
                         }
 

@@ -62,18 +62,18 @@ func (c *Controller) WebSocket(r *ghttp.Request) {
 		}
 		// json解析
 		if err := gjson.DecodeTo(msgByte, msg); err != nil {
-			c.write(&MsgResp{"error", "消息格式不正确: " + err.Error()})
+			c.write(&MsgResp{InvalidParamterFormat, "消息格式不正确: " + err.Error()})
 			continue
 		}
 		// 数据校验
 		if err := gvalid.CheckStruct(msg, nil); err != nil {
-			c.write(&MsgResp{"invalidParam", err.String()})
+			c.write(&MsgResp{ParameterValidationFailed, err.String()})
 			continue
 		}
 		// 检验token
 		userID, err := getUserID(msg.Token)
 		if err != nil {
-			c.write(&MsgResp{"invalidToken", err.Error()})
+			c.write(&MsgResp{InvalidToken, err.Error()})
 			continue
 		}
 		//发送消息

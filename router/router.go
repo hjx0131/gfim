@@ -26,12 +26,7 @@ func init() {
 	})
 	s.BindHandler("/", func(r *ghttp.Request) {
 		r.Response.WriteTpl("layout.html", g.Map{
-			"mainTpl": "index/init.html",
-		})
-	})
-	s.BindHandler("/profile", func(r *ghttp.Request) {
-		r.Response.WriteTpl("layout.html", g.Map{
-			"mainTpl": "index/init.html",
+			"mainTpl": "index/index.html",
 		})
 	})
 	s.BindHandler("/chatlog", func(r *ghttp.Request) {
