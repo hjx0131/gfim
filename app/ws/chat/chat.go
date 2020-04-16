@@ -91,12 +91,12 @@ func (c *Controller) WebSocket(r *ghttp.Request) {
 		case "friend": //好友聊天
 			err := c.FriendChat(msg)
 			if err != nil {
-				c.write(&MsgResp{"error", err.Error()})
+				c.write(&MsgResp{SystemError, err.Error()})
 			}
 		case "group": //群聊
 			err := c.GroupChat(msg)
 			if err != nil {
-				c.write(&MsgResp{"error", err.Error()})
+				c.write(&MsgResp{SystemError, err.Error()})
 			}
 		case "updateSign": //修改签名
 			sign, ok := msg.Data.(string)
@@ -216,7 +216,7 @@ func (c *Controller) joinConn(userID uint) {
 	} else {
 		if ws != nil {
 			writeByWs(ws, &MsgResp{
-				Type: "invalidToken",
+				Type: InvalidToken,
 				Data: "该帐号已在其他设备登录",
 			})
 		}
