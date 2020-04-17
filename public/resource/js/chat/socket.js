@@ -1,5 +1,5 @@
 
-import { getToken } from "../utils/auth.js";
+import { getToken } from "/resource/js/utils/auth.js";
 import { initConfig } from "/resource/js/chat/event.js";
 
 var socket = {}
@@ -88,6 +88,6 @@ export function socketEvent() {
         wsClose(event)
     };
 }
-export {
-    socket
+export function getSocket() {
+    return socket;
 }

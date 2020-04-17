@@ -43,7 +43,7 @@ func Logout(data *GetIDInput) error {
 		return errors.New(e.String())
 	}
 	user_token.Model.Where("token=?", data.Token).
-		Data("is_valid", 1).
+		Data("is_valid", 0).
 		Update()
 	return nil
 }

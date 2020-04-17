@@ -23,13 +23,14 @@
       {{# }
     }); }}
     </textarea>
-  <script>
-    layui.use(['laypage', 'layim'], function () {
-      var layim = layui.layim
-        , layer = layui.layer
-        , laytpl = layui.laytpl
-        , laypage = layui.laypage;
+  <script type="module">
+    import { getParams } from "/resource/js/utils/tools.js";
+    import { getToken } from "/resource/js/utils/auth.js";
+    import { getRecord } from "/resource/js/api/record.js";
 
+    layui.use(['laypage', 'layim'], function () {
+      var laytpl = layui.laytpl
+      var laypage = layui.laypage;
       var page = 1
       var limit = 10
       var total = 0
@@ -52,19 +53,21 @@
         });
       }
       function loadData() {
-        var param = location.search + '&token=' + token + '&page=' + page + "&limit=" + limit
-        console.log(param)
-        $.get("/api/record/getData" + param, {}, function (res) {
-          total = res.data.count
+        var param = getParams()
+        param.token = getToken()
+        param.page = page
+        param.limit = limit
+        console.log(param, 'parma')
+        getRecord(param).then(response => {
+          total = response.data.count
           var html = laytpl(LAY_tpl.value).render({
-            data: res.data.list
+            data: response.data.list
           });
           $('#LAY_view').html(html);
           getPage(page)
-        }, 'JSON')
+        })
       }
     })
-
   </script>
 </body>
 

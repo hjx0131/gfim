@@ -66,8 +66,20 @@
         //JavaScript代码区域
         layui.use('element', function () {
             var element = layui.element;
-
         });
     </script>
     <script type="module" src="/resource/js/chat/init.js"></script>
+    <script type="module">
+        import { logout } from "/resource/js/api/auth.js";
+        import { getToken, removeToken } from "/resource/js/utils/auth.js";
+        $(".logout").click(function () {
+            logout({ token: getToken() }).then(response => {
+                removeToken()
+                layer.msg("退出成功，页面跳转中~")
+                setTimeout(function () {
+                    window.location.href = '/signIn';
+                }, 2000)
+            })
+        })
+    </script>
 </body>

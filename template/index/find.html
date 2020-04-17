@@ -71,11 +71,14 @@
         display: block
     } */
 </style>
+<script type="module">
+    import { getSocket } from "/resource/js/chat/socket.js";
+    console.log(window, 'socket')
+
+</script>
 <script>
-    //获取上一个页面的websocket
     var socket = window.parent.ws_socket
     layui.use(['layim', 'laypage', 'form'], function () {
-        // console.log(parent, 'parent');
         var page = 1
         var limit = 10
         var total = 0
@@ -93,7 +96,6 @@
             id = othis.parent().attr("data-id")
             username = othis.parent().attr("data-username")
             avatar = othis.parent().attr("data-avatar")
-            console.log(username, avatar)
             type = othis.data('type')
             if (type == "friend") {
 

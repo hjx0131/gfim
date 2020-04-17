@@ -27,16 +27,14 @@ layui.use('layer', function () {
              * code为非0是抛错 可结合自己业务进行修改
              */
             console.log(Promise, 'promise')
-
             const res = response.data
             if (res.code !== 0) {
                 layer.msg(res.msg, { time: 3000 })
                 // 50008:非法的token; 50012:其他客户端登录了;  50014:Token 过期了;
                 if (res.code === 2) {
                     layer.confirm('token无效，是否重新登录', function (index) {
-                        //do something
                         layer.close(index);
-                        // window.location.href = '/signIn';
+                        window.location.href = '/signIn';
                     });
                 }
                 return Promise.reject('error')
