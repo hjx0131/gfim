@@ -6,7 +6,10 @@ export function getParams(key = '') {
         params.map(v => result[v.split("=")[0]] = v.split("=")[1])
     }
     if (key) {
-        return result[key] ? result[key] : null
+        return result[key] ? result[key] : ''
     }
     return result
+}
+export function redirect(path) {
+    window.location.href = path;
 }

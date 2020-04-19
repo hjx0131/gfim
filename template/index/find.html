@@ -71,114 +71,7 @@
         display: block
     } */
 </style>
-<script type="module">
-    import { getSocket } from "/resource/js/chat/socket.js";
-    console.log(window, 'socket')
 
-</script>
-<script>
-    var socket = window.parent.ws_socket
-    layui.use(['layim', 'laypage', 'form'], function () {
-        var page = 1
-        var limit = 10
-        var total = 0
-        var layim = layui.layim
-            , layer = layui.layer
-            , laytpl = layui.laytpl
-            , form = layui.form
-            , $ = layui.jquery
-            , laypage = layui.laypage;
-        $(function () {
-            searchData("recommend", "", "推荐好友")
-        });
-        $('body').on('click', '.add', function () {//添加好友
-            var othis = $(this)
-            id = othis.parent().attr("data-id")
-            username = othis.parent().attr("data-username")
-            avatar = othis.parent().attr("data-avatar")
-            type = othis.data('type')
-            if (type == "friend") {
-
-            }
-            //弹出添加好友框
-            parent.layui.layim.add({
-                type: 'friend' //friend：申请加好友、group：申请加群
-                , username: username //好友昵称，若申请加群，参数为：groupname
-                , avatar: avatar //头像
-                , submit: function (group, remark, index) { //一般在此执行Ajax和WS，以通知对方
-                    console.log(group); //获取选择的好友分组ID，若为添加群，则不返回值
-                    console.log(remark); //获取附加信息
-                    layer.close(index); //关闭改面板
-                    socket.send(socketData('addFriend', {
-                        friend_group_id: group,
-                        friend_id: id,
-                        remark: remark,
-                    }));
-                }
-            });
-        });
-        //下一篇分享创建群的html
-        // $('body').on('click', '.createGroup', function () {//创建群
-        //     var othis = $(this);
-        //     parent.layui.im.createGroup(othis);
-        // });
-        $('body').on('click', '.back', function () {//返回推荐好友
-            searchData("friend", "", "推荐好友")
-            $("#LAY_page").css("display", "none");
-        });
-
-        $("body").keydown(function (event) {
-            if (event.keyCode == 13) {
-                $(".find").click();
-            }
-        });
-        $('body').on('click', '.find', function () {
-            $("#LAY_page").css("display", "block");
-            var othis = $(this), input = othis.parents('.layui-col-space3').find('input').val();
-            var addType = $('input:radio:checked').val();
-            page = 1
-            searchData("friend", input, "查找结果")
-        });
-        function getPage(cpage, type = "friend", wd, legend) {
-            laypage.render({
-                elem: 'LAY_page'
-                , count: total
-                , limit: limit
-                , curr: cpage
-                , groups: 10 //连续显示分页数
-                , layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
-                , jump: function (obj, first) {
-                    page = obj.curr //得到当前页，以便向服务端请求对应页的数据
-                    limit = obj.limit //得到每页显示的条数
-                    if (!first) {
-                        searchData(type, wd, legend)
-                    }
-                }
-            });
-        }
-        function searchData(type = "friend", wd, legend) {
-            var url = "";
-            if (type == "group") {
-                url = "/api/group/search";
-            } else if (type == "recommend") {
-                url = "/api/user/recommend";
-            } else {
-                url = "/api/user/search";
-            }
-            var param = '?token=' + token + '&page=' + page + "&limit=" + limit + "&wd=" + wd
-            $.get(url + param, {}, function (res) {
-                total = res.data.count
-                var html = laytpl(LAY_tpl.value).render({
-                    data: res.data.list,
-                    type: type,
-                    legend: legend
-                });
-                $('#LAY_view').html(html);
-                getPage(page, type, wd, legend)
-            }, 'JSON')
-        }
-    });
-</script>
 </head>
 
 <body>
@@ -203,8 +96,11 @@
             <textarea title="消息模版" id="LAY_tpl" style="display:none;">
 			<fieldset class="layui-elem-field layui-field-title">
 			  <legend>{{ d.legend}}</legend>
-			</fieldset>	
+            </fieldset>	
+
 			<div class="layui-row ">
+               
+
 				{{# if(d.type == 'friend' || d.type == 'recommend'){ }}
 					{{#  layui.each(d.data, function(index, item){ }}
 					<div class="layui-col-xs3 layui-find-list">
@@ -236,5 +132,119 @@
         </div>
     </div>
 </body>
+<script type="module">
+    import { getToken } from "/resource/js/utils/auth.js";
+    import { socketData } from "/resource/js/chat/socket.js";
+    import { search, recommend } from "/resource/js/api/user.js";
+    import { getParams } from "/resource/js/utils/tools.js";
+    layui.use(['layim', 'laypage', 'form'], function () {
+        var socket = window.parent.ws
+        var type = "recommend"
+        var legend = "推荐好友"
+        var wd = ""
+        var page = 1
+        var limit = 10
+        var total = 0
+        var layim = layui.layim
+            , layer = layui.layer
+            , laytpl = layui.laytpl
+            , form = layui.form
+            , laypage = layui.laypage;
+        $(function () {
+            searchData()
+        });
+        $('body').on('click', '.add', function () {//添加好友
+            var othis = $(this)
+            let id = othis.parent().attr("data-id")
+            let username = othis.parent().attr("data-username")
+            let avatar = othis.parent().attr("data-avatar")
+            type = othis.data('type')
+            //弹出添加好友框
+            parent.layui.layim.add({
+                type: type //friend：申请加好友、group：申请加群
+                , username: username //好友昵称，若申请加群，参数为：groupname
+                , avatar: avatar //头像
+                , submit: function (group, remark, index) { //一般在此执行Ajax和WS，以通知对方
+                    console.log(group); //获取选择的好友分组ID，若为添加群，则不返回值
+                    console.log(remark); //获取附加信息
+                    layer.close(index); //关闭改面板
+                    socket.send(socketData('addFriend', {
+                        friend_group_id: group,
+                        friend_id: id,
+                        remark: remark,
+                    }));
+                }
+            });
+        });
+        $('body').on('click', '.back', function () {//返回推荐好友
+            type = "friend"
+            wd = ""
+            legend = "推荐好友"
+            searchData()
+            $("#LAY_page").css("display", "none");
+        });
+        $("body").keydown(function (event) {
+            if (event.keyCode == 13) {
+                $(".find").click();
+            }
+        });
+        $('body').on('click', '.find', function () {
+            $("#LAY_page").css("display", "block");
+            var othis = $(this), input = othis.parents('.layui-col-space3').find('input').val();
+            var addType = $('input:radio:checked').val();
+            page = 1
+            type = "friend"
+            wd = input
+            legend = "查找结果"
+            searchData("friend", input, "查找结果")
+        });
+        function getPage(cpage) {
+            laypage.render({
+                elem: 'LAY_page'
+                , count: total
+                , limit: limit
+                , curr: cpage
+                , groups: 10 //连续显示分页数
+                , layout: ['count', 'prev', 'page', 'next', 'limit', 'skip']
+                , jump: function (obj, first) {
+                    page = obj.curr //得到当前页，以便向服务端请求对应页的数据
+                    limit = obj.limit //得到每页显示的条数
+                    if (!first) {
+                        searchData()
+                    }
+                }
+            });
+        }
+        function searchData() {
+            var param = getParams()
+            param.token = getToken()
+            param.page = page
+            param.limit = limit
+            param.wd = wd
+            var func = "search"
+            if (type == "group") {
+                url = "/api/group/search";
+            } else if (type == "recommend") {
+                recommend(param).then(response => {
+                    addView(response)
+                })
+            } else {
+                search(param).then(response => {
+                    addView(response)
+                })
+            }
+        }
+        function addView(response) {
+            total = response.data.count
+            var html = laytpl(LAY_tpl.value).render({
+                data: response.data.list,
+                type: type,
+                legend: legend
+            });
+            $('#LAY_view').html(html);
+            getPage(page)
+        }
+    });
+</script>
 
 </html>

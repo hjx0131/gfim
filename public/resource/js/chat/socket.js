@@ -1,12 +1,14 @@
 
 import { getToken } from "/resource/js/utils/auth.js";
 import { initConfig } from "/resource/js/chat/event.js";
+import { redirect } from "/resource/js/utils/tools.js";
 
 var socket = {}
 
 //创建连接
 export function createSocket(url) {
     socket = new WebSocket(url);
+    window.ws = socket
     return socket;
 }
 //发送数据格式
@@ -25,6 +27,18 @@ export function wsOpen() {
 }
 export function wsReceive(res) {
     let resp = JSON.parse(res.data);
+    if (resp.error === true) {
+        layui.layer.msg(resp.data)
+        return;
+    }
+    //成功处理返回提示信息
+    if (resp.type === 'success') {
+        layui.layer.msg(resp.data)
+    }
+    if (resp.type === "applyCount") {
+        console.log(layui.layim)
+        layui.layim.msgbox(resp.data)
+    }
     //配置im
     if (resp.type === 'initlayim') {
         // 初始化layim
@@ -56,10 +70,10 @@ export function wsReceive(res) {
     }
     //无效token
     if (resp.type === "invalid_token") {
-        layui.layer.msg(resp.data, function () {
+        layui.layer.confirm(resp.data + ',是否重新登录?', function (index) {
             //do something
-            window.location.href = "/signIn"
-
+            redirect("signIn")
+            layer.close(index);
         });
         return;
     }
@@ -69,9 +83,17 @@ export function wsReceive(res) {
     }
 }
 export function wsError(event) {
+    console.log(event)
+    layui.layer.msg("连接出错")
+
 }
 
 export function wsClose(event) {
+    console.log(event)
+    // layer.confirm('连接已断开', function (index) {
+    //     //do something
+    //     layer.close(index);
+    // });
 
 }
 export function socketEvent() {

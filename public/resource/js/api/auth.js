@@ -1,4 +1,4 @@
-import request from "../utils/request.js";
+import request from "/resource/js/utils/request.js";
 
 /**
  * 登录

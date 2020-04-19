@@ -5,6 +5,8 @@ import (
 )
 
 func init() {
-	user.Model.Data("im_status", "offline").Update()
-
+	user.Model.
+		Where("im_status <>", "offline").
+		Data("im_status", "offline").
+		Update()
 }

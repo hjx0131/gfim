@@ -9,7 +9,6 @@ import (
 	"github.com/gogf/gf/encoding/gjson"
 	"github.com/gogf/gf/net/ghttp"
 	"github.com/gogf/gf/os/glog"
-	"github.com/gogf/gf/util/gconv"
 	"github.com/gogf/gf/util/gvalid"
 )
 
@@ -27,8 +26,9 @@ type MsgReq struct {
 
 //MsgResp 发送消息结构体
 type MsgResp struct {
-	Type string      `json:"type"`
-	Data interface{} `json:"data"`
+	Type  string      `json:"type"`
+	Data  interface{} `json:"data"`
+	Error bool        `json:"error"`
 }
 
 //Controller 控制器
@@ -62,41 +62,51 @@ func (c *Controller) WebSocket(r *ghttp.Request) {
 		}
 		// json解析
 		if err := gjson.DecodeTo(msgByte, msg); err != nil {
-			c.write(&MsgResp{InvalidParamterFormat, "消息格式不正确: " + err.Error()})
+			c.write(&MsgResp{InvalidParamterFormat, "消息格式不正确: " + err.Error(), true})
 			continue
 		}
 		// 数据校验
 		if err := gvalid.CheckStruct(msg, nil); err != nil {
-			c.write(&MsgResp{ParameterValidationFailed, err.String()})
+			c.write(&MsgResp{ParameterValidationFailed, err.String(), true})
 			continue
 		}
 		// 检验token
 		userID, err := getUserID(msg.Token)
 		if err != nil {
-			c.write(&MsgResp{InvalidToken, err.Error()})
+			c.write(&MsgResp{InvalidToken, err.Error(), true})
+			ws.Close()
 			continue
 		}
 		//发送消息
 		switch msg.Type {
 		case "confirmJoin": //确认连接
 			c.joinConn(userID)
-			c.write(&MsgResp{"initlayim", "initlayim"})
+			c.write(&MsgResp{
+				Type: "initlayim",
+				Data: "initlayim",
+			})
+			//统计数据
 			countData()
 		case "getNotify": //获取通知
 			c.notifyUserRecord(userID)
+		case "applyCount":
+			//待处理验证数
+			c.NoHandleApplyCount(userID)
 		case "close": //退出连接
 		case "ping": //心跳检测
-			c.write(&MsgResp{"ping", "pong"})
-			c.write(&MsgResp{"welcome", "欢迎" + gconv.String(userID)})
+			c.write(&MsgResp{
+				Type: "ping",
+				Data: "pong",
+			})
 		case "friend": //好友聊天
 			err := c.FriendChat(msg)
 			if err != nil {
-				c.write(&MsgResp{SystemError, err.Error()})
+				c.write(&MsgResp{SystemError, err.Error(), true})
 			}
 		case "group": //群聊
 			err := c.GroupChat(msg)
 			if err != nil {
-				c.write(&MsgResp{SystemError, err.Error()})
+				c.write(&MsgResp{SystemError, err.Error(), true})
 			}
 		case "updateSign": //修改签名
 			sign, ok := msg.Data.(string)
@@ -124,7 +134,14 @@ func (c *Controller) WebSocket(r *ghttp.Request) {
 			if err != nil {
 				fmt.Println(err.Error())
 			}
+		case "addFriend":
+			if err := c.apply(userID, msg); err != nil {
+				c.write(&MsgResp{SystemError, err.Error(), true})
+			} else {
+				c.write(&MsgResp{"success", "申请成功", false})
+			}
 		}
+
 	}
 }
 
@@ -164,6 +181,14 @@ func (c *Controller) write(msg *MsgResp) error {
 		return err
 	}
 	return nil
+}
+func (c *Controller) writeByUserID(userID uint, msg *MsgResp) error {
+	ws := userIds.Get(userID)
+	if err := writeByWs(ws.(*ghttp.WebSocket), msg); err != nil {
+		return err
+	}
+	return nil
+
 }
 
 //getUserID 获取UserID
@@ -219,6 +244,7 @@ func (c *Controller) joinConn(userID uint) {
 				Type: InvalidToken,
 				Data: "该帐号已在其他设备登录",
 			})
+			ws.Close()
 		}
 	}
 	userIds.Set(userID, c.ws)

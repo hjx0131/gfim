@@ -5,6 +5,7 @@ import (
 	"gfim/app/model/friend"
 	"gfim/app/model/user"
 	"gfim/app/model/user_record"
+	"gfim/app/service/apply"
 
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
@@ -143,23 +144,22 @@ func (c *Controller) notifyUserRecord(userID uint) error {
 	return nil
 }
 
-type applyFriendReq struct {
-	FriendID      uint   `json:"friend_id" v:"friend_id@required#好友不能为空"`
-	FriendGroupID uint   `json:"friend_group_id" v:"friend_group_id@required#好友分组不能为空"`
-	Remark        string `json:"remark"`
+type applyReq struct {
+	friend apply.FriendReq
 }
 
 //applyFriend 好友申请
-func (c *Controller) applyFriend(msg *MsgReq) error {
-	freq := &applyFriendReq{}
-	err := gconv.Struct(msg.Data, freq)
-
+func (c *Controller) apply(userID uint, msg *MsgReq) error {
+	req := &applyReq{}
+	err := gconv.Struct(msg.Data, &req.friend)
+	fmt.Printf("#%v", req)
 	if err != nil {
 		panic(err)
 	}
-	// 数据校验
-	if err := gvalid.CheckStruct(freq, nil); err != nil {
+	if err := apply.Friend(userID, &req.friend); err != nil {
 		return err
 	}
+	//向该好友推送未处理的验证
+	c.NoHandleApplyCount(req.friend.FriendID)
 	return nil
 }

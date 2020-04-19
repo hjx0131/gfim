@@ -1,4 +1,4 @@
-import { getToken } from "./auth.js";
+import { getToken } from "/resource/js/utils/auth.js";
 
 // 创建axios实例
 const service = axios.create({

@@ -72,12 +72,14 @@
     <script type="module">
         import { logout } from "/resource/js/api/auth.js";
         import { getToken, removeToken } from "/resource/js/utils/auth.js";
+        import { redirect } from "/resource/js/utils/tools.js";
+
         $(".logout").click(function () {
             logout({ token: getToken() }).then(response => {
                 removeToken()
                 layer.msg("退出成功，页面跳转中~")
                 setTimeout(function () {
-                    window.location.href = '/signIn';
+                    redirect("/signIn")
                 }, 2000)
             })
         })

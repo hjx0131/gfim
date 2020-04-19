@@ -1,5 +1,5 @@
 import { sendMsg } from "/resource/js/chat/socket.js";
-import { getToken } from "../utils/auth.js";
+import { getToken } from "/resource/js/utils/auth.js";
 
 export function initConfig() {
     layui.use('layim', function (layim) {
@@ -51,8 +51,9 @@ export function ready() {
             data: layui.layim.cache().mine
         });
         $('#view').html(html);
-        //获取未通知的好友消息
+        //获取未通知的好友消息，未处理验证消息
         sendMsg('getNotify', {})
+        sendMsg('applyCount', {})
     });
 }
 //修改签名

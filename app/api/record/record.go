@@ -29,7 +29,7 @@ func (c *Controller) GetData(r *ghttp.Request) {
 	}
 	switch data.Type {
 	case "friend":
-		data, err := user_record.GetListAndTotal(&user_record.GetListRequest{
+		res, err := user_record.GetListAndTotal(&user_record.GetListRequest{
 			UserID:   c.GetUserID(r),
 			FriendID: data.ID,
 			Page:     data.Page,
@@ -38,9 +38,9 @@ func (c *Controller) GetData(r *ghttp.Request) {
 		if err != nil {
 			c.Fail(r, err.Error())
 		}
-		c.Success(r, data)
+		c.Success(r, res)
 	case "group":
-		data, err := group_record.GetListAndTotal(&group_record.GetListRequest{
+		res, err := group_record.GetListAndTotal(&group_record.GetListRequest{
 			GroupID: data.ID,
 			Page:    data.Page,
 			Limit:   data.Limit,
@@ -48,7 +48,7 @@ func (c *Controller) GetData(r *ghttp.Request) {
 		if err != nil {
 			c.Fail(r, err.Error())
 		}
-		c.Success(r, data)
+		c.Success(r, res)
 	default:
 		c.Fail(r, "类型不正确")
 
