@@ -152,7 +152,6 @@ type applyReq struct {
 func (c *Controller) apply(userID uint, msg *MsgReq) error {
 	req := &applyReq{}
 	err := gconv.Struct(msg.Data, &req.friend)
-	fmt.Printf("#%v", req)
 	if err != nil {
 		panic(err)
 	}
@@ -161,5 +160,22 @@ func (c *Controller) apply(userID uint, msg *MsgReq) error {
 	}
 	//向该好友推送未处理的验证
 	c.NoHandleApplyCount(req.friend.FriendID)
+	return nil
+}
+
+type handleReq struct {
+	friend apply.HandleReq
+}
+
+//agree 同意好友申请
+func (c *Controller) agree(userID uint, msg *MsgReq) error {
+	req := &handleReq{}
+	err := gconv.Struct(msg.Data, &req.friend)
+	if err != nil {
+		panic(err)
+	}
+	if err := apply.Agree(userID, &req.friend); err != nil {
+		return err
+	}
 	return nil
 }

@@ -28,6 +28,12 @@ type GroupReq struct {
 	Remark  string `json:"remark"`
 }
 
+//HandleReq 处理申请请求参数
+type HandleReq struct {
+	ID            uint `json:"id" v:"id@required#申请id不能为空"`
+	FriendGroupID uint `json:"friend_group_id"`
+}
+
 //Friend 好友申请
 func Friend(userID uint, req *FriendReq) error {
 	// 数据校验
@@ -126,11 +132,80 @@ func Group(userID uint, req *GroupReq) error {
 	return nil
 }
 
-func Agree() {
-
+//HandleCheck 1
+func HandleCheck(handleUserID uint, req *HandleReq) (*apply.Entity, error) {
+	// 数据校验
+	if err := gvalid.CheckStruct(req, nil); err != nil {
+		return nil, err
+	}
+	one, err := apply.Model.Where("id", req.ID).FindOne()
+	if err != nil {
+		return one, err
+	}
+	if one == nil {
+		return nil, errors.New("申请未找到")
+	}
+	if one.State != 1 {
+		return one, errors.New("当前状态下不能同意")
+	}
+	if handleUserID != one.ToUserId {
+		return one, errors.New("您没有处理权限")
+	}
+	return one, nil
 }
-func Refuse() {
 
+//Agree 同意
+func Agree(handleUserID uint, req *HandleReq) error {
+	one, err := HandleCheck(handleUserID, req)
+	if err != nil {
+		return err
+	}
+	if req.FriendGroupID <= 0 {
+		return errors.New("好友分组不能为空")
+	}
+	now := gtime.Timestamp()
+	apply.Model.
+		Where("id", one.Id).
+		Data(g.Map{
+			"handle_time": now,
+			"state":       2,
+		}).
+		Update()
+	if one.Type == "friend" {
+		//建立好友关联
+		friend.Model.Data(g.Map{
+			"user_id":         one.FromUserId,
+			"friend_id":       one.ToUserId,
+			"friend_group_id": one.TargetId,
+			"create_time":     now,
+		}).Insert()
+		friend.Model.Data(g.Map{
+			"user_id":         one.ToUserId,
+			"friend_id":       one.FromUserId,
+			"friend_group_id": req.FriendGroupID,
+			"create_time":     now,
+		}).Insert()
+	} else {
+		//建立群和用户关联
+	}
+	return nil
+}
+
+//Refuse 拒绝
+func Refuse(handleUserID uint, req *HandleReq) error {
+	one, err := HandleCheck(handleUserID, req)
+	if err != nil {
+		return err
+	}
+	now := gtime.Timestamp()
+	apply.Model.
+		Where("id", one.Id).
+		Data(g.Map{
+			"handle_time": now,
+			"state":       3,
+		}).
+		Update()
+	return nil
 }
 
 //GetListRequest 获取记录所需要的参数
@@ -140,11 +215,11 @@ type GetListRequest struct {
 	Limit  int
 }
 
-//UserInfo  用户信息格式
-type UserInfo struct {
-	Username string `json:"username"`
-	ID       uint   `json:"id"`
-	Avatar   string `json:"avatar"`
+//User  用户信息格式
+type User struct {
+	Name   string `json:"name"`
+	ID     uint   `json:"id"`
+	Avatar string `json:"avatar"`
 }
 
 //Info 申请消息格式
@@ -154,9 +229,12 @@ type Info struct {
 	Content   string `json:"content"`
 	Timestamp int    `json:"timestamp"`
 	Remark    string `json:"remark"`
+	TargetID  uint   `json:"group_id"`
 	State     uint   `json:"state"`
+	StateText string `json:"state_text"`
 	FromSelf  bool   `json:"from_self"`
-	UserInfo  *UserInfo
+	User      *User  `json:"user"`
+	CanHandle bool   `json:"can_handle"`
 }
 
 //GetListAndTotal 获取列表和数量
@@ -171,30 +249,56 @@ func GetListAndTotal(req *GetListRequest) (interface{}, error) {
 			var uid uint
 			var content string
 			var fromSelf bool
-			//发起人是自己
-			if req.UserID == item.FromUserId {
-				fromSelf = true
-				uid = item.ToUserId
-				content = "验证已发送"
+			var canHandle bool
+			//好友验证
+			if item.Type == "friend" {
+				//发起人是自己
+				if req.UserID == item.FromUserId {
+					fromSelf = true
+					uid = item.ToUserId
+					content = "验证消息已发送"
+				} else {
+					if item.State == 1 {
+						canHandle = true
+					}
+					fromSelf = false
+					uid = item.FromUserId
+					content = "申请添加你为好友"
+				}
+
 			} else {
-				fromSelf = false
-				uid = item.FromUserId
-				content = "申请添加你为好友"
+				//群验证
+				if req.UserID == item.FromUserId {
+					//发起人是自己
+					fromSelf = true
+					uid = item.ToUserId
+					content = "验证消息已发送"
+				} else {
+					if item.State == 1 {
+						canHandle = true
+					}
+					fromSelf = false
+					uid = item.FromUserId
+					content = "申请进群"
+				}
 			}
 			one, _ := user.Model.Where("id", uid).FindOne()
 			res[index] = &Info{
 				ID:        item.Id,
-				Timestamp: gconv.Int(item.CreateTime) * 1000,
-				Content:   content,
 				Type:      item.Type,
-				FromSelf:  fromSelf,
-				State:     item.State,
+				Content:   content,
+				Timestamp: gconv.Int(item.CreateTime) * 1000,
 				Remark:    item.Remark,
-				UserInfo: &UserInfo{
-					ID:       one.Id,
-					Username: one.Nickname,
-					Avatar:   one.Avatar,
+				TargetID:  item.TargetId,
+				State:     item.State,
+				StateText: item.GetStateText(),
+				FromSelf:  fromSelf,
+				User: &User{
+					ID:     one.Id,
+					Name:   one.Nickname,
+					Avatar: one.Avatar,
 				},
+				CanHandle: canHandle,
 			}
 		}
 	}

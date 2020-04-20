@@ -140,6 +140,12 @@ func (c *Controller) WebSocket(r *ghttp.Request) {
 			} else {
 				c.write(&MsgResp{"success", "申请成功", false})
 			}
+		case "agreeFriend":
+			if err := c.agree(userID, msg); err != nil {
+				c.write(&MsgResp{SystemError, err.Error(), true})
+			} else {
+				c.write(&MsgResp{"success", "操作成功", false})
+			}
 		}
 
 	}
@@ -182,13 +188,11 @@ func (c *Controller) write(msg *MsgResp) error {
 	}
 	return nil
 }
-func (c *Controller) writeByUserID(userID uint, msg *MsgResp) error {
+func (c *Controller) writeByUserID(userID uint, msg *MsgResp) {
 	ws := userIds.Get(userID)
-	if err := writeByWs(ws.(*ghttp.WebSocket), msg); err != nil {
-		return err
+	if ws != nil {
+		writeByWs(ws.(*ghttp.WebSocket), msg)
 	}
-	return nil
-
 }
 
 //getUserID 获取UserID

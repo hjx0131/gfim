@@ -61,37 +61,43 @@
     top: 12px;
     color: #999;
   }
+
+  .state {
+    position: absolute;
+    right: 0;
+    top: 12px;
+    color: #999;
+  }
 </style>
 
 <body>
 
   <ul class="layim-msgbox" id="LAY_view"></ul>
-
-  <!-- <div style="margin: 0 15px;">
-    <blockquote class="layui-elem-quote">注意：这些都是模拟数据，实际使用时，需将其中的模拟接口改为你的项目真实接口。
-      <br>该模版文件所在目录（相对于layui.js）：/css/modules/layim/html/msgbox.html</blockquote>
-  </div> -->
-
   <textarea title="消息模版" id="LAY_tpl" style="display:none;">
 {{# layui.each(d.data, function(index, item){
-  if(item.from){ }}
-    <li data-uid="{{ item.from }}" data-fromGroup="{{ item.from_group }}">
-      <a href="/u/{{ item.from }}/" target="_blank">
+  if(item.id){ }}
+    <li data-id="{{item.id}}" data-uid="{{ item.from }}" data-fromGroup="{{ item.from_group }}">
         <img src="{{ item.user.avatar }}" class="layui-circle layim-msgbox-avatar">
-      </a>
       <p class="layim-msgbox-user">
-        <a href="/u/{{ item.from }}/" target="_blank">{{ item.user.username||'' }}</a>
-        <span>{{ item.time }}</span>
+        {{ item.user.name||'' }}
+        <span>{{ layui.data.date(item.timestamp) }}</span>
       </p>
       <p class="layim-msgbox-content">
         {{ item.content }} 
         <span>{{ item.remark ? '附言: '+item.remark : '' }}</span>
       </p>
+      {{# if (item.can_handle){ }}
       <p class="layim-msgbox-btn">
-        <button class="layui-btn layui-btn-small" data-type="agree">同意</button>
-        <button class="layui-btn layui-btn-small layui-btn-primary" data-type="refuse">拒绝</button>
+          <button class="layui-btn layui-btn-small" data-type="agree">同意</button>
+          <button class="layui-btn layui-btn-small layui-btn-primary" data-type="refuse">拒绝</button>
       </p>
+      {{# } else{ }}
+      <p class="state">
+        {{item.state_text}}
+      </p>
+      {{# } }}
     </li>
+
   {{# } else { }}
     <li class="layim-msgbox-system">
       <p><em>系统：</em>{{ item.content }}<span>{{ item.time }}</span></p>
@@ -99,11 +105,111 @@
   {{# }
 }); }}
 </textarea>
+  <script type="module">
+    import { getParams } from "/resource/js/utils/tools.js";
+    import { socketData } from "/resource/js/chat/socket.js";
+    import { getToken } from "/resource/js/utils/auth.js";
+    import { getData } from "/resource/js/api/apply.js";
+
+    layui.use(['laypage', 'layim'], function () {
+      var socket = window.parent.ws
+      var laytpl = layui.laytpl
+      var laypage = layui.laypage;
+      var page = 1
+      var limit = 10
+      var total = 0
+      var cache = {}
+      loadData()
+      function getPage(cpage) {
+        laypage.render({
+          elem: 'LAY_page'
+          , count: total
+          , limit: limit
+          , curr: cpage
+          , layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
+          , groups: 5 //连续显示分页数
+          , jump: function (obj, first) {
+            page = obj.curr //得到当前页，以便向服务端请求对应页的数据
+            limit = obj.limit //得到每页显示的条数
+            if (!first) {
+              loadData()
+            }
+          }
+        });
+      }
+      function loadData() {
+        var param = getParams()
+        param.token = getToken()
+        param.page = page
+        param.limit = limit
+        console.log(param, 'parma')
+        getData(param).then(response => {
+          total = response.data.count
+          var html = laytpl(LAY_tpl.value).render({
+            data: response.data.list
+          });
+          //记录来源用户信息
+          layui.each(response.data.list, function (index, item) {
+            cache[item.from] = item.user;
+          });
+          $('#LAY_view').html(html);
+          getPage(page)
+        })
+      }
+      //操作
+      var active = {
+        //同意
+        agree: function (othis) {
+          var li = othis.parents('li')
+            , uid = li.data('uid')
+            , from_group = li.data('fromGroup')
+            , user = cache[uid]
+            , id = li.data("id")
+          //选择分组
+          parent.layui.layim.setFriendGroup({
+            type: 'friend'
+            , username: user.username
+            , avatar: user.avatar
+            , group: parent.layui.layim.cache().friend //获取好友分组数据
+            , submit: function (group, index) {
+              console.log(group, 'group')
+              console.log(index, 'index')
+
+              socket.send(socketData('agreeFriend', {
+                id: id,
+                friend_group_id: parseInt(group)
+              }));
+            }
+          });
+        }
+        //拒绝
+        , refuse: function (othis) {
+          var li = othis.parents('li')
+            , uid = li.data('uid');
+          layer.confirm('确定拒绝吗？', function (index) {
+            $.post('/im/refuseFriend', {
+              uid: uid //对方用户ID
+            }, function (res) {
+              if (res.code != 0) {
+                return layer.msg(res.msg);
+              }
+              layer.close(index);
+              othis.parent().html('<em>已拒绝</em>');
+            });
+          });
+        }
+      };
+      $('body').on('click', '.layui-btn', function () {
+        var othis = $(this), type = othis.data('type');
+        active[type] ? active[type].call(this, othis) : '';
+      });
+    })
+  </script>
 
   <!-- 
 上述模版采用了 laytpl 语法，不了解的同学可以去看下文档：http://www.layui.com/doc/modules/laytpl.html 
 -->
-  <script>
+  <!-- <script>
     layui.use(['layim', 'flow'], function () {
       var layim = layui.layim
         , layer = layui.layer
@@ -240,7 +346,7 @@
         active[type] ? active[type].call(this, othis) : '';
       });
     });
-  </script>
+  </script> -->
 </body>
 
 </html>

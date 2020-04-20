@@ -1,18 +1,10 @@
 package apply
 
-import (
-	"github.com/gogf/gf/frame/g"
-)
-
 //GetListAndTotal 获取列表和总数
 func GetListAndTotal(userID uint, page, limit int) ([]*Entity, int, error) {
 	list, err := Model.
-		Where(g.Map{
-			"to_user_id": userID,
-		}).
-		Or(g.Map{
-			"from_user_id": userID,
-		}).
+		Where("to_user_id", userID).
+		Or("from_user_id", userID).
 		Order("id desc").
 		Page(page, limit).
 		All()
@@ -20,12 +12,8 @@ func GetListAndTotal(userID uint, page, limit int) ([]*Entity, int, error) {
 		return nil, 0, err
 	}
 	count, err := Model.
-		Where(g.Map{
-			"to_user_id": userID,
-		}).
-		Or(g.Map{
-			"from_user_id": userID,
-		}).
+		Where("to_user_id", userID).
+		Or("from_user_id", userID).
 		Count()
 	if err != nil {
 		return list, 0, err
@@ -43,4 +31,19 @@ func GetNoHandleCount(userID uint) (int, error) {
 		return 0, nil
 	}
 	return count, nil
+}
+
+//GetStateList 获取状态列表
+func GetStateList() map[uint]string {
+	return map[uint]string{
+		1: "待验证",
+		2: "已同意",
+		3: "已拒绝",
+	}
+}
+
+//GetStateText 获取状态描述
+func (entity *Entity) GetStateText() string {
+	list := GetStateList()
+	return list[entity.State]
 }

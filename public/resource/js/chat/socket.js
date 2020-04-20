@@ -27,7 +27,7 @@ export function wsOpen() {
 }
 export function wsReceive(res) {
     let resp = JSON.parse(res.data);
-    if (resp.error === true) {
+    if (resp.error === true && resp.type != "invalid_token") {
         layui.layer.msg(resp.data)
         return;
     }
@@ -36,7 +36,6 @@ export function wsReceive(res) {
         layui.layer.msg(resp.data)
     }
     if (resp.type === "applyCount") {
-        console.log(layui.layim)
         layui.layim.msgbox(resp.data)
     }
     //配置im
@@ -76,6 +75,20 @@ export function wsReceive(res) {
             layer.close(index);
         });
         return;
+    }
+    //添加好友
+    if (resp.type === "agreeFriend") {
+        //将好友追加到主面板
+        parent.layui.layim.addList({
+            type: 'friend'
+            , avatar: resp.data.avatar //好友头像
+            , username: resp.data.username //好友昵称
+            , groupid: resp.data.friend_group_id //所在的分组id
+            , id: resp.data.id //好友ID
+            , sign: resp.data.sign //好友签名
+        });
+        parent.layer.close(index);
+        othis.parent().html('已同意');
     }
     //数据统计
     if (resp.type === "count") {
