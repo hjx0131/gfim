@@ -2,6 +2,7 @@ package api
 
 import (
 	"gfim/app/service/user_token"
+	"gfim/library/auth"
 	"gfim/library/response"
 
 	"github.com/gogf/gf/net/ghttp"
@@ -9,11 +10,6 @@ import (
 
 //Base 基础控制器
 type Base struct {
-}
-
-//GetIDRequest 获取登录用户ID的请求参数
-type GetIDRequest struct {
-	user_token.GetIDInput
 }
 
 //Success 成功数据返回
@@ -32,14 +28,13 @@ func (b *Base) Fail(r *ghttp.Request, msg string) {
 
 //GetUserID 获取登录用户ID
 func (b *Base) GetUserID(r *ghttp.Request) uint {
-	var data *GetIDRequest
-	if e := r.GetStruct(&data); e != nil {
-		response.JSONExit(r, 1, e.Error())
-	}
+	token := auth.GetToken(r)
 	//验证token是否有效
-	UserID, e := user_token.GetUserID(&data.GetIDInput)
+	userID, e := user_token.GetUserID(&user_token.GetIDInput{
+		Token: token,
+	})
 	if e != nil {
 		response.JSONExit(r, 2, e.Error())
 	}
-	return UserID
+	return userID
 }

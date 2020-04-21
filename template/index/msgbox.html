@@ -68,6 +68,12 @@
     top: 12px;
     color: #999;
   }
+
+  .no-data {
+    text-align: center;
+    top: 12px;
+    color: #999;
+  }
 </style>
 
 <body>
@@ -104,14 +110,26 @@
     </li>
   {{# }
 }); }}
+{{#  if(d.data.length === 0){ }}
+<p class="no-data">
+  暂无数据
+</p>
+{{#  } }} 
 </textarea>
   <script type="module">
     import { getParams } from "/resource/js/utils/tools.js";
     import { socketData } from "/resource/js/chat/socket.js";
     import { getToken } from "/resource/js/utils/auth.js";
     import { getData } from "/resource/js/api/apply.js";
+    import { setIsRead } from "/resource/js/api/applyRemind.js";
 
+    import {
+      AgreeFriend,
+      RefuseFriend
+    } from "/resource/js/msg_type.js";
     layui.use(['laypage', 'layim'], function () {
+      setIsRead()
+      //打开标记为已读
       var socket = window.parent.ws
       var laytpl = layui.laytpl
       var laypage = layui.laypage;
@@ -119,6 +137,8 @@
       var limit = 10
       var total = 0
       var cache = {}
+      var layer = layui.layer
+
       loadData()
       function getPage(cpage) {
         laypage.render({
@@ -172,30 +192,34 @@
             , avatar: user.avatar
             , group: parent.layui.layim.cache().friend //获取好友分组数据
             , submit: function (group, index) {
-              console.log(group, 'group')
-              console.log(index, 'index')
-
-              socket.send(socketData('agreeFriend', {
+              socket.send(socketData(AgreeFriend, {
                 id: id,
                 friend_group_id: parseInt(group)
               }));
+              parent.layer.close(index);
+              othis.parent().html('已同意');
             }
           });
         }
         //拒绝
         , refuse: function (othis) {
           var li = othis.parents('li')
-            , uid = li.data('uid');
+            , id = li.data('id');
           layer.confirm('确定拒绝吗？', function (index) {
-            $.post('/im/refuseFriend', {
-              uid: uid //对方用户ID
-            }, function (res) {
-              if (res.code != 0) {
-                return layer.msg(res.msg);
-              }
-              layer.close(index);
-              othis.parent().html('<em>已拒绝</em>');
-            });
+            socket.send(socketData(RefuseFriend, {
+              id: id,
+            }));
+            layer.close(index);
+            othis.parent().html('<em>已拒绝</em>');
+            // $.post('/im/refuseFriend', {
+            //   uid: uid //对方用户ID
+            // }, function (res) {
+            //   if (res.code != 0) {
+            //     return layer.msg(res.msg);
+            //   }
+            //   layer.close(index);
+            //   othis.parent().html('<em>已拒绝</em>');
+            // });
           });
         }
       };

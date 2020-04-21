@@ -19,6 +19,9 @@ func GetUserID(data *GetIDInput) (uint, error) {
 	if e := gvalid.CheckStruct(data, nil); e != nil {
 		return 0, errors.New(e.String())
 	}
+	if data.Token == "" {
+		return 0, errors.New("token不能为空")
+	}
 	one, err := user_token.FindOne("token=?", data.Token)
 	if err != nil {
 		return 0, err

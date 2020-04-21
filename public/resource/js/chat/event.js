@@ -1,6 +1,13 @@
 import { sendMsg } from "/resource/js/chat/socket.js";
 import { getToken } from "/resource/js/utils/auth.js";
-
+import {
+    NoReadApply,
+    NotifyRecord,
+    UpdateSign,
+    UpdateStatus,
+    FriendChat,
+    GroupChat,
+} from "/resource/js/msg_type.js";
 export function initConfig() {
     layui.use('layim', function (layim) {
         // 初始化layim
@@ -10,6 +17,9 @@ export function initConfig() {
                 type: 'get', //默认get，一般可不填
                 data: {
                     token: getToken()//额外参数
+                },
+                beforeSend: function (request) {
+                    request.setRequestHeader("X-Auth-Token", getToken());
                 },
             },
             //获取群员接口（返回的数据格式见下文）
@@ -52,39 +62,39 @@ export function ready() {
         });
         $('#view').html(html);
         //获取未通知的好友消息，未处理验证消息
-        sendMsg('getNotify', {})
-        sendMsg('applyCount', {})
+        sendMsg(NotifyRecord, {})
+        sendMsg(NoReadApply, {})
     });
 }
 //修改签名
 export function updateSign() {
     //监听修改签名
     layui.layim.on('sign', function (value) {
-        sendMsg('updateSign', value)
+        sendMsg(UpdateSign, value)
     });
 }
 
 //修改在线状态
 export function updateImStatus() {
     layui.layim.on('online', function (status) {
-        sendMsg('updateImStatus', status)
+        sendMsg(UpdateStatus, status)
     });
 }
 //发送消息
 export function sendMessage() {
     //监听发送消息
     layui.layim.on('sendMessage', function (res) {
-        if (res.to.type == "friend") {
+        if (res.to.type == FriendChat) {
             //好友消息
-            sendMsg('friend', {
+            sendMsg(FriendChat, {
                 from_user_id: res.mine.id,
                 to_user_id: res.to.id,
                 content: res.mine.content
             })
         }
-        if (res.to.type == "group") {
+        if (res.to.type == GroupChat) {
             //群消息
-            sendMsg('group', {
+            sendMsg(GroupChat, {
                 user_id: res.mine.id,
                 group_id: res.to.id,
                 content: res.mine.content

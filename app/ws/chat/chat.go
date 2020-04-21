@@ -33,11 +33,10 @@ type MsgResp struct {
 
 //Controller 控制器
 type Controller struct {
-	ws *ghttp.WebSocket
 }
 
-//CountData 统计数据
-type CountData struct {
+//CountDataResp 统计数据返回格式
+type CountDataResp struct {
 	Total int `json:"total"`
 }
 
@@ -50,112 +49,141 @@ func (c *Controller) WebSocket(r *ghttp.Request) {
 		glog.Error(err)
 		r.Exit()
 	}
-	c.ws = ws
-	for {
-		_, msgByte, err := ws.ReadMessage()
-		if err != nil {
-			//断开连接处理
-			c.closeConn(ws)
-			fmt.Println("断开连接")
-			countData()
-			break
-		}
-		// json解析
-		if err := gjson.DecodeTo(msgByte, msg); err != nil {
-			c.write(&MsgResp{InvalidParamterFormat, "消息格式不正确: " + err.Error(), true})
-			continue
-		}
-		// 数据校验
-		if err := gvalid.CheckStruct(msg, nil); err != nil {
-			c.write(&MsgResp{ParameterValidationFailed, err.String(), true})
-			continue
-		}
-		// 检验token
-		userID, err := getUserID(msg.Token)
-		if err != nil {
-			c.write(&MsgResp{InvalidToken, err.Error(), true})
-			ws.Close()
-			continue
-		}
-		//发送消息
-		switch msg.Type {
-		case "confirmJoin": //确认连接
-			c.joinConn(userID)
-			c.write(&MsgResp{
-				Type: "initlayim",
-				Data: "initlayim",
-			})
-			//统计数据
-			countData()
-		case "getNotify": //获取通知
-			c.notifyUserRecord(userID)
-		case "applyCount":
-			//待处理验证数
-			c.NoHandleApplyCount(userID)
-		case "close": //退出连接
-		case "ping": //心跳检测
-			c.write(&MsgResp{
-				Type: "ping",
-				Data: "pong",
-			})
-		case "friend": //好友聊天
-			err := c.FriendChat(msg)
+	go func() {
+		for {
+			_, msgByte, err := ws.ReadMessage()
 			if err != nil {
-				c.write(&MsgResp{SystemError, err.Error(), true})
+				//断开连接处理
+				c.closeConn(ws)
+				getCountData()
+				break
 			}
-		case "group": //群聊
-			err := c.GroupChat(msg)
+			// json解析
+			if err := gjson.DecodeTo(msgByte, msg); err != nil {
+				writeByWs(ws, &MsgResp{
+					Type:  InvalidParamterFormat,
+					Data:  "消息格式不正确: " + err.Error(),
+					Error: true,
+				})
+				continue
+			}
+			// 数据校验
+			if err := gvalid.CheckStruct(msg, nil); err != nil {
+				writeByWs(ws, &MsgResp{
+					Type:  ParameterValidationFailed,
+					Data:  err.String(),
+					Error: true,
+				})
+				continue
+			}
+			// 检验token
+			userID, err := getUserID(msg.Token)
 			if err != nil {
-				c.write(&MsgResp{SystemError, err.Error(), true})
+				writeByWs(ws, &MsgResp{
+					Type:  InvalidToken,
+					Data:  err.Error(),
+					Error: true,
+				})
+				ws.Close()
+				continue
 			}
-		case "updateSign": //修改签名
-			sign, ok := msg.Data.(string)
-			if !ok {
-				fmt.Println("It's not ok for type sign")
-			}
-			user.Model.Data("sign", sign).Where("id=?", userID).Update()
-		case "updateImStatus": //切换状态,在线或者隐身
-			imStatus, ok := msg.Data.(string)
-			if !ok {
-				fmt.Println("It's not ok for type string")
-			}
-			user.Model.Data("im_status", imStatus).Where("id=?", userID).Update()
-			//通知好友
-			msgType := ""
-			if imStatus == "online" {
-				msgType = "online"
-			} else if imStatus == "hide" {
-				msgType = "offline"
-			}
-			err := c.writeFriends(userID, &MsgResp{
-				Type: msgType,
-				Data: userID,
-			})
-			if err != nil {
-				fmt.Println(err.Error())
-			}
-		case "addFriend":
-			if err := c.apply(userID, msg); err != nil {
-				c.write(&MsgResp{SystemError, err.Error(), true})
-			} else {
-				c.write(&MsgResp{"success", "申请成功", false})
-			}
-		case "agreeFriend":
-			if err := c.agree(userID, msg); err != nil {
-				c.write(&MsgResp{SystemError, err.Error(), true})
-			} else {
-				c.write(&MsgResp{"success", "操作成功", false})
-			}
-		}
+			//发送消息
+			switch msg.Type {
 
-	}
+			case ConfirmJoin: //确认连接
+				c.joinConn(ws, userID)
+				writeByWs(ws, &MsgResp{
+					Type: InitLayimConfig,
+				})
+				//统计数据
+				getCountData()
+
+			case NotifyRecord: //获取通知
+				c.notifyUserRecord(userID)
+
+			case NoReadApply: //获取未读验证消息
+				c.NoReadApplyCount(userID)
+
+			case Ping: //心跳检测
+				writeByWs(ws, &MsgResp{
+					Type: Pong,
+				})
+
+			case FriendChat: //好友聊天
+				err := c.FriendChat(msg)
+				if err != nil {
+					writeByWs(ws, &MsgResp{
+						Type:  SystemError,
+						Data:  err.Error(),
+						Error: true,
+					})
+				}
+
+			case GroupChat: //群聊
+				err := c.GroupChat(msg)
+				if err != nil {
+					writeByWs(ws, &MsgResp{SystemError, err.Error(), true})
+				}
+
+			case UpdateSign: //修改签名
+				sign, ok := msg.Data.(string)
+				if !ok {
+					fmt.Println("It's not ok for type sign")
+				}
+				user.Model.Data("sign", sign).Where("id=?", userID).Update()
+				writeByWs(ws, &MsgResp{Success, "签名修改成功", false})
+
+			case UpdateStatus: //切换状态,在线或者隐身
+				imStatus, ok := msg.Data.(string)
+				if !ok {
+					fmt.Println("It's not ok for type string")
+				}
+				user.Model.Data("im_status", imStatus).Where("id=?", userID).Update()
+				//通知好友
+				msgType := ""
+				if imStatus == Online {
+					msgType = Online
+				} else if imStatus == Hide {
+					msgType = Offline
+				}
+				err := c.writeFriends(userID, &MsgResp{
+					Type: msgType,
+					Data: userID,
+				})
+				if err != nil {
+					fmt.Println(err.Error())
+				}
+
+			case ApplyFriend: //好友申请
+				if err := c.apply(userID, msg); err != nil {
+					writeByWs(ws, &MsgResp{SystemError, err.Error(), true})
+				} else {
+					writeByWs(ws, &MsgResp{Success, "申请成功", false})
+				}
+
+			case AgreeFriend: //同意好友申请
+				if err := c.agree(userID, msg); err != nil {
+					writeByWs(ws, &MsgResp{SystemError, err.Error(), true})
+				} else {
+					writeByWs(ws, &MsgResp{Success, "操作成功", false})
+				}
+
+			case RefuseFriend: //拒绝好友申请
+				if err := c.refuse(userID, msg); err != nil {
+					writeByWs(ws, &MsgResp{SystemError, err.Error(), true})
+				} else {
+					writeByWs(ws, &MsgResp{Success, "操作成功", false})
+				}
+			}
+		}
+	}()
 }
 
-//countData 统计数据
-func countData() {
+//getCountData 获取统计数据
+func getCountData() {
 	writeAll(&MsgResp{
-		Type: "count",
-		Data: &CountData{
+		Type: CountData,
+		Data: &CountDataResp{
 			Total: users.Size(),
 		},
 	})
@@ -167,7 +195,10 @@ func writeByWs(ws *ghttp.WebSocket, msg *MsgResp) error {
 	if err != nil {
 		return err
 	}
-	return ws.WriteMessage(ghttp.WS_MSG_TEXT, data)
+	if ws != nil {
+		ws.WriteMessage(ghttp.WS_MSG_TEXT, data)
+	}
+	return nil
 }
 
 //writeAll 发送给所有客户端
@@ -181,13 +212,6 @@ func writeAll(msg *MsgResp) {
 	}
 }
 
-//write 发送消息给当前客户端
-func (c *Controller) write(msg *MsgResp) error {
-	if err := writeByWs(c.ws, msg); err != nil {
-		return err
-	}
-	return nil
-}
 func (c *Controller) writeByUserID(userID uint, msg *MsgResp) {
 	ws := userIds.Get(userID)
 	if ws != nil {
@@ -210,8 +234,6 @@ func getUserID(token string) (uint, error) {
 //closeConn 断开连接处理
 func (c *Controller) closeConn(ws *ghttp.WebSocket) {
 	userID := users.Get(ws)
-	fmt.Println(userID)
-	fmt.Printf("close user_id:%d\n", userID)
 	users.Remove(ws)
 	//状态修改为下线，并通知好友
 	if userID != 0 {
@@ -222,9 +244,9 @@ func (c *Controller) closeConn(ws *ghttp.WebSocket) {
 		}
 		if ws == userIds.Get(userID) {
 			userIds.Remove(userID)
-			user.Model.Data("im_status", "offline").Where("id=?", userID).Update()
+			user.Model.Data("im_status", Offline).Where("id=?", userID).Update()
 			err := c.writeFriends(userID, &MsgResp{
-				Type: "offline",
+				Type: Offline,
 				Data: userID,
 			})
 			if err != nil {
@@ -235,30 +257,35 @@ func (c *Controller) closeConn(ws *ghttp.WebSocket) {
 }
 
 //joinConn 加入连接处理
-func (c *Controller) joinConn(userID uint) {
+func (c *Controller) joinConn(ws *ghttp.WebSocket, userID uint) {
 	fmt.Printf("join user_id:%d\n", userID)
-	users.Set(c.ws, userID)
+	users.Set(ws, userID)
 	//如果该帐号已在其他客户端登录，通知客户端下线
-	ws, ok := userIds.Get(userID).(*ghttp.WebSocket)
-	if !ok {
-		fmt.Println("It's not ok for type *ghttp.WebSocket")
-	} else {
-		if ws != nil {
-			writeByWs(ws, &MsgResp{
-				Type: InvalidToken,
-				Data: "该帐号已在其他设备登录",
-			})
-			ws.Close()
-		}
+	oldWs := getWsByUserID(userID)
+	if oldWs != nil {
+		writeByWs(oldWs, &MsgResp{
+			Type: InvalidToken,
+			Data: "该帐号已在其他设备登录",
+		})
+		oldWs.Close()
 	}
-	userIds.Set(userID, c.ws)
+	userIds.Set(userID, ws)
 	//状态修改为在线，并通知好友
-	user.Model.Data("im_status", "online").Where("id=?", userID).Update()
+	user.Model.Data("im_status", Online).Where("id=?", userID).Update()
 	err := c.writeFriends(userID, &MsgResp{
-		Type: "online",
+		Type: Online,
 		Data: userID,
 	})
 	if err != nil {
 		fmt.Println(err.Error())
 	}
+}
+
+//getWsByUserID 根据用户id获取ws连接
+func getWsByUserID(userID uint) *ghttp.WebSocket {
+	ws, ok := userIds.Get(userID).(*ghttp.WebSocket)
+	if ok {
+		return ws
+	}
+	return nil
 }

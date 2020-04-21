@@ -2,6 +2,7 @@ package router
 
 import (
 	"gfim/app/api/apply"
+	"gfim/app/api/apply_remind"
 	"gfim/app/api/group"
 	"gfim/app/api/record"
 	"gfim/app/api/user"
@@ -49,7 +50,7 @@ func init() {
 	ctlGroup := new(group.Controller)
 	ctlRecord := new(record.Controller)
 	ctlApply := new(apply.Controller)
-
+	ctlApplyRemind := new(apply_remind.Controller)
 	s.Group("/api", func(group *ghttp.RouterGroup) {
 		group.Middleware(middleware.CORS)
 		group.Group("/user/signIn", func(group *ghttp.RouterGroup) {
@@ -79,6 +80,9 @@ func init() {
 		})
 		group.Group("/apply/getData", func(group *ghttp.RouterGroup) {
 			group.ALL("/", ctlApply.GetData)
+		})
+		group.Group("/applyRemind/setIsRead", func(group *ghttp.RouterGroup) {
+			group.ALL("/", ctlApplyRemind.SetIsRead)
 		})
 	})
 	ctlChat := new(chat.Controller)

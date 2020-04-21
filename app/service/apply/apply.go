@@ -5,6 +5,7 @@ import (
 	"gfim/app/model/apply"
 	"gfim/app/model/user"
 
+	"gfim/app/model/apply_remind"
 	"gfim/app/model/friend"
 	"gfim/app/model/group"
 	"gfim/app/model/group_user"
@@ -73,13 +74,23 @@ func Friend(userID uint, req *FriendReq) error {
 		return errors.New("等待对方验证中，请勿重复提交")
 	}
 	now := gtime.Timestamp()
-	apply.Model.Data(g.Map{
+	res, err := apply.Model.Data(g.Map{
 		"type":         "friend",
 		"from_user_id": userID,
 		"to_user_id":   req.FriendID,
 		"target_id":    req.FriendGroupID,
 		"remark":       req.Remark,
 		"create_time":  now,
+	}).Insert()
+	if err != nil {
+		return err
+	}
+	//向接收人添加一条验证提醒
+	applyID, _ := res.LastInsertId()
+	apply_remind.Model.Data(g.Map{
+		"apply_id":    applyID,
+		"user_id":     req.FriendID,
+		"create_time": now,
 	}).Insert()
 	return nil
 }
@@ -155,13 +166,13 @@ func HandleCheck(handleUserID uint, req *HandleReq) (*apply.Entity, error) {
 }
 
 //Agree 同意
-func Agree(handleUserID uint, req *HandleReq) error {
+func Agree(handleUserID uint, req *HandleReq) (*apply.Entity, error) {
 	one, err := HandleCheck(handleUserID, req)
 	if err != nil {
-		return err
+		return one, err
 	}
 	if req.FriendGroupID <= 0 {
-		return errors.New("好友分组不能为空")
+		return one, errors.New("好友分组不能为空")
 	}
 	now := gtime.Timestamp()
 	apply.Model.
@@ -185,17 +196,23 @@ func Agree(handleUserID uint, req *HandleReq) error {
 			"friend_group_id": req.FriendGroupID,
 			"create_time":     now,
 		}).Insert()
+		//向发起人添加一条同意提醒
+		apply_remind.Model.Data(g.Map{
+			"apply_id":    one.Id,
+			"user_id":     one.FromUserId,
+			"create_time": now,
+		}).Insert()
 	} else {
 		//建立群和用户关联
 	}
-	return nil
+	return one, nil
 }
 
 //Refuse 拒绝
-func Refuse(handleUserID uint, req *HandleReq) error {
+func Refuse(handleUserID uint, req *HandleReq) (*apply.Entity, error) {
 	one, err := HandleCheck(handleUserID, req)
 	if err != nil {
-		return err
+		return one, err
 	}
 	now := gtime.Timestamp()
 	apply.Model.
@@ -205,7 +222,13 @@ func Refuse(handleUserID uint, req *HandleReq) error {
 			"state":       3,
 		}).
 		Update()
-	return nil
+	//向发起人添加一条拒绝提醒
+	apply_remind.Model.Data(g.Map{
+		"apply_id":    one.Id,
+		"user_id":     one.FromUserId,
+		"create_time": now,
+	}).Insert()
+	return one, nil
 }
 
 //GetListRequest 获取记录所需要的参数

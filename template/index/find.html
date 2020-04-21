@@ -137,6 +137,9 @@
     import { socketData } from "/resource/js/chat/socket.js";
     import { search, recommend } from "/resource/js/api/user.js";
     import { getParams } from "/resource/js/utils/tools.js";
+    import {
+        ApplyFriend,
+    } from "/resource/js/msg_type.js";
     layui.use(['layim', 'laypage', 'form'], function () {
         var socket = window.parent.ws
         var type = "recommend"
@@ -168,7 +171,7 @@
                     console.log(group); //获取选择的好友分组ID，若为添加群，则不返回值
                     console.log(remark); //获取附加信息
                     layer.close(index); //关闭改面板
-                    socket.send(socketData('addFriend', {
+                    socket.send(socketData(ApplyFriend, {
                         friend_group_id: group,
                         friend_id: id,
                         remark: remark,

@@ -1,14 +1,12 @@
 package chat
 
 import (
-	"fmt"
 	"gfim/app/model/friend"
 	"gfim/app/model/user"
 	"gfim/app/model/user_record"
 	"gfim/app/service/apply"
 
 	"github.com/gogf/gf/frame/g"
-	"github.com/gogf/gf/net/ghttp"
 	"github.com/gogf/gf/os/gtime"
 	"github.com/gogf/gf/util/gconv"
 	"github.com/gogf/gf/util/gvalid"
@@ -58,8 +56,8 @@ func (c *Controller) FriendChat(msg *MsgReq) error {
 	}
 	recordID, _ := res.LastInsertId()
 	//如果接收人在线， 发送消息
-	f := userIds.Get(freq.ToUserID)
-	if f != nil {
+	ws := getWsByUserID(freq.ToUserID)
+	if ws != nil {
 		one, err := user.FindOne("id=?", freq.FormUserID)
 		if err != nil {
 			return err
@@ -78,7 +76,7 @@ func (c *Controller) FriendChat(msg *MsgReq) error {
 				Timestamp: gconv.Uint(now) * 1000,
 			},
 		}
-		writeByWs(f.(*ghttp.WebSocket), resp)
+		writeByWs(ws, resp)
 		//修改为已通知
 		user_record.Model.Where("id=?", recordID).
 			Data("is_notify", 1).
@@ -94,15 +92,14 @@ func (c *Controller) writeFriends(userID uint, resp *MsgResp) error {
 		return err
 	}
 	if ids == nil {
-		fmt.Println("没有可通知的好友")
 		return nil
 	}
 	var toUserID uint
 	for _, id := range ids {
 		toUserID = id.Uint()
-		f := userIds.Get(toUserID)
-		if f != nil {
-			writeByWs(f.(*ghttp.WebSocket), resp)
+		ws := getWsByUserID(toUserID)
+		if ws != nil {
+			writeByWs(ws, resp)
 		}
 	}
 	return nil
@@ -130,10 +127,10 @@ func (c *Controller) notifyUserRecord(userID uint) error {
 			}
 		}
 		resp := &MsgResp{
-			Type: "getNotify",
+			Type: NotifyRecord,
 			Data: data,
 		}
-		c.write(resp)
+		c.writeByUserID(userID, resp)
 		//修改为已通知
 		user_record.Model.
 			Where("friend_id=?", userID).
@@ -158,8 +155,8 @@ func (c *Controller) apply(userID uint, msg *MsgReq) error {
 	if err := apply.Friend(userID, &req.friend); err != nil {
 		return err
 	}
-	//向该好友推送未处理的验证
-	c.NoHandleApplyCount(req.friend.FriendID)
+	//向该好友推送未读的好友申请
+	c.NoReadApplyCount(req.friend.FriendID)
 	return nil
 }
 
@@ -174,8 +171,64 @@ func (c *Controller) agree(userID uint, msg *MsgReq) error {
 	if err != nil {
 		panic(err)
 	}
-	if err := apply.Agree(userID, &req.friend); err != nil {
+	one, err := apply.Agree(userID, &req.friend)
+	if err != nil {
 		return err
+	}
+	//向发起人推送未读提醒
+	c.NoReadApplyCount(one.FromUserId)
+	//追加好友到面板
+	c.AppendFriend(userID, one.FromUserId)
+	ws := getWsByUserID(one.FromUserId)
+	if ws != nil {
+		c.AppendFriend(one.FromUserId,userID)
+	}
+	return nil
+}
+
+//refuse 拒绝好友申请
+func (c *Controller) refuse(userID uint, msg *MsgReq) error {
+	req := &handleReq{}
+	err := gconv.Struct(msg.Data, &req.friend)
+	if err != nil {
+		panic(err)
+	}
+	one, err := apply.Refuse(userID, &req.friend)
+	if err != nil {
+		return nil
+	}
+	//向发起人推送
+	c.NoReadApplyCount(one.FromUserId)
+	return nil
+}
+
+//AppendFriend 追加好友到面板
+func (c *Controller) AppendFriend(userID, friendID uint) error {
+	friendInfo, err := g.DB().
+		Table(friend.Table).
+		As("f").
+		InnerJoin("gf_user u", "u.id=f.friend_id").
+		Where(g.Map{
+			"f.user_id":   userID,
+			"f.friend_id": friendID,
+		}).
+		Fields("f.friend_group_id,u.id,u.nickname,u.avatar,u.im_status,u.sign").
+		One()
+	if err != nil {
+		return err
+	}
+	if friendInfo != nil {
+		c.writeByUserID(userID, &MsgResp{
+			Type: AppendFriend,
+			Data: g.Map{
+				"type":     "friend",
+				"avatar":   friendInfo["avatar"].String(),
+				"username": friendInfo["nickname"].String(),
+				"groupid":  friendInfo["friend_group_id"].Int(),
+				"id":       friendInfo["id"].Int(),
+				"sign":     friendInfo["sign"].String(),
+			},
+		})
 	}
 	return nil
 }
