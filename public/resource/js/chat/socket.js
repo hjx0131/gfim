@@ -2,6 +2,8 @@
 import { getToken } from "/resource/js/utils/auth.js";
 import { initConfig } from "/resource/js/chat/event.js";
 import { redirect } from "/resource/js/utils/tools.js";
+import { wsUrl } from "/resource/js/env.js";
+
 import {
     ConfirmJoin,
     InvalidToken,
@@ -13,13 +15,13 @@ import {
     NotifyRecord,
     Online,
     Offline,
-    AgreeFriend,
     CountData,
-    AppendFriend
+    AppendFriend,
+    Ping,
 } from "/resource/js/msg_type.js";
 
 var socket = {}
-
+var heartCheckTime
 //创建连接
 export function createSocket(url) {
     socket = new WebSocket(url);
@@ -39,6 +41,12 @@ export function sendMsg(type = "", data = {}) {
 }
 export function wsOpen() {
     sendMsg(ConfirmJoin, {})
+    heartCheck()
+}
+export function heartCheck() {
+    heartCheckTime = setInterval(function () {
+        sendMsg(Ping, {})
+    }, 1000 * 60);
 }
 export function wsReceive(res) {
     let resp = JSON.parse(res.data);
@@ -95,9 +103,7 @@ export function wsReceive(res) {
     }
     if (resp.type === AppendFriend) {
         //将好友追加到主面板
-        console.log("追加到好友面板")
         layui.layim.addList(resp.data);
-        //layui.layim.addList(resp.data);
     }
     //数据统计
     if (resp.type === CountData) {
@@ -105,33 +111,46 @@ export function wsReceive(res) {
     }
 }
 export function wsError(event) {
-    console.log(event)
     layui.layer.msg("连接出错")
 
 }
 
 export function wsClose(event) {
-    console.log(event)
-    // layer.confirm('连接已断开', function (index) {
-    //     //do something
-    //     layer.close(index);
-    // });
-
+    clearInterval(heartCheckTime);
+    reloadSocket(event)
 }
-export function socketEvent() {
-    socket.onopen = function (event) {
+
+export function reloadSocket(event) {
+    layui.layer.msg(event.reason, {
+        time: 0
+        , title: '连接已断开'
+        , btn: ['重试', '取消']
+        , yes: function (index) {
+            let ws = createSocket(wsUrl)
+            socketEvent(ws)
+            layui.layer.close(index);
+        },
+        btn2: function (index) {
+            layui.layer.close(index);
+        }
+    });
+}
+
+export function socketEvent(webSocket) {
+    webSocket.onopen = function (event) {
         wsOpen(event);
     }
-    socket.onmessage = function (event) {
+    webSocket.onmessage = function (event) {
         wsReceive(event);
     }
-    socket.onerror = function (event) {
+    webSocket.onerror = function (event) {
         wsError(event)
     };
-    socket.onclose = function (event) {
+    webSocket.onclose = function (event) {
         wsClose(event)
     };
 }
 export function getSocket() {
     return socket;
 }
+

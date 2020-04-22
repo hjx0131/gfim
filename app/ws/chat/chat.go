@@ -76,6 +76,13 @@ func (c *Controller) WebSocket(r *ghttp.Request) {
 				})
 				continue
 			}
+			//频繁心跳检测，不做token验证
+			if msg.Type == Ping {
+				writeByWs(ws, &MsgResp{
+					Type: Pong,
+				})
+				continue
+			}
 			// 检验token
 			userID, err := getUserID(msg.Token)
 			if err != nil {

@@ -3,11 +3,11 @@
 	Address     = ":8199"
 	ServerRoot  = "public"
 	ServerAgent = "gf-app"
-	LogPath     = "/tmp/log/gf-app/server"
+	LogPath     = "/tmp/log/gfim/server"
 
 # Logger.
 [logger]
-    Path        = "/tmp/log/gf-app"
+    Path        = "/tmp/log/gfim"
     Level       = "all"
     Stdout      = true
 
@@ -23,7 +23,7 @@
     debug = true
     # Database logger.
     [database.logger]
-        Path   = "/tmp/log/gf-app/sql"
+        Path   = "/tmp/log/gfim/sql"
         Level  = "all"
         Stdout = true
 # Redis数据库配置

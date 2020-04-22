@@ -68,12 +68,12 @@
             var element = layui.element;
         });
     </script>
-    <script type="module" src="/resource/js/chat/init.js"></script>
     <script type="module">
+        import { init } from "/resource/js/chat/init.js";
         import { logout } from "/resource/js/api/auth.js";
         import { getToken, removeToken } from "/resource/js/utils/auth.js";
         import { redirect } from "/resource/js/utils/tools.js";
-
+        init()
         $(".logout").click(function () {
             logout({ token: getToken() }).then(response => {
                 removeToken()
