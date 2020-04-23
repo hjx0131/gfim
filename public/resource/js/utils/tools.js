@@ -13,3 +13,7 @@ export function getParams(key = '') {
 export function redirect(path) {
     window.location.href = path;
 }
+
+export function getwsURL() {
+    return $("#wsURL").val()
+}

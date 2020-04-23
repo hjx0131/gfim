@@ -2,7 +2,7 @@
 import { getToken } from "/resource/js/utils/auth.js";
 import { initConfig } from "/resource/js/chat/event.js";
 import { redirect } from "/resource/js/utils/tools.js";
-import { wsUrl } from "/resource/js/env.js";
+import { getwsURL } from "/resource/js/utils/tools.js";
 
 import {
     ConfirmJoin,
@@ -126,7 +126,7 @@ export function reloadSocket(event) {
         , title: '连接已断开'
         , btn: ['重试', '取消']
         , yes: function (index) {
-            let ws = createSocket(wsUrl)
+            let ws = createSocket(getwsURL())
             socketEvent(ws)
             layui.layer.close(index);
         },

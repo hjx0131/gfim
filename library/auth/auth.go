@@ -26,7 +26,9 @@ func CreateToken() string {
 func GetToken(r *ghttp.Request) string {
 	token := r.Header.Get("X-Auth-Token")
 	if token == "" {
-		token = r.Get("token").(string)
+		if queryToken := r.Get("token"); queryToken != nil {
+			token = queryToken.(string)
+		}
 	}
 	return token
 }

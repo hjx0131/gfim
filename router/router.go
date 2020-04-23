@@ -16,80 +16,76 @@ import (
 
 func init() {
 	s := g.Server()
-	s.BindHandler("/signIn", func(r *ghttp.Request) {
-		r.Response.WriteTpl("layout.html", g.Map{
-			"mainTpl": "index/signIn.html",
+
+	s.Group("/", func(group *ghttp.RouterGroup) {
+		group.Middleware(middleware.SetData)
+		group.ALL("/signIn", func(r *ghttp.Request) {
+			r.Response.WriteTpl("layout.html", g.Map{
+				"mainTpl": "index/signIn.html",
+			})
+		})
+		group.ALL("/signUp", func(r *ghttp.Request) {
+			r.Response.WriteTpl("layout.html", g.Map{
+				"mainTpl": "index/signup.html",
+			})
+		})
+		group.ALL("/", func(r *ghttp.Request) {
+			r.Response.WriteTpl("layout.html", g.Map{
+				"mainTpl": "index/index.html",
+			})
+		})
+		group.ALL("/chatlog", func(r *ghttp.Request) {
+			r.Response.WriteTpl("layout.html", g.Map{
+				"mainTpl": "index/chatlog.html",
+			})
+		})
+		group.ALL("/msgbox", func(r *ghttp.Request) {
+			r.Response.WriteTpl("layout.html", g.Map{
+				"mainTpl": "index/msgbox.html",
+			})
+		})
+		group.ALL("/find", func(r *ghttp.Request) {
+			r.Response.WriteTpl("layout.html", g.Map{
+				"mainTpl": "index/find.html",
+			})
 		})
 	})
-	s.BindHandler("/signUp", func(r *ghttp.Request) {
-		r.Response.WriteTpl("layout.html", g.Map{
-			"mainTpl": "index/signup.html",
-		})
-	})
-	s.BindHandler("/", func(r *ghttp.Request) {
-		r.Response.WriteTpl("layout.html", g.Map{
-			"mainTpl": "index/index.html",
-		})
-	})
-	s.BindHandler("/chatlog", func(r *ghttp.Request) {
-		r.Response.WriteTpl("layout.html", g.Map{
-			"mainTpl": "index/chatlog.html",
-		})
-	})
-	s.BindHandler("/msgbox", func(r *ghttp.Request) {
-		r.Response.WriteTpl("layout.html", g.Map{
-			"mainTpl": "index/msgbox.html",
-		})
-	})
-	s.BindHandler("/find", func(r *ghttp.Request) {
-		r.Response.WriteTpl("layout.html", g.Map{
-			"mainTpl": "index/find.html",
-		})
-	})
+
 	ctlUser := new(user.Controller)
 	ctlGroup := new(group.Controller)
 	ctlRecord := new(record.Controller)
 	ctlApply := new(apply.Controller)
 	ctlApplyRemind := new(apply_remind.Controller)
+
 	s.Group("/api", func(group *ghttp.RouterGroup) {
 		group.Middleware(middleware.CORS)
-		group.Group("/user/signIn", func(group *ghttp.RouterGroup) {
-			group.ALL("/", ctlUser.SignIn)
-		})
-		group.Group("/user/signUp", func(group *ghttp.RouterGroup) {
-			group.ALL("/", ctlUser.SignUp)
-		})
-		group.Group("/user/logout", func(group *ghttp.RouterGroup) {
-			group.ALL("/", ctlUser.Logout)
+		group.Group("/user", func(group *ghttp.RouterGroup) {
+			group.ALL("/signIn", ctlUser.SignIn)
+			group.ALL("/signUp", ctlUser.SignUp)
+			group.Middleware(middleware.Auth)
+			group.ALL("/logout", ctlUser.Logout)
+			group.ALL("/profile", ctlUser.Profile)
+			group.ALL("/recommend", ctlUser.Recommend)
+			group.ALL("/search", ctlUser.Search)
 		})
 		group.Middleware(middleware.Auth)
-		group.Group("/user/profile", func(group *ghttp.RouterGroup) {
-			group.ALL("/", ctlUser.Profile)
+		group.Group("/group", func(group *ghttp.RouterGroup) {
+			group.ALL("/userList", ctlGroup.UserList)
 		})
-		group.Group("/user/recommend", func(group *ghttp.RouterGroup) {
-			group.ALL("/", ctlUser.Recommend)
+		group.Group("/record", func(group *ghttp.RouterGroup) {
+			group.ALL("/getData", ctlRecord.GetData)
 		})
-		group.Group("/user/search", func(group *ghttp.RouterGroup) {
-			group.ALL("/", ctlUser.Search)
+		group.Group("/apply", func(group *ghttp.RouterGroup) {
+			group.ALL("/getData", ctlApply.GetData)
 		})
-		group.Group("/group/userList", func(group *ghttp.RouterGroup) {
-			group.ALL("/", ctlGroup.UserList)
-		})
-		group.Group("/record/getData", func(group *ghttp.RouterGroup) {
-			group.ALL("/", ctlRecord.GetData)
-		})
-		group.Group("/apply/getData", func(group *ghttp.RouterGroup) {
-			group.ALL("/", ctlApply.GetData)
-		})
-		group.Group("/applyRemind/setIsRead", func(group *ghttp.RouterGroup) {
-			group.ALL("/", ctlApplyRemind.SetIsRead)
+		group.Group("/applyRemind", func(group *ghttp.RouterGroup) {
+			group.ALL("/setIsRead", ctlApplyRemind.SetIsRead)
 		})
 	})
 	ctlChat := new(chat.Controller)
 
 	s.Group("/chat", func(group *ghttp.RouterGroup) {
 		group.Middleware(middleware.CORS)
-		// group.Middleware(middleware.Auth)
 		group.Group("/", func(group *ghttp.RouterGroup) {
 			group.ALL("/", ctlChat.WebSocket)
 		})
