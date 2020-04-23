@@ -1,6 +1,6 @@
 # 简介
 
-[gfim] (http://gfim.echome.net.cn/) 是基于 [GoFrame] (https://goframe.org/index) 和 [layim] (https://layim.layui.com/) 开发的网页版即时通讯
+gfim  是基于[GoFrame](https://goframe.org) 和 [layim](https://layim.layui.com)  开发的网页版即时通讯 
 
 # 在线体验
 http://gfim.echome.net.cn/
