@@ -1,0 +1,34 @@
+<form class="layui-form">
+    <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+    <div class="layui-form-item">
+        <label class="layui-form-label">群名</label>
+        <div class="layui-input-inline">
+            <input type="text" name="name" required lay-verify="required" placeholder="请输入群名" autocomplete="off"
+                class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="*">创建</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+<script type="module">
+    import { save } from "/resource/js/api/group.js";
+
+    layui.use('form', function () {
+        var form = layui.form;
+        //监听提交
+        form.on('submit(*)', function (data) {
+            save(data.field).then(response => {
+                layer.msg("创建成功", { time: 1000 }, function () {
+                    let index = parent.layer.getFrameIndex(window.name);
+                    parent.layer.close(index);
+                    parent.window.location = '/'
+                })
+            });
+            return false;
+        });
+    });
+</script>

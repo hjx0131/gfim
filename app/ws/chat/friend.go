@@ -143,6 +143,7 @@ func (c *Controller) notifyUserRecord(userID uint) error {
 
 type applyReq struct {
 	friend apply.FriendReq
+	group  apply.GroupReq
 }
 
 //applyFriend 好友申请
@@ -181,7 +182,7 @@ func (c *Controller) agree(userID uint, msg *MsgReq) error {
 	c.AppendFriend(userID, one.FromUserId)
 	ws := getWsByUserID(one.FromUserId)
 	if ws != nil {
-		c.AppendFriend(one.FromUserId,userID)
+		c.AppendFriend(one.FromUserId, userID)
 	}
 	return nil
 }

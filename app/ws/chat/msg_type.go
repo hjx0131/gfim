@@ -69,4 +69,16 @@ const (
 
 	//AppendFriend 追加好友
 	AppendFriend = "append_friend"
+
+	//ApplyGroup 群组申请
+	ApplyGroup = "apply_group"
+
+	//AgreeGroup 同意好友申请
+	AgreeGroup = "agree_group"
+
+	//RefuseGroup 拒绝好友申请
+	RefuseGroup = "refuse_group"
+
+	//AppendGroup 追加群组
+	AppendGroup = "append_group"
 )

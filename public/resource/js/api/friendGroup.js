@@ -1,13 +1,13 @@
 import request from "/resource/js/utils/request.js";
 
 /**
- * 获取聊天记录
+ * 新增
  * @param {} params 
  */
-export function getRecord(params) {
+export function save(params) {
     return request({
-        url: '/api/record/getData',
-        method: 'get',
+        url: '/api/friendGroup/save',
+        method: 'post',
         params
     })
 }

@@ -25,8 +25,9 @@ type FriendReq struct {
 
 //GroupReq 群组申请请求参数
 type GroupReq struct {
-	GroupID uint   `json:"friend_group_id" v:"friend_group_id@required#群组不能为空"`
-	Remark  string `json:"remark"`
+	GroupID  uint `json:"friend_group_id" v:"group_id@required#群组不能为空"`
+	ToUserID uint
+	Remark   string `json:"remark"`
 }
 
 //HandleReq 处理申请请求参数
@@ -132,13 +133,21 @@ func Group(userID uint, req *GroupReq) error {
 		return errors.New("等待对方验证中，请勿重复提交")
 	}
 	now := gtime.Timestamp()
-	apply.Model.Data(g.Map{
-		"type":         "friend",
+	res, err := apply.Model.Data(g.Map{
+		"type":         "group",
 		"from_user_id": userID,
 		"to_user_id":   group.UserId,
 		"target_id":    req.GroupID,
 		"remark":       req.Remark,
 		"create_time":  now,
+	}).Insert()
+	req.ToUserID = group.UserId
+	//向接收人添加一条验证提醒
+	applyID, _ := res.LastInsertId()
+	apply_remind.Model.Data(g.Map{
+		"apply_id":    applyID,
+		"user_id":     group.UserId,
+		"create_time": now,
 	}).Insert()
 	return nil
 }
@@ -171,9 +180,9 @@ func Agree(handleUserID uint, req *HandleReq) (*apply.Entity, error) {
 	if err != nil {
 		return one, err
 	}
-	if req.FriendGroupID <= 0 {
-		return one, errors.New("好友分组不能为空")
-	}
+	// if req.FriendGroupID <= 0 {
+	// 	return one, errors.New("好友分组不能为空")
+	// }
 	now := gtime.Timestamp()
 	apply.Model.
 		Where("id", one.Id).
@@ -196,15 +205,20 @@ func Agree(handleUserID uint, req *HandleReq) (*apply.Entity, error) {
 			"friend_group_id": req.FriendGroupID,
 			"create_time":     now,
 		}).Insert()
-		//向发起人添加一条同意提醒
-		apply_remind.Model.Data(g.Map{
-			"apply_id":    one.Id,
+	} else {
+		//建立群和用户关联
+		group_user.Model.Data(g.Map{
+			"group_id":    one.TargetId,
 			"user_id":     one.FromUserId,
 			"create_time": now,
 		}).Insert()
-	} else {
-		//建立群和用户关联
 	}
+	//向发起人添加一条同意提醒
+	apply_remind.Model.Data(g.Map{
+		"apply_id":    one.Id,
+		"user_id":     one.FromUserId,
+		"create_time": now,
+	}).Insert()
 	return one, nil
 }
 
@@ -251,6 +265,7 @@ type Info struct {
 	Type      string `json:"type"`
 	Content   string `json:"content"`
 	Timestamp int    `json:"timestamp"`
+	GroupName string `json:"groupname"`
 	Remark    string `json:"remark"`
 	TargetID  uint   `json:"group_id"`
 	State     uint   `json:"state"`
@@ -273,6 +288,7 @@ func GetListAndTotal(req *GetListRequest) (interface{}, error) {
 			var content string
 			var fromSelf bool
 			var canHandle bool
+			var groupname string
 			//好友验证
 			if item.Type == "friend" {
 				//发起人是自己
@@ -290,6 +306,10 @@ func GetListAndTotal(req *GetListRequest) (interface{}, error) {
 				}
 
 			} else {
+				one, _ := group.Model.Where("id", item.TargetId).One()
+				if one != nil {
+					groupname = one.Name
+				}
 				//群验证
 				if req.UserID == item.FromUserId {
 					//发起人是自己
@@ -303,6 +323,7 @@ func GetListAndTotal(req *GetListRequest) (interface{}, error) {
 					fromSelf = false
 					uid = item.FromUserId
 					content = "申请进群"
+
 				}
 			}
 			one, _ := user.Model.Where("id", uid).FindOne()
@@ -311,6 +332,7 @@ func GetListAndTotal(req *GetListRequest) (interface{}, error) {
 				Type:      item.Type,
 				Content:   content,
 				Timestamp: gconv.Int(item.CreateTime) * 1000,
+				GroupName: groupname,
 				Remark:    item.Remark,
 				TargetID:  item.TargetId,
 				State:     item.State,

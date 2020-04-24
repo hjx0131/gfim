@@ -82,7 +82,7 @@
   <textarea title="消息模版" id="LAY_tpl" style="display:none;">
 {{# layui.each(d.data, function(index, item){
   if(item.id){ }}
-    <li data-id="{{item.id}}" data-uid="{{ item.from }}" data-fromGroup="{{ item.from_group }}">
+    <li data-id="{{item.id}}" data-type="{{item.type}}" data-uid="{{ item.from }}" data-fromGroup="{{ item.from_group }}">
         <img src="{{ item.user.avatar }}" class="layui-circle layim-msgbox-avatar">
       <p class="layim-msgbox-user">
         {{ item.user.name||'' }}
@@ -125,7 +125,9 @@
 
     import {
       AgreeFriend,
-      RefuseFriend
+      RefuseFriend,
+      AgreeGroup,
+      RefuseGroup,
     } from "/resource/js/msg_type.js";
     layui.use(['laypage', 'layim'], function () {
       setIsRead()
@@ -181,45 +183,51 @@
         //同意
         agree: function (othis) {
           var li = othis.parents('li')
+            , type = li.data('type')
             , uid = li.data('uid')
-            , from_group = li.data('fromGroup')
             , user = cache[uid]
             , id = li.data("id")
-          //选择分组
-          parent.layui.layim.setFriendGroup({
-            type: 'friend'
-            , username: user.username
-            , avatar: user.avatar
-            , group: parent.layui.layim.cache().friend //获取好友分组数据
-            , submit: function (group, index) {
-              socket.send(socketData(AgreeFriend, {
-                id: id,
-                friend_group_id: parseInt(group)
-              }));
-              parent.layui.layer.close(index);
-              othis.parent().html('已同意');
-            }
-          });
+          if (type == "friend") {
+            //选择分组
+            parent.layui.layim.setFriendGroup({
+              type: 'friend'
+              , username: user.username
+              , avatar: user.avatar
+              , group: parent.layui.layim.cache().friend //获取好友分组数据
+              , submit: function (group, index) {
+                socket.send(socketData(AgreeFriend, {
+                  id: id,
+                  friend_group_id: parseInt(group)
+                }));
+                parent.layui.layer.close(index);
+                othis.parent().html('已同意');
+              }
+            });
+          } else {
+            socket.send(socketData(AgreeGroup, {
+              id: id,
+            }));
+            othis.parent().html('已同意');
+          }
+
         }
         //拒绝
         , refuse: function (othis) {
           var li = othis.parents('li')
+            , type = li.data('type')
             , id = li.data('id');
           layer.confirm('确定拒绝吗？', function (index) {
-            socket.send(socketData(RefuseFriend, {
-              id: id,
-            }));
+            if (type == "friend") {
+              socket.send(socketData(RefuseFriend, {
+                id: id,
+              }));
+            } else {
+              socket.send(socketData(RefuseGroup, {
+                id: id,
+              }));
+            }
             layer.close(index);
             othis.parent().html('<em>已拒绝</em>');
-            // $.post('/im/refuseFriend', {
-            //   uid: uid //对方用户ID
-            // }, function (res) {
-            //   if (res.code != 0) {
-            //     return layer.msg(res.msg);
-            //   }
-            //   layer.close(index);
-            //   othis.parent().html('<em>已拒绝</em>');
-            // });
           });
         }
       };

@@ -35,3 +35,34 @@ func (c *Controller) UserList(r *ghttp.Request) {
 	})
 	c.Success(r, res)
 }
+
+//Search 搜索群组
+func (c *Controller) Search(r *ghttp.Request) {
+	var data *group.SearchReq
+	if err := r.Parse(&data); err != nil {
+		c.Fail(r, err.Error())
+	}
+	resp, err := group.Search(data)
+	if err != nil {
+		c.Fail(r, err.Error())
+	}
+	c.Success(r, resp)
+}
+
+//SaveInpnut 保存请求参数
+type SaveInpnut struct {
+	group.SaveReq
+}
+
+//Save 保存数据
+func (c *Controller) Save(r *ghttp.Request) {
+	var data *SaveInpnut
+	if err := r.Parse(&data); err != nil {
+		c.Fail(r, err.Error())
+	}
+	data.SaveReq.UserID = c.GetUserID(r)
+	if err := group.Save(&data.SaveReq); err != nil {
+		c.Fail(r, err.Error())
+	}
+	c.Success(r)
+}

@@ -104,7 +104,7 @@
 				{{# if(d.type == 'friend' || d.type == 'recommend'){ }}
 					{{#  layui.each(d.data, function(index, item){ }}
 					<div class="layui-col-xs3 layui-find-list">
-						<li layim-event="add"  data-type="friend" data-index="{{index}}" data-id="{{ item.id }}" data-username="{{item.username}}"  data-avatar="{{item.avatar}}">
+						<li layim-event="add"  data-type="friend" data-index="{{index}}" data-id="{{ item.id }}" data-name="{{item.username}}"  data-avatar="{{item.avatar}}">
                             <img class="{{item.status == 'online' ? '' : 'gray'}}" src="{{item.avatar}}">
 							<span>{{item.username}}</span>
 							<p>{{item.sign}}  {{#  if(item.sign == ''){ }}我很懒，懒得写签名{{#  } }} </p>
@@ -115,10 +115,10 @@
 				{{# }else{ }}
 					{{#  layui.each(d.data, function(index, item){ }}
 					<div class="layui-col-xs3 layui-find-list">
-						<li layim-event="add" data-type="group" data-approval="{{ item.approval }}" data-index="0" data-id="{{ item.groupIdx }}" data-name="{{item.groupName}}">
+						<li layim-event="add" data-type="group" data-index="0" data-avatar="{{item.avatar}}" data-id="{{ item.id }}" data-name="{{item.groupname}}">
 							<img src="{{item.avatar}}">
-							<span>{{item.nickname}}({{item.groupIdx}})</span>
-							<p>{{item.des}}  {{#  if(item.des == ''){ }}无{{#  } }} </p>
+							<span>{{item.groupname}}</span>
+							<p>暂无描述 </p>
 							<button class="layui-btn layui-btn-mini btncolor add" data-type="group"><i class="layui-icon">&#xe654;</i>加群</button>
 						</li>
 					</div>
@@ -136,10 +136,13 @@
     import { getToken } from "/resource/js/utils/auth.js";
     import { socketData } from "/resource/js/chat/socket.js";
     import { search, recommend } from "/resource/js/api/user.js";
+    import { search as GroupSearch } from "/resource/js/api/group.js";
     import { getParams } from "/resource/js/utils/tools.js";
     import {
         ApplyFriend,
+        ApplyGroup,
     } from "/resource/js/msg_type.js";
+
     layui.use(['layim', 'laypage', 'form'], function () {
         var socket = window.parent.ws
         var type = "recommend"
@@ -159,23 +162,31 @@
         $('body').on('click', '.add', function () {//添加好友
             var othis = $(this)
             let id = othis.parent().attr("data-id")
-            let username = othis.parent().attr("data-username")
+            let name = othis.parent().attr("data-name")
             let avatar = othis.parent().attr("data-avatar")
             type = othis.data('type')
             //弹出添加好友框
             parent.layui.layim.add({
                 type: type //friend：申请加好友、group：申请加群
-                , username: username //好友昵称，若申请加群，参数为：groupname
+                , username: name //好友昵称，若申请加群，参数为：groupname
                 , avatar: avatar //头像
                 , submit: function (group, remark, index) { //一般在此执行Ajax和WS，以通知对方
                     console.log(group); //获取选择的好友分组ID，若为添加群，则不返回值
                     console.log(remark); //获取附加信息
                     layer.close(index); //关闭改面板
-                    socket.send(socketData(ApplyFriend, {
-                        friend_group_id: group,
-                        friend_id: id,
-                        remark: remark,
-                    }));
+                    if (type == "friend") {
+                        socket.send(socketData(ApplyFriend, {
+                            friend_group_id: group,
+                            friend_id: id,
+                            remark: remark,
+                        }));
+                    } else {
+                        socket.send(socketData(ApplyGroup, {
+                            group_id: id,
+                            remark: remark,
+                        }));
+                    }
+
                 }
             });
         });
@@ -195,11 +206,12 @@
             $("#LAY_page").css("display", "block");
             var othis = $(this), input = othis.parents('.layui-col-space3').find('input').val();
             var addType = $('input:radio:checked').val();
+            console.log(addType, 'addType')
             page = 1
-            type = "friend"
+            type = addType
             wd = input
             legend = "查找结果"
-            searchData("friend", input, "查找结果")
+            searchData()
         });
         function getPage(cpage) {
             laypage.render({
@@ -224,9 +236,10 @@
             param.page = page
             param.limit = limit
             param.wd = wd
-            var func = "search"
             if (type == "group") {
-                url = "/api/group/search";
+                GroupSearch(param).then(response => {
+                    addView(response)
+                })
             } else if (type == "recommend") {
                 recommend(param).then(response => {
                     addView(response)

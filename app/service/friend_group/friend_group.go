@@ -1,8 +1,13 @@
 package friend_group
 
 import (
+	"errors"
 	"gfim/app/model/friend"
 	"gfim/app/model/friend_group"
+
+	"github.com/gogf/gf/frame/g"
+	"github.com/gogf/gf/os/gtime"
+	"github.com/gogf/gf/util/gvalid"
 )
 
 //GroupInfo 好友群组结构体,前台需要的格式
@@ -60,4 +65,40 @@ func GetListByUserID(userID uint) ([]*GroupInfo, error) {
 		}
 	}
 	return res, nil
+}
+
+//SaveReq 保存请求参数
+type SaveReq struct {
+	UserID uint   `json:"user_id" v:"user_id@required#创建人不能为空"`
+	Name   string `json:"name" v:"name@required#分组名不能为空"`
+}
+
+//Save 保存数据
+func Save(req *SaveReq) error {
+	// 数据校验
+	if err := gvalid.CheckStruct(req, nil); err != nil {
+		return err
+	}
+	count, err := friend_group.Model.
+		Where("user_id in(?) ", g.Slice{0, req.UserID}).
+		Where("name", req.Name).
+		Count()
+	if err != nil {
+		return err
+	}
+	if count > 0 {
+		return errors.New("分组名已存在")
+	}
+	now := gtime.Timestamp()
+	_, err = friend_group.Model.
+		Data(g.Map{
+			"user_id":     req.UserID,
+			"name":        req.Name,
+			"create_time": now,
+		}).
+		Insert()
+	if err != nil {
+		return err
+	}
+	return nil
 }

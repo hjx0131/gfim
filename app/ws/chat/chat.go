@@ -49,141 +49,159 @@ func (c *Controller) WebSocket(r *ghttp.Request) {
 		glog.Error(err)
 		r.Exit()
 	}
-	go func() {
-		for {
-			_, msgByte, err := ws.ReadMessage()
+	for {
+		_, msgByte, err := ws.ReadMessage()
+		if err != nil {
+			//断开连接处理
+			c.closeConn(ws)
+			getCountData()
+			break
+		}
+		// json解析
+		if err := gjson.DecodeTo(msgByte, msg); err != nil {
+			writeByWs(ws, &MsgResp{
+				Type:  InvalidParamterFormat,
+				Data:  "消息格式不正确: " + err.Error(),
+				Error: true,
+			})
+			continue
+		}
+		// 数据校验
+		if err := gvalid.CheckStruct(msg, nil); err != nil {
+			writeByWs(ws, &MsgResp{
+				Type:  ParameterValidationFailed,
+				Data:  err.String(),
+				Error: true,
+			})
+			continue
+		}
+		//频繁心跳检测，不做token验证
+		if msg.Type == Ping {
+			writeByWs(ws, &MsgResp{
+				Type: Pong,
+			})
+			continue
+		}
+		// 检验token
+		userID, err := getUserID(msg.Token)
+		if err != nil {
+			writeByWs(ws, &MsgResp{
+				Type:  InvalidToken,
+				Data:  err.Error(),
+				Error: true,
+			})
+			ws.Close()
+			continue
+		}
+		//发送消息
+		switch msg.Type {
+
+		case ConfirmJoin: //确认连接
+			c.joinConn(ws, userID)
+			writeByWs(ws, &MsgResp{
+				Type: InitLayimConfig,
+			})
+			//统计数据
+			getCountData()
+
+		case NotifyRecord: //获取通知
+			c.notifyUserRecord(userID)
+
+		case NoReadApply: //获取未读验证消息
+			c.NoReadApplyCount(userID)
+
+		case Ping: //心跳检测
+			writeByWs(ws, &MsgResp{
+				Type: Pong,
+			})
+
+		case FriendChat: //好友聊天
+			err := c.FriendChat(msg)
 			if err != nil {
-				//断开连接处理
-				c.closeConn(ws)
-				getCountData()
-				break
-			}
-			// json解析
-			if err := gjson.DecodeTo(msgByte, msg); err != nil {
 				writeByWs(ws, &MsgResp{
-					Type:  InvalidParamterFormat,
-					Data:  "消息格式不正确: " + err.Error(),
-					Error: true,
-				})
-				continue
-			}
-			// 数据校验
-			if err := gvalid.CheckStruct(msg, nil); err != nil {
-				writeByWs(ws, &MsgResp{
-					Type:  ParameterValidationFailed,
-					Data:  err.String(),
-					Error: true,
-				})
-				continue
-			}
-			//频繁心跳检测，不做token验证
-			if msg.Type == Ping {
-				writeByWs(ws, &MsgResp{
-					Type: Pong,
-				})
-				continue
-			}
-			// 检验token
-			userID, err := getUserID(msg.Token)
-			if err != nil {
-				writeByWs(ws, &MsgResp{
-					Type:  InvalidToken,
+					Type:  SystemError,
 					Data:  err.Error(),
 					Error: true,
 				})
-				ws.Close()
-				continue
 			}
-			//发送消息
-			switch msg.Type {
 
-			case ConfirmJoin: //确认连接
-				c.joinConn(ws, userID)
-				writeByWs(ws, &MsgResp{
-					Type: InitLayimConfig,
-				})
-				//统计数据
-				getCountData()
+		case GroupChat: //群聊
+			err := c.GroupChat(msg)
+			if err != nil {
+				writeByWs(ws, &MsgResp{SystemError, err.Error(), true})
+			}
 
-			case NotifyRecord: //获取通知
-				c.notifyUserRecord(userID)
+		case UpdateSign: //修改签名
+			sign, ok := msg.Data.(string)
+			if !ok {
+				fmt.Println("It's not ok for type sign")
+			}
+			user.Model.Data("sign", sign).Where("id=?", userID).Update()
+			writeByWs(ws, &MsgResp{Success, "签名修改成功", false})
 
-			case NoReadApply: //获取未读验证消息
-				c.NoReadApplyCount(userID)
+		case UpdateStatus: //切换状态,在线或者隐身
+			imStatus, ok := msg.Data.(string)
+			if !ok {
+				fmt.Println("It's not ok for type string")
+			}
+			user.Model.Data("im_status", imStatus).Where("id=?", userID).Update()
+			//通知好友
+			msgType := ""
+			if imStatus == Online {
+				msgType = Online
+			} else if imStatus == Hide {
+				msgType = Offline
+			}
+			err := c.writeFriends(userID, &MsgResp{
+				Type: msgType,
+				Data: userID,
+			})
+			if err != nil {
+				fmt.Println(err.Error())
+			}
 
-			case Ping: //心跳检测
-				writeByWs(ws, &MsgResp{
-					Type: Pong,
-				})
+		case ApplyFriend: //好友申请
+			if err := c.apply(userID, msg); err != nil {
+				writeByWs(ws, &MsgResp{SystemError, err.Error(), true})
+			} else {
+				writeByWs(ws, &MsgResp{Success, "申请成功", false})
+			}
 
-			case FriendChat: //好友聊天
-				err := c.FriendChat(msg)
-				if err != nil {
-					writeByWs(ws, &MsgResp{
-						Type:  SystemError,
-						Data:  err.Error(),
-						Error: true,
-					})
-				}
+		case AgreeFriend: //同意好友申请
+			if err := c.agree(userID, msg); err != nil {
+				writeByWs(ws, &MsgResp{SystemError, err.Error(), true})
+			} else {
+				writeByWs(ws, &MsgResp{Success, "操作成功", false})
+			}
 
-			case GroupChat: //群聊
-				err := c.GroupChat(msg)
-				if err != nil {
-					writeByWs(ws, &MsgResp{SystemError, err.Error(), true})
-				}
+		case RefuseFriend: //拒绝好友申请
+			if err := c.refuse(userID, msg); err != nil {
+				writeByWs(ws, &MsgResp{SystemError, err.Error(), true})
+			} else {
+				writeByWs(ws, &MsgResp{Success, "操作成功", false})
+			}
+		case ApplyGroup: //群组申请
+			if err := c.applyGroup(userID, msg); err != nil {
+				writeByWs(ws, &MsgResp{SystemError, err.Error(), true})
+			} else {
+				writeByWs(ws, &MsgResp{Success, "申请成功", false})
+			}
 
-			case UpdateSign: //修改签名
-				sign, ok := msg.Data.(string)
-				if !ok {
-					fmt.Println("It's not ok for type sign")
-				}
-				user.Model.Data("sign", sign).Where("id=?", userID).Update()
-				writeByWs(ws, &MsgResp{Success, "签名修改成功", false})
+		case AgreeGroup: //同意入群
+			if err := c.agree(userID, msg); err != nil {
+				writeByWs(ws, &MsgResp{SystemError, err.Error(), true})
+			} else {
+				writeByWs(ws, &MsgResp{Success, "操作成功", false})
+			}
 
-			case UpdateStatus: //切换状态,在线或者隐身
-				imStatus, ok := msg.Data.(string)
-				if !ok {
-					fmt.Println("It's not ok for type string")
-				}
-				user.Model.Data("im_status", imStatus).Where("id=?", userID).Update()
-				//通知好友
-				msgType := ""
-				if imStatus == Online {
-					msgType = Online
-				} else if imStatus == Hide {
-					msgType = Offline
-				}
-				err := c.writeFriends(userID, &MsgResp{
-					Type: msgType,
-					Data: userID,
-				})
-				if err != nil {
-					fmt.Println(err.Error())
-				}
-
-			case ApplyFriend: //好友申请
-				if err := c.apply(userID, msg); err != nil {
-					writeByWs(ws, &MsgResp{SystemError, err.Error(), true})
-				} else {
-					writeByWs(ws, &MsgResp{Success, "申请成功", false})
-				}
-
-			case AgreeFriend: //同意好友申请
-				if err := c.agree(userID, msg); err != nil {
-					writeByWs(ws, &MsgResp{SystemError, err.Error(), true})
-				} else {
-					writeByWs(ws, &MsgResp{Success, "操作成功", false})
-				}
-
-			case RefuseFriend: //拒绝好友申请
-				if err := c.refuse(userID, msg); err != nil {
-					writeByWs(ws, &MsgResp{SystemError, err.Error(), true})
-				} else {
-					writeByWs(ws, &MsgResp{Success, "操作成功", false})
-				}
+		case RefuseGroup: //拒绝入群
+			if err := c.refuse(userID, msg); err != nil {
+				writeByWs(ws, &MsgResp{SystemError, err.Error(), true})
+			} else {
+				writeByWs(ws, &MsgResp{Success, "操作成功", false})
 			}
 		}
-	}()
+	}
 }
 
 //getCountData 获取统计数据

@@ -3,6 +3,7 @@ package router
 import (
 	"gfim/app/api/apply"
 	"gfim/app/api/apply_remind"
+	"gfim/app/api/friend_group"
 	"gfim/app/api/group"
 	"gfim/app/api/record"
 	"gfim/app/api/user"
@@ -49,6 +50,16 @@ func init() {
 				"mainTpl": "index/find.html",
 			})
 		})
+		group.ALL("/createFriendGroup", func(r *ghttp.Request) {
+			r.Response.WriteTpl("layout.html", g.Map{
+				"mainTpl": "index/createFriendGroup.html",
+			})
+		})
+		group.ALL("/createGroup", func(r *ghttp.Request) {
+			r.Response.WriteTpl("layout.html", g.Map{
+				"mainTpl": "index/createGroup.html",
+			})
+		})
 	})
 
 	ctlUser := new(user.Controller)
@@ -56,6 +67,7 @@ func init() {
 	ctlRecord := new(record.Controller)
 	ctlApply := new(apply.Controller)
 	ctlApplyRemind := new(apply_remind.Controller)
+	ctlFriendGroup := new(friend_group.Controller)
 
 	s.Group("/api", func(group *ghttp.RouterGroup) {
 		group.Middleware(middleware.CORS)
@@ -71,6 +83,10 @@ func init() {
 		group.Middleware(middleware.Auth)
 		group.Group("/group", func(group *ghttp.RouterGroup) {
 			group.ALL("/userList", ctlGroup.UserList)
+			group.ALL("/save", ctlGroup.Save)
+			group.ALL("/search", ctlGroup.Search)
+
+
 		})
 		group.Group("/record", func(group *ghttp.RouterGroup) {
 			group.ALL("/getData", ctlRecord.GetData)
@@ -80,6 +96,9 @@ func init() {
 		})
 		group.Group("/applyRemind", func(group *ghttp.RouterGroup) {
 			group.ALL("/setIsRead", ctlApplyRemind.SetIsRead)
+		})
+		group.Group("/friendGroup", func(group *ghttp.RouterGroup) {
+			group.ALL("/save", ctlFriendGroup.Save)
 		})
 	})
 	ctlChat := new(chat.Controller)

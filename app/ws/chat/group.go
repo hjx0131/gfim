@@ -4,6 +4,7 @@ import (
 	"gfim/app/model/group_record"
 	"gfim/app/model/group_user"
 	"gfim/app/model/user"
+	"gfim/app/service/apply"
 
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
@@ -90,5 +91,20 @@ func (c *Controller) GroupChat(msg *MsgReq) error {
 
 		}
 	}
+	return nil
+}
+
+//applyGroup 群组申请
+func (c *Controller) applyGroup(userID uint, msg *MsgReq) error {
+	req := &applyReq{}
+	err := gconv.Struct(msg.Data, &req.group)
+	if err != nil {
+		panic(err)
+	}
+	if err := apply.Group(userID, &req.group); err != nil {
+		return err
+	}
+	//向该好友推送未读的好友申请
+	c.NoReadApplyCount(req.group.ToUserID)
 	return nil
 }

@@ -64,6 +64,18 @@ const RefuseFriend = "refuse_friend"
 //AppendFriend 追加好友
 const AppendFriend = "append_friend"
 
+//ApplyGroup 群组申请
+const ApplyGroup = "apply_group"
+
+//AgreeGroup 同意好友申请
+const AgreeGroup = "agree_group"
+
+//RefuseGroup 拒绝好友申请
+const RefuseGroup = "refuse_group"
+
+//AppendGroup 追加群组
+const AppendGroup = "append_group"
+
 //CountData 数据统计
 const CountData = "count_data"
 export {
@@ -89,5 +101,9 @@ export {
     AgreeFriend,
     CountData,
     RefuseFriend,
-    AppendFriend
+    AppendFriend,
+    ApplyGroup,
+    AgreeGroup,
+    RefuseGroup,
+    AppendGroup
 }
