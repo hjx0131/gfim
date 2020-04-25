@@ -90,7 +90,7 @@ func (c *Controller) WebSocket(r *ghttp.Request) {
 				Data:  err.Error(),
 				Error: true,
 			})
-			ws.Close()
+			//ws.Close()
 			continue
 		}
 		//发送消息
